@@ -1,0 +1,31 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Courses from './pages/Courses';
+import CreateCourse from './pages/CreateCourse';
+import CourseDetail from './pages/CourseDetail';
+import ChatView from './pages/ChatView';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="courses" element={<Courses />} />
+          <Route path="courses/new" element={<CreateCourse />} />
+          <Route path="courses/:id" element={<CourseDetail />} />
+          <Route path="chat" element={<ChatView />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
