@@ -1,57 +1,77 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --bg-primary: #0f172a;
-  /* slate-900 */
-  --bg-secondary: #1e293b;
-  /* slate-800 */
-  --bg-tertiary: #334155;
-  /* slate-700 */
+  /* Catppuccin Mocha */
+  --bg-primary: #1e1e2e;
+  /* base */
+  --bg-secondary: #181825;
+  /* mantle */
+  --bg-tertiary: #11111b;
+  /* crust */
+  --bg-separator: #313244;
+  /* surface0 */
 
-  --text-primary: #f8fafc;
-  /* slate-50 */
-  --text-secondary: #cbd5e1;
-  /* slate-300 */
-  --text-muted: #94a3b8;
-  /* slate-400 */
+  --text-primary: #cdd6f4;
+  /* text */
+  --text-secondary: #bac2de;
+  /* subtext1 */
+  --text-muted: #a6adc8;
+  /* subtext0 */
 
-  --brand-primary: #6366f1;
-  /* indigo-500 */
-  --brand-primary-hover: #4f46e5;
-  /* indigo-600 */
-  --brand-secondary: #ec4899;
-  /* pink-500 */
+  --brand-primary: #cba6f7;
+  /* mauve */
+  --brand-primary-hover: #b4befe;
+  /* sapphire */
+  --brand-secondary: #f5c2e7;
+  /* pink */
 
-  --danger: #ef4444;
-  /* red-500 */
-  --success: #10b981;
-  /* emerald-500 */
-  --warning: #f59e0b;
-  /* amber-500 */
+  --danger: #f38ba8;
+  /* red */
+  --success: #a6e3a1;
+  /* green */
+  --warning: #f9e2af;
+  /* yellow */
 
-  --border-color: #334155;
-  /* slate-700 */
+  --border-color: #313244;
+  /* surface0 */
 
   --font-family: 'Inter', sans-serif;
 }
 
 body.light-theme {
-  --bg-primary: #f8fafc;
-  /* slate-50 */
-  --bg-secondary: #ffffff;
-  /* white */
-  --bg-tertiary: #f1f5f9;
-  /* slate-100 */
+  /* Catppuccin Latte */
+  --bg-primary: #eff1f5;
+  /* base */
+  --bg-secondary: #e6e9ef;
+  /* mantle */
+  --bg-tertiary: #dce0e8;
+  /* crust */
+  --bg-separator: #ccd0da;
+  /* surface0 */
 
-  --text-primary: #0f172a;
-  /* slate-900 */
-  --text-secondary: #334155;
-  /* slate-700 */
-  --text-muted: #64748b;
-  /* slate-500 */
+  --text-primary: #4c4f69;
+  /* text */
+  --text-secondary: #5c5f77;
+  /* subtext1 */
+  --text-muted: #6c6f85;
+  /* subtext0 */
 
-  --border-color: #e2e8f0;
-  /* slate-200 */
+  --brand-primary: #8839ef;
+  /* mauve */
+  --brand-primary-hover: #7287fd;
+  /* sapphire */
+  --brand-secondary: #ea76cb;
+  /* pink */
+
+  --danger: #d20f39;
+  /* red */
+  --success: #40a02b;
+  /* green */
+  --warning: #df8e1d;
+  /* yellow */
+
+  --border-color: #ccd0da;
+  /* surface0 */
 }
 
 * {
@@ -113,14 +133,16 @@ a:hover {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-hover));
-  color: white;
-  box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  color: var(--bg-primary);
+  /* dark text on vibrant btn */
+  font-weight: 600;
+  box-shadow: 0 4px 14px 0 rgba(203, 166, 247, 0.39);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.23);
+  box-shadow: 0 6px 20px rgba(203, 166, 247, 0.23);
 }
 
 .btn-secondary {
