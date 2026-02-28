@@ -137,7 +137,7 @@ export default function Courses() {
 
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
                                     <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                                        {course.price === 0 || course.type === 'free' ? 'Free' : `$${course.price}`}
+                                        {course.price === 0 || course.type === 'free' ? 'Free' : `₹${course.price}`}
                                     </span>
                                     <Link to={`/courses/${course.id}`} className="btn btn-primary" style={{ padding: '0.6rem 1.25rem', fontSize: '0.95rem' }}>
                                         View Details

@@ -1,7 +1,7 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useState, useEffect } from 'react';
-import { SunIcon, MoonIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { SunIcon, MoonIcon, MagnifyingGlassIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NotificationBell from './NotificationBell';
 
 export default function Layout() {
@@ -10,6 +10,13 @@ export default function Layout() {
         const saved = localStorage.getItem('theme');
         return saved ? saved === 'dark' : true; // Default dark
     });
+
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [location.pathname]);
 
     useEffect(() => {
         if (isDarkMode) {
@@ -37,62 +44,79 @@ export default function Layout() {
 
     return (
         <div className="layout-container">
-            <nav className="glass-panel" style={{ padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderRadius: '0 0 12px 12px', borderTop: 'none' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-                    <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700' }} className="text-gradient">
+            <nav className="glass-panel navbar">
+                <div className="navbar-brand-container">
+                    <Link to="/" className="text-gradient navbar-brand">
                         ESDC LMS
                     </Link>
-                    <Link to="/courses/trending" style={{ color: 'var(--text-secondary)', fontWeight: 600, textDecoration: 'none' }} className="hover-text-primary">
-                        Trending
-                    </Link>
-                    <Link to="/leaderboard" style={{ color: 'var(--text-secondary)', fontWeight: 600, textDecoration: 'none' }} className="hover-text-primary">
-                        Leaderboard
-                    </Link>
-                    <Link to="/users" style={{ color: 'var(--text-secondary)', fontWeight: 600, textDecoration: 'none' }} className="hover-text-primary">
-                        Members
-                    </Link>
+
+                    <div className="mobile-actions">
+                        {user && (
+                            <div className="mobile-notification-wrapper">
+                                <NotificationBell />
+                            </div>
+                        )}
+                        <button onClick={toggleTheme} className="theme-toggle-btn mobile-theme-btn" aria-label="Toggle Theme">
+                            {isDarkMode ? <SunIcon /> : <MoonIcon />}
+                        </button>
+                        <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                            {isMobileMenuOpen ? <XMarkIcon /> : <Bars3Icon />}
+                        </button>
+                    </div>
                 </div>
-                <form onSubmit={handleSearch} className="search-container" style={{ flex: 1, maxWidth: '400px', margin: '0 2rem' }}>
-                    <input
-                        type="text"
-                        placeholder="Search courses..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="form-input"
-                    />
-                    <button type="submit" className="search-icon" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                        <MagnifyingGlassIcon style={{ width: '1.25rem', height: '1.25rem' }} />
-                    </button>
-                </form>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <button onClick={toggleTheme} className="btn btn-secondary" style={{ padding: '0.4rem', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Toggle Theme">
-                        {isDarkMode ? <SunIcon style={{ width: '1.5rem', height: '1.5rem' }} /> : <MoonIcon style={{ width: '1.5rem', height: '1.5rem' }} />}
-                    </button>
-                    {user ? (
-                        <>
-                            <NotificationBell />
-                            <Link to="/profile/edit" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', textDecoration: 'none', marginLeft: '1rem' }} className="hover-card">
-                                {user.avatar_url ? (
-                                    <img src={user.avatar_url} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--brand-primary)' }} />
-                                ) : (
-                                    <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--brand-primary)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
-                                        {user.first_name?.[0]}{user.last_name?.[0]}
-                                    </div>
-                                )}
-                                <span className="text-secondary" style={{ fontWeight: 600 }}>{user.first_name}</span>
-                            </Link>
-                            <button onClick={logout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', marginLeft: '1rem' }}>Logout</button>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/login" className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Login</Link>
-                            <Link to="/register" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }}>Get Started</Link>
-                        </>
-                    )}
+
+                <div className={`navbar-menu ${isMobileMenuOpen ? 'show' : ''}`}>
+                    <div className="navbar-links">
+                        <Link to="/courses/trending" className="nav-link">Trending</Link>
+                        <Link to="/leaderboard" className="nav-link">Leaderboard</Link>
+                        <Link to="/users" className="nav-link">Members</Link>
+                    </div>
+
+                    <form onSubmit={handleSearch} className="search-container navbar-search">
+                        <input
+                            type="text"
+                            placeholder="Search courses..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="form-input"
+                        />
+                        <button type="submit" className="search-icon">
+                            <MagnifyingGlassIcon style={{ width: '1.25rem', height: '1.25rem' }} />
+                        </button>
+                    </form>
+
+                    <div className="navbar-actions">
+                        <button onClick={toggleTheme} className="theme-toggle-btn desktop-theme-btn" aria-label="Toggle Theme">
+                            {isDarkMode ? <SunIcon /> : <MoonIcon />}
+                        </button>
+                        {user ? (
+                            <>
+                                <div className="desktop-notification-wrapper">
+                                    <NotificationBell />
+                                </div>
+                                <Link to="/profile/edit" className="profile-link hover-card">
+                                    {user.avatar_url ? (
+                                        <img src={user.avatar_url} alt="Profile" className="profile-avatar" />
+                                    ) : (
+                                        <div className="profile-avatar-placeholder">
+                                            {user.first_name?.[0]}{user.last_name?.[0]}
+                                        </div>
+                                    )}
+                                    <span className="profile-name">{user.first_name}</span>
+                                </Link>
+                                <button onClick={logout} className="btn-logout">Logout</button>
+                            </>
+                        ) : (
+                            <div className="auth-buttons">
+                                <Link to="/login" className="btn btn-secondary">Login</Link>
+                                <Link to="/register" className="btn btn-primary">Get Started</Link>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </nav>
 
-            <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
+            <main className="main-content">
                 <Outlet />
             </main>
         </div>

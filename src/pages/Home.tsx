@@ -94,7 +94,7 @@ export default function Home() {
             </section>
 
             {/* Stats Section */}
-            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '5rem' }}>
+            {/* <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '5rem' }}>
                 {[
                     { number: '10,000+', label: 'Active Students', icon: UsersIcon },
                     { number: '50+', label: 'Expert Courses', icon: PlayIcon },
@@ -107,10 +107,10 @@ export default function Home() {
                         <p style={{ margin: 0, color: 'var(--text-secondary)', fontWeight: 500 }}>{stat.label}</p>
                     </div>
                 ))}
-            </section>
+            </section> */}
 
             {/* Features Section */}
-            <section style={{ marginBottom: '5rem' }}>
+            {/* <section style={{ marginBottom: '5rem' }}>
                 <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                     <h2 style={{ fontSize: '2.5rem', margin: '0 0 1rem 0', fontWeight: 700 }}>Why Choose <span className="text-gradient">Us?</span></h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
@@ -133,7 +133,7 @@ export default function Home() {
                         </div>
                     ))}
                 </div>
-            </section>
+            </section> */}
 
             {/* Latest Courses Section */}
             <section style={{ marginBottom: '5rem' }}>
