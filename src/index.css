@@ -206,5 +206,250 @@ a:hover {
 .input-field:focus {
   outline: none;
   border-color: var(--brand-primary);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 2px rgba(203, 166, 247, 0.2);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--brand-primary);
+  background-color: var(--bg-secondary);
+  box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.1);
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  right: 1rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.search-container:focus-within .search-icon {
+  color: var(--brand-primary);
+}
+
+/* Markdown Styles */
+.markdown-content {
+  color: inherit;
+  font-size: inherit;
+}
+
+.markdown-content p {
+  margin-bottom: 0.75rem;
+}
+
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25rem;
+  list-style-position: outside;
+}
+
+.markdown-content a {
+  color: var(--brand-primary);
+  text-decoration: underline;
+}
+
+.markdown-content strong {
+  color: var(--text-primary);
+}
+
+.markdown-content code {
+  background: var(--bg-tertiary);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.markdown-content pre {
+  background: var(--bg-tertiary);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* --- LMS Specific Additions --- */
+
+.hero-gradient {
+  background: linear-gradient(-45deg, var(--bg-primary), rgba(136, 57, 239, 0.15), rgba(234, 118, 203, 0.05), var(--bg-primary));
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+.dark-theme .hero-gradient,
+body:not(.light-theme) .hero-gradient {
+  background: linear-gradient(-45deg, var(--bg-primary), rgba(203, 166, 247, 0.15), rgba(245, 194, 231, 0.05), var(--bg-primary));
+  background-size: 400% 400%;
+}
+
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.course-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(203, 166, 247, 0.15);
+  border-color: var(--brand-primary);
+}
+
+.course-card-img-wrapper {
+  overflow: hidden;
+  height: 200px;
+  position: relative;
+}
+
+.course-card-image {
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.course-card:hover .course-card-image {
+  transform: scale(1.08);
+}
+
+.stat-box {
+  background: var(--bg-secondary);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.stat-box:hover {
+  transform: translateY(-5px);
+  border-color: var(--brand-primary);
+  box-shadow: 0 10px 30px -10px rgba(203, 166, 247, 0.2);
+}
+
+.feature-card {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--brand-secondary);
+  box-shadow: 0 10px 30px -10px rgba(245, 194, 231, 0.2);
+}
+
+.feature-icon-wrapper {
+  background: linear-gradient(135deg, rgba(203, 166, 247, 0.15), rgba(245, 194, 231, 0.1));
+  color: var(--brand-primary);
+  border-radius: 12px;
+  padding: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.feature-card:hover .feature-icon-wrapper {
+  background: var(--brand-primary);
+  color: var(--bg-primary);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-primary {
+  background: rgba(203, 166, 247, 0.15);
+  color: var(--brand-primary);
+  border: 1px solid rgba(203, 166, 247, 0.3);
+}
+
+.badge-success {
+  background: rgba(166, 227, 161, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(166, 227, 161, 0.3);
+}
+
+.badge-blur {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-link {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer-link:hover {
+  color: var(--brand-primary);
 }

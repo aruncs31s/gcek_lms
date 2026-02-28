@@ -8,6 +8,9 @@ import Courses from './pages/Courses';
 import CreateCourse from './pages/CreateCourse';
 import CourseDetail from './pages/CourseDetail';
 import ChatView from './pages/ChatView';
+import Leaderboard from './pages/Leaderboard';
+import Users from './pages/Users';
+import UserProfile from './pages/UserProfile';
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
           <Route path="courses" element={<Courses />} />
           <Route path="courses/new" element={<CreateCourse />} />
           <Route path="courses/:id" element={<CourseDetail />} />
+          <Route path="leaderboard" element={<Leaderboard />} />
+          <Route path="users" element={<Users />} />
+          <Route path="users/:id" element={<UserProfile />} />
           <Route path="chat" element={<ChatView />} />
         </Route>
       </Routes>
