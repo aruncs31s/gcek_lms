@@ -3,14 +3,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import {
-    AcademicCapIcon,
-    ChatBubbleLeftRightIcon,
-    DocumentCheckIcon,
-    PlayIcon,
-    UsersIcon,
-    StarIcon,
     ArrowRightIcon,
-    CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import { SparklesIcon } from '@heroicons/react/24/solid';
 
@@ -181,7 +174,7 @@ export default function Home() {
             </section>
 
             {/* CTA Section */}
-            <section className="glass-panel" style={{ padding: '4rem 2rem', textAlign: 'center', borderRadius: '24px', background: 'linear-gradient(135deg, rgba(203, 166, 247, 0.1) 0%, rgba(245, 194, 231, 0.05) 100%)', border: '1px solid rgba(203, 166, 247, 0.2)' }}>
+            {/* <section className="glass-panel" style={{ padding: '4rem 2rem', textAlign: 'center', borderRadius: '24px', background: 'linear-gradient(135deg, rgba(203, 166, 247, 0.1) 0%, rgba(245, 194, 231, 0.05) 100%)', border: '1px solid rgba(203, 166, 247, 0.2)' }}>
                 <h2 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '1rem' }}>Ready to Start <span className="text-gradient">Learning?</span></h2>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto 2rem auto' }}>
                     Join thousands of students who are already advancing their careers and acquiring new skills.
@@ -189,7 +182,7 @@ export default function Home() {
                 <Link to="/register" className="btn btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.2rem', borderRadius: '12px' }}>
                     Create Your Account Now
                 </Link>
-            </section>
+            </section> */}
 
             {/* Footer */}
             <footer style={{ marginTop: '5rem', paddingTop: '3rem', borderTop: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem' }}>
