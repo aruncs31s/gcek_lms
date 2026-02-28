@@ -8,7 +8,10 @@ export default function CreateCourse() {
         title: '',
         description: '',
         price: 0,
-        thumbnail_url: ''
+        thumbnail_url: '',
+        status: 'coming soon',
+        duration: '',
+        start_date: ''
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -51,10 +54,15 @@ export default function CreateCourse() {
 
         try {
             // Send the price as a number
-            const payload = {
+            const payload: any = {
                 ...formData,
                 price: Number(formData.price)
             };
+            if (payload.start_date) {
+                payload.start_date = new Date(payload.start_date).toISOString();
+            } else {
+                delete payload.start_date;
+            }
             const response = await api.post('/courses', payload);
             // Navigate to the newly created course view
             navigate(`/courses/${response.data.id}`);
@@ -65,7 +73,7 @@ export default function CreateCourse() {
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -134,6 +142,43 @@ export default function CreateCourse() {
                                     Image uploaded successfully!
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Status</label>
+                            <select
+                                name="status"
+                                className="input-field"
+                                value={formData.status}
+                                onChange={handleChange}
+                            >
+                                <option value="coming soon">Coming Soon</option>
+                                <option value="active">Active</option>
+                                <option value="ended">Ended</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Duration (e.g. "4 Weeks")</label>
+                            <input
+                                type="text"
+                                name="duration"
+                                className="input-field"
+                                value={formData.duration}
+                                onChange={handleChange}
+                                placeholder="10 Hours..."
+                            />
+                        </div>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Start Date</label>
+                            <input
+                                type="datetime-local"
+                                name="start_date"
+                                className="input-field"
+                                value={formData.start_date}
+                                onChange={handleChange}
+                            />
                         </div>
                     </div>
 

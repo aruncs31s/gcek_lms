@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../lib/api';
-import { FunnelIcon } from '@heroicons/react/24/outline';
+import { FunnelIcon, MagnifyingGlassIcon, UsersIcon, UserIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 
 interface Course {
     id: string;
@@ -11,6 +12,12 @@ interface Course {
     thumbnail_url?: string;
     type: string;
     status: string;
+    duration?: string;
+    start_date?: string;
+    progress?: number;
+    teacher_name?: string;
+    student_count?: number;
+    likes_count?: number;
 }
 
 export default function Courses() {
@@ -21,6 +28,8 @@ export default function Courses() {
     const query = searchParams.get('query') || '';
     const type = searchParams.get('type') || '';
     const status = searchParams.get('status') || '';
+
+    const [localQuery, setLocalQuery] = useState(query);
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -49,43 +58,69 @@ export default function Courses() {
         setSearchParams(newParams);
     };
 
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        handleFilterChange('query', localQuery);
+    };
+
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '4rem' }}>
             {/* Header Section */}
-            <div className="glass-panel" style={{ padding: '3rem 2rem', marginBottom: '3rem', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(203, 166, 247, 0.05) 0%, rgba(245, 194, 231, 0.05) 100%)', border: '1px solid var(--border-color)' }}>
-                <h1 className="text-gradient" style={{ fontSize: '3rem', marginBottom: '1rem', fontWeight: 800 }}>Explore Our Courses</h1>
-                <p className="text-secondary" style={{ maxWidth: '650px', margin: '0 auto', fontSize: '1.15rem', lineHeight: 1.6 }}>
-                    Broaden your horizons with expert-led courses in Embedded Systems, IoT, and cutting-edge digital technologies.
-                </p>
+            <div className="glass-panel" style={{ padding: '4rem 2rem', marginBottom: '3rem', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(203, 166, 247, 0.08) 0%, rgba(245, 194, 231, 0.03) 100%)', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: '-50%', left: '-10%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(203, 166, 247, 0.1) 0%, transparent 70%)', borderRadius: '50%', zIndex: 0 }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                    <h1 className="text-gradient" style={{ fontSize: '3.5rem', marginBottom: '1rem', fontWeight: 800, lineHeight: 1.2 }}>Explore Our Courses</h1>
+                    <p className="text-secondary" style={{ maxWidth: '650px', margin: '0 auto', fontSize: '1.15rem', lineHeight: 1.6 }}>
+                        Broaden your horizons with expert-led courses in Embedded Systems, IoT, and cutting-edge digital technologies.
+                    </p>
 
-                {/* Search / Filter Bar */}
-                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '2.5rem', background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: '16px', border: '1px solid var(--border-color)', maxWidth: 'fit-content', margin: '2.5rem auto 0 auto' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-secondary)', padding: '0.5rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-                        <FunnelIcon style={{ width: '1.25rem', height: '1.25rem', color: 'var(--text-secondary)' }} />
-                        <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Filters</span>
+                    {/* Search Bar */}
+                    <form onSubmit={handleSearchSubmit} style={{ maxWidth: '600px', margin: '2.5rem auto 1rem auto', position: 'relative' }}>
+                        <div style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}>
+                            <MagnifyingGlassIcon style={{ width: '1.5rem', height: '1.5rem' }} />
+                        </div>
+                        <input
+                            type="text"
+                            className="form-input"
+                            placeholder="What do you want to learn today?"
+                            value={localQuery}
+                            onChange={(e) => setLocalQuery(e.target.value)}
+                            style={{ paddingLeft: '3rem', paddingRight: '8rem', height: '3.5rem', fontSize: '1.1rem', borderRadius: '999px', background: 'var(--bg-primary)' }}
+                        />
+                        <button type="submit" className="btn btn-primary" style={{ position: 'absolute', right: '0.4rem', top: '0.4rem', bottom: '0.4rem', borderRadius: '999px', padding: '0 1.5rem' }}>
+                            Search
+                        </button>
+                    </form>
+
+                    {/* Filter Bar */}
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1.5rem', maxWidth: 'fit-content', margin: '1.5rem auto 0 auto' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '999px', border: '1px solid var(--border-color)', backdropFilter: 'blur(10px)' }}>
+                            <FunnelIcon style={{ width: '1.25rem', height: '1.25rem', color: 'var(--text-secondary)' }} />
+                            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Filters</span>
+                        </div>
+                        <select
+                            className="form-input"
+                            style={{ width: 'auto', minWidth: '160px', padding: '0.55rem 1rem', borderRadius: '999px', background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)' }}
+                            value={type}
+                            onChange={(e) => handleFilterChange('type', e.target.value)}
+                        >
+                            <option value="">All Types</option>
+                            <option value="free">Free Courses</option>
+                            <option value="paid">Premium Courses</option>
+                        </select>
+
+                        <select
+                            className="form-input"
+                            style={{ width: 'auto', minWidth: '160px', padding: '0.55rem 1rem', borderRadius: '999px', background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)' }}
+                            value={status}
+                            onChange={(e) => handleFilterChange('status', e.target.value)}
+                        >
+                            <option value="">All Statuses</option>
+                            <option value="coming soon">Coming Soon</option>
+                            <option value="active">Active</option>
+                            <option value="ended">Ended</option>
+                        </select>
                     </div>
-                    <select
-                        className="form-input"
-                        style={{ width: 'auto', minWidth: '160px', padding: '0.55rem 1rem' }}
-                        value={type}
-                        onChange={(e) => handleFilterChange('type', e.target.value)}
-                    >
-                        <option value="">All Types</option>
-                        <option value="free">Free Courses</option>
-                        <option value="paid">Premium Courses</option>
-                    </select>
-
-                    <select
-                        className="form-input"
-                        style={{ width: 'auto', minWidth: '160px', padding: '0.55rem 1rem' }}
-                        value={status}
-                        onChange={(e) => handleFilterChange('status', e.target.value)}
-                    >
-                        <option value="">All Statuses</option>
-                        <option value="not started">Not Started</option>
-                        <option value="active">Active</option>
-                        <option value="ended">Ended</option>
-                    </select>
                 </div>
             </div>
 
@@ -122,25 +157,46 @@ export default function Courses() {
                                     ) : (
                                         <span className="badge badge-primary badge-blur">Premium</span>
                                     )}
-                                    <span className="badge badge-blur" style={{ textTransform: 'capitalize' }}>
-                                        {course.status || 'Not Started'}
+                                    <span className="badge badge-blur" style={{
+                                        textTransform: 'capitalize',
+                                        background: course.status === 'coming soon' ? 'rgba(250, 176, 5, 0.2)' : course.status === 'active' ? 'rgba(166, 227, 161, 0.15)' : undefined,
+                                        color: course.status === 'coming soon' ? 'var(--warning)' : course.status === 'active' ? 'var(--success)' : undefined,
+                                    }}>
+                                        {course.status === 'coming soon' ? '🔜 Coming Soon' : (course.status || 'Not Started')}
                                     </span>
                                 </div>
                             </div>
 
                             <div style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, margin: '0 0 1rem 0', lineHeight: 1.4, color: 'var(--text-primary)' }}>{course.title}</h3>
+                                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, margin: '0 0 0.5rem 0', lineHeight: 1.4, color: 'var(--text-primary)' }}>{course.title}</h3>
+                                {course.teacher_name && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--brand-primary)', marginBottom: '1rem', fontSize: '0.9rem', fontWeight: 500 }}>
+                                        <UserIcon style={{ width: '1rem' }} />
+                                        <span>{course.teacher_name}</span>
+                                    </div>
+                                )}
 
                                 <p className="text-muted" style={{ fontSize: '0.95rem', marginBottom: '1.5rem', flex: 1, lineHeight: 1.6 }}>
-                                    {course.description.length > 120 ? `${course.description.substring(0, 120)}...` : course.description || "No description provided."}
+                                    {course.description.length > 100 ? `${course.description.substring(0, 100)}...` : course.description || "No description provided."}
                                 </p>
 
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+                                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                        <UsersIcon style={{ width: '1.1rem' }} />
+                                        <span>{course.student_count || 0} Students</span>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                        <HeartSolidIcon style={{ width: '1.1rem', color: 'var(--danger)' }} />
+                                        <span>{course.likes_count || 0} Likes</span>
+                                    </div>
+                                </div>
+
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)' }}>
                                     <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                                        {course.price === 0 || course.type === 'free' ? 'Free' : `₹${course.price}`}
+                                        {course.price === 0 || course.type === 'free' ? 'Free' : `$${course.price}`}
                                     </span>
-                                    <Link to={`/courses/${course.id}`} className="btn btn-primary" style={{ padding: '0.6rem 1.25rem', fontSize: '0.95rem' }}>
-                                        View Details
+                                    <Link to={`/courses/${course.id}`} className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.95rem' }}>
+                                        View Content
                                     </Link>
                                 </div>
                             </div>

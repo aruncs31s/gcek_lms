@@ -13,6 +13,11 @@ interface Course {
     likes_count: number;
     student_count: number;
     price: number;
+    type: string;
+    status: string;
+    duration?: string;
+    start_date?: string;
+    progress?: number;
 }
 
 export default function TrendingCourses() {

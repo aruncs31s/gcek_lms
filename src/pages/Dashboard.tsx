@@ -18,6 +18,10 @@ interface Course {
     thumbnail_url?: string;
     type: string;
     status: string;
+    duration?: string;
+    start_date?: string;
+    progress?: number;
+    created_at: string;
 }
 
 export default function Dashboard() {

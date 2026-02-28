@@ -15,6 +15,10 @@ interface Course {
     thumbnail_url?: string;
     type: string;
     status: string;
+    duration?: string;
+    start_date?: string;
+    progress?: number;
+    teacher_name?: string;
 }
 
 export default function Home() {
