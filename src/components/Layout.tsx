@@ -42,6 +42,9 @@ export default function Layout() {
                     <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700' }} className="text-gradient">
                         ESDC LMS
                     </Link>
+                    <Link to="/courses/trending" style={{ color: 'var(--text-secondary)', fontWeight: 600, textDecoration: 'none' }} className="hover-text-primary">
+                        Trending
+                    </Link>
                     <Link to="/leaderboard" style={{ color: 'var(--text-secondary)', fontWeight: 600, textDecoration: 'none' }} className="hover-text-primary">
                         Leaderboard
                     </Link>
@@ -68,8 +71,17 @@ export default function Layout() {
                     {user ? (
                         <>
                             <NotificationBell />
-                            <span className="text-secondary" style={{ marginLeft: '1rem' }}>Hello, {user.first_name}</span>
-                            <button onClick={logout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>Logout</button>
+                            <Link to="/profile/edit" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', textDecoration: 'none', marginLeft: '1rem' }} className="hover-card">
+                                {user.avatar_url ? (
+                                    <img src={user.avatar_url} alt="Profile" style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--brand-primary)' }} />
+                                ) : (
+                                    <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--brand-primary)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+                                        {user.first_name?.[0]}{user.last_name?.[0]}
+                                    </div>
+                                )}
+                                <span className="text-secondary" style={{ fontWeight: 600 }}>{user.first_name}</span>
+                            </Link>
+                            <button onClick={logout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', marginLeft: '1rem' }}>Logout</button>
                         </>
                     ) : (
                         <>

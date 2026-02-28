@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
-import { PlayCircleIcon, AcademicCapIcon, UserIcon, ClockIcon, DocumentTextIcon, CheckCircleIcon, Bars3Icon, FolderIcon, VideoCameraIcon, LockClosedIcon, CheckBadgeIcon, Cog6ToothIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PlayCircleIcon, AcademicCapIcon, UserIcon, ClockIcon, DocumentTextIcon, CheckCircleIcon, Bars3Icon, FolderIcon, VideoCameraIcon, LockClosedIcon, CheckBadgeIcon, Cog6ToothIcon, TrashIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
@@ -37,6 +38,8 @@ interface Course {
     modules: Module[];
     type: string;
     status: string;
+    likes_count: number;
+    is_liked: boolean;
 }
 
 interface Enrollment {
@@ -446,6 +449,7 @@ export default function CourseDetail() {
     const [enrollment, setEnrollment] = useState<Enrollment | null>(null);
     const [loading, setLoading] = useState(true);
     const [enrolling, setEnrolling] = useState(false);
+    const [liking, setLiking] = useState(false);
 
     // UI state
     const [isCreatingModule, setIsCreatingModule] = useState(false);
@@ -494,6 +498,24 @@ export default function CourseDetail() {
             alert('Failed to enroll. Please try again.');
         } finally {
             setEnrolling(false);
+        }
+    };
+
+    const handleLikeToggle = async () => {
+        if (!user || liking || !course) return;
+        setLiking(true);
+        try {
+            if (course.is_liked) {
+                await api.delete(`/courses/${id}/like`);
+                setCourse({ ...course, is_liked: false, likes_count: Math.max(0, course.likes_count - 1) });
+            } else {
+                await api.post(`/courses/${id}/like`);
+                setCourse({ ...course, is_liked: true, likes_count: course.likes_count + 1 });
+            }
+        } catch (err) {
+            console.error("Failed to toggle like", err);
+        } finally {
+            setLiking(false);
         }
     };
 
@@ -578,6 +600,10 @@ export default function CourseDetail() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <DocumentTextIcon style={{ width: '1.2rem', height: '1.2rem' }} />
                             <span>{modules.length} Items</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <HeartSolidIcon style={{ width: '1.2rem', height: '1.2rem', color: 'var(--danger)' }} />
+                            <span>{course.likes_count} Likes</span>
                         </div>
                     </div>
                 </div>
@@ -789,6 +815,26 @@ export default function CourseDetail() {
                                             </button>
                                         )}
                                         <Link to={`/chat?course=${course.id}`} className="btn btn-secondary" style={{ width: '100%', textAlign: 'center', padding: '1rem' }}>Community Chat</Link>
+                                        <button
+                                            onClick={handleLikeToggle}
+                                            disabled={liking}
+                                            className="btn"
+                                            style={{
+                                                width: '100%',
+                                                padding: '1rem',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                gap: '0.5rem',
+                                                background: course.is_liked ? 'rgba(243, 139, 168, 0.1)' : 'transparent',
+                                                border: course.is_liked ? '1px solid var(--danger)' : '1px solid var(--border-color)',
+                                                color: course.is_liked ? 'var(--danger)' : 'var(--text-secondary)',
+                                                transition: 'all 0.2s ease'
+                                            }}
+                                        >
+                                            {course.is_liked ? <HeartSolidIcon style={{ width: '1.2rem' }} /> : <HeartIcon style={{ width: '1.2rem' }} />}
+                                            {course.is_liked ? 'Liked' : 'Like'} ({course.likes_count})
+                                        </button>
                                     </>
                                 ) : (
                                     <Link to="/login" className="btn btn-primary" style={{ width: '100%', textAlign: 'center', padding: '1rem', fontSize: '1.1rem' }}>Login to Enroll</Link>
