@@ -679,7 +679,7 @@ export default function CourseDetail() {
                 borderRadius: '1.5rem',
                 overflow: 'hidden',
                 background: `linear-gradient(to right, var(--bg-primary) 20%, transparent), url(${course.thumbnail_url || 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200'}) center/cover`,
-                padding: '4rem 3rem',
+                padding: '4rem 2rem',
                 marginBottom: '2rem',
                 boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
                 border: '1px solid var(--border-color)',
@@ -710,10 +710,10 @@ export default function CourseDetail() {
             </div>
 
             {/* Layout Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2.5rem', alignItems: 'start' }}>
+            <div className="course-detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2.5rem', alignItems: 'start' }}>
 
                 {/* Left Column - Content */}
-                <div>
+                <div className="course-content-col">
                     {/* Tabs */}
                     <div style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', marginBottom: '2rem', overflowX: 'auto', paddingBottom: '2px' }}>
                         {(isTeacher ? ['overview', 'curriculum', 'assignments', 'instructor', 'reviews', 'settings'] as const : ['overview', 'curriculum', 'assignments', 'instructor', 'reviews'] as const).map(tab => (
@@ -851,7 +851,9 @@ export default function CourseDetail() {
                         )}
 
                         {activeTab === 'reviews' && (
-                            <CourseReviews courseId={course.id} />
+                            <div className="animate-fade-in">
+                                <CourseReviews courseId={course.id} />
+                            </div>
                         )}
 
                         {activeTab === 'settings' && isTeacher && (
@@ -862,7 +864,7 @@ export default function CourseDetail() {
                 </div>
 
                 {/* Right Column - Action Card */}
-                <div style={{ position: 'sticky', top: '2rem' }}>
+                <div className="course-action-col" style={{ position: 'sticky', top: '2rem' }}>
                     <div className="glass-panel" style={{ padding: '2rem', overflow: 'hidden', position: 'relative' }}>
                         {course.thumbnail_url && (
                             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '120px', backgroundImage: `url(${course.thumbnail_url})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.1 }} />

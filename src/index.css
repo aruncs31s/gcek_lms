@@ -724,3 +724,20 @@ body:not(.light-theme) .hero-gradient {
     justify-content: center;
   }
 }
+
+@media (max-width: 900px) {
+  .course-detail-grid {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+  }
+
+  .course-action-col {
+    width: 100% !important;
+    position: static !important;
+    margin-bottom: 2rem;
+  }
+
+  .course-content-col {
+    width: 100% !important;
+  }
+}

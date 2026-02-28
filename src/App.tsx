@@ -13,6 +13,7 @@ import Users from './pages/Users';
 import UserProfile from './pages/UserProfile';
 import TrendingCourses from './pages/TrendingCourses';
 import EditProfile from './pages/EditProfile';
+import CodingAssignment from './pages/CodingAssignment';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="users/:id" element={<UserProfile />} />
           <Route path="profile/edit" element={<EditProfile />} />
           <Route path="chat" element={<ChatView />} />
+          <Route path="courses/:courseId/coding/:codingAssignmentId" element={<CodingAssignment />} />
         </Route>
       </Routes>
     </BrowserRouter>
