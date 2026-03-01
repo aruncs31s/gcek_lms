@@ -65,14 +65,14 @@ export default function Users() {
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '4rem' }}>
             {/* Header Section */}
-            <div className="glass-panel" style={{ padding: '3rem 2rem', marginBottom: '3rem', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(203, 166, 247, 0.05) 0%, rgba(245, 194, 231, 0.05) 100%)', border: '1px solid var(--border-color)' }}>
+            <div className="glass-panel search-hero-section" style={{ padding: '3rem 2rem', marginBottom: '3rem', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(203, 166, 247, 0.05) 0%, rgba(245, 194, 231, 0.05) 100%)', border: '1px solid var(--border-color)' }}>
                 <h1 className="text-gradient" style={{ fontSize: '3rem', marginBottom: '1rem', fontWeight: 800 }}>Community Members</h1>
                 <p className="text-secondary" style={{ maxWidth: '650px', margin: '0 auto', fontSize: '1.15rem', lineHeight: 1.6 }}>
                     Connect with fellow students, expert instructors, and platform administrators.
                 </p>
 
                 {/* Filter Bar */}
-                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '2.5rem', background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: '16px', border: '1px solid var(--border-color)', maxWidth: 'fit-content', margin: '2.5rem auto 0 auto' }}>
+                <div className="filter-bar" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '2.5rem', background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: '16px', border: '1px solid var(--border-color)', maxWidth: 'fit-content', margin: '2.5rem auto 0 auto' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-secondary)', padding: '0.5rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                         <FunnelIcon style={{ width: '1.25rem', height: '1.25rem', color: 'var(--text-secondary)' }} />
                         <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Filters</span>
@@ -120,7 +120,7 @@ export default function Users() {
                     <p className="text-muted" style={{ fontSize: '1.1rem' }}>Try adjusting your role filters to see more results.</p>
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: '1.5rem' }}>
                     {users.map(user => (
                         <Link to={`/users/${user.id}`} key={user.id} className="stat-box" style={{ padding: '2rem 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', textDecoration: 'none' }}>
                             <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--bg-tertiary)', border: '2px solid var(--border-color)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

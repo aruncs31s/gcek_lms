@@ -115,7 +115,7 @@ export default function CreateCourse() {
                         />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+                    <div className="form-grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Format</label>
                             <select
@@ -145,7 +145,7 @@ export default function CreateCourse() {
                             <input
                                 type="file"
                                 accept="image/jpeg, image/png, image/webp"
-                                className="input-field"
+                                className="file-input"
                                 onChange={handleImageUpload}
                                 disabled={uploadingImage}
                             />
@@ -158,7 +158,7 @@ export default function CreateCourse() {
                         </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+                    <div className="form-grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Status</label>
                             <select

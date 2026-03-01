@@ -71,7 +71,7 @@ export default function Layout() {
                                 <div className="desktop-notification-wrapper">
                                     <NotificationBell />
                                 </div>
-                                <Link to="/profile/edit" className="profile-link hover-card">
+                                <Link to={`/users/${user.id}`} className="profile-link hover-card">
                                     {user.avatar_url ? (
                                         <img src={user.avatar_url} alt="Profile" className="profile-avatar" />
                                     ) : (

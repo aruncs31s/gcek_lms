@@ -229,6 +229,51 @@ a:hover {
   box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.1);
 }
 
+/* Custom File Input */
+.file-input {
+  display: block;
+  width: 100%;
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.file-input:hover {
+  border-color: var(--brand-primary);
+  background-color: var(--bg-tertiary);
+}
+
+.file-input:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.1);
+}
+
+.file-input::file-selector-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border-radius: 8px;
+  background: var(--bg-separator);
+  color: var(--text-primary);
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.file-input::file-selector-button:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+}
+
 .search-container {
   position: relative;
   display: flex;
@@ -726,6 +771,35 @@ body:not(.light-theme) .hero-gradient {
   }
 }
 
+/* Tablet navbar adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .navbar {
+    padding: 0.75rem 1rem;
+  }
+
+  .navbar-links {
+    gap: 1rem;
+    margin-left: 1rem;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+  }
+
+  .navbar-search {
+    max-width: 250px;
+    margin: 0 1rem;
+  }
+
+  .navbar-actions {
+    gap: 0.5rem;
+  }
+
+  .profile-name {
+    display: none;
+  }
+}
+
 @media (max-width: 900px) {
   .course-detail-grid {
     display: flex !important;
@@ -739,6 +813,383 @@ body:not(.light-theme) .hero-gradient {
   }
 
   .course-content-col {
+    width: 100% !important;
+  }
+}
+
+/* ============================================
+   COMPREHENSIVE RESPONSIVE STYLES
+   Mobile: 0-480px | Tablet: 481-768px | 
+   Small Laptop: 769-1024px | Desktop: 1025px+
+   ============================================ */
+
+/* --- Global container adjustments --- */
+@media (max-width: 768px) {
+  #root {
+    padding: 0.5rem;
+  }
+
+  .main-content {
+    padding: 0 0.5rem;
+  }
+
+  .glass-panel {
+    border-radius: 8px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .main-content {
+    padding: 0 0.75rem;
+  }
+}
+
+/* --- Responsive grid utility classes --- */
+.responsive-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.responsive-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .responsive-grid-3,
+  .responsive-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .responsive-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Course cards grid --- */
+@media (max-width: 480px) {
+  .course-card-img-wrapper {
+    height: 150px;
+  }
+}
+
+/* --- Hero sections responsive --- */
+@media (max-width: 768px) {
+  .hero-gradient {
+    padding: 3rem 1rem !important;
+    border-radius: 12px !important;
+    margin-bottom: 2rem !important;
+  }
+}
+
+/* --- Course detail hero --- */
+@media (max-width: 768px) {
+  .course-detail-hero {
+    padding: 2rem 1rem !important;
+  }
+
+  .course-detail-hero h1 {
+    font-size: 1.8rem !important;
+  }
+
+  .course-detail-hero .course-meta {
+    flex-wrap: wrap;
+    gap: 0.75rem !important;
+  }
+}
+
+/* --- Dashboard stat boxes --- */
+@media (max-width: 480px) {
+  .stat-box {
+    padding: 1rem;
+  }
+}
+
+/* --- Leaderboard rows --- */
+@media (max-width: 600px) {
+  .leaderboard-row {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem !important;
+    padding: 1.25rem !important;
+  }
+
+  .leaderboard-row .rank-number {
+    min-width: unset !important;
+  }
+}
+
+/* --- Form responsiveness (used by CreateCourse, EditProfile, CourseSettings) --- */
+@media (max-width: 640px) {
+  .form-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .form-grid-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* --- Dashboard course list items --- */
+@media (max-width: 600px) {
+  .dashboard-course-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  .dashboard-course-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* --- Header sections with flex space-between --- */
+@media (max-width: 600px) {
+  .page-header-flex {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+}
+
+/* --- Filter bars (Courses, Users) --- */
+@media (max-width: 640px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem !important;
+  }
+
+  .filter-bar select,
+  .filter-bar .form-input {
+    width: 100% !important;
+    min-width: unset !important;
+  }
+}
+
+/* --- Course detail tabs --- */
+@media (max-width: 640px) {
+  .course-tabs {
+    gap: 0;
+  }
+
+  .course-tabs button {
+    padding: 0.75rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* --- Instructor tab on course detail --- */
+@media (max-width: 640px) {
+  .instructor-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .instructor-section img,
+  .instructor-avatar {
+    width: 80px !important;
+    height: 80px !important;
+  }
+}
+
+/* --- Coding Assignment page --- */
+@media (max-width: 900px) {
+  .coding-layout {
+    flex-direction: column !important;
+  }
+
+  .coding-right-panel {
+    width: 100% !important;
+    max-height: 50vh;
+    border-right: none !important;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .coding-left-panel {
+    border-right: none !important;
+  }
+
+  .coding-header {
+    flex-direction: column;
+    gap: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .coding-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* --- Chat box --- */
+@media (max-width: 640px) {
+  .chat-input-area {
+    flex-wrap: wrap;
+  }
+}
+
+/* --- Module editor inline form --- */
+@media (max-width: 640px) {
+  .module-editor-row {
+    flex-direction: column;
+  }
+
+  .module-editor-row > div,
+  .module-editor-row > label {
+    width: 100%;
+  }
+}
+
+/* --- Search hero sections (Courses page, Users page) --- */
+@media (max-width: 768px) {
+  .search-hero-section {
+    padding: 2rem 1rem !important;
+    border-radius: 16px !important;
+  }
+
+  .search-hero-section h1 {
+    font-size: 2rem !important;
+  }
+
+  .search-hero-section p {
+    font-size: 1rem !important;
+  }
+
+  .search-hero-section form {
+    margin: 1.5rem auto 0.5rem auto !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .search-hero-section h1 {
+    font-size: 2.5rem !important;
+  }
+}
+
+/* --- Profile overview card --- */
+@media (max-width: 640px) {
+  .profile-overview-card {
+    padding: 2rem 1rem !important;
+  }
+
+  .profile-overview-card h1 {
+    font-size: 1.75rem !important;
+  }
+
+  .profile-avatar-large {
+    width: 80px !important;
+    height: 80px !important;
+  }
+}
+
+/* --- Button responsiveness --- */
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    font-size: 0.9rem;
+  }
+}
+
+/* --- Table-like leaderboard items --- */
+@media (max-width: 768px) {
+  .leaderboard-container {
+    max-width: 100% !important;
+  }
+}
+
+/* --- User grid cards --- */
+@media (max-width: 480px) {
+  .user-card {
+    padding: 1.25rem 1rem !important;
+  }
+
+  .user-card .profile-avatar-medium {
+    width: 60px !important;
+    height: 60px !important;
+  }
+}
+
+/* --- Notification dropdown --- */
+@media (max-width: 480px) {
+  .notification-dropdown {
+    width: 280px !important;
+    right: -1rem !important;
+  }
+}
+
+/* --- Edit Profile page --- */
+@media (max-width: 640px) {
+  .edit-profile-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .edit-profile-panel {
+    padding: 1.5rem !important;
+  }
+}
+
+/* --- Typography scaling --- */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.75rem !important;
+  }
+
+  .text-gradient {
+    font-size: inherit;
+  }
+}
+
+/* --- Prevent horizontal overflow --- */
+html, body {
+  overflow-x: hidden;
+}
+
+/* --- Footer responsive --- */
+@media (max-width: 640px) {
+  .responsive-footer {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    text-align: center;
+  }
+}
+
+/* --- Dashboard filters row --- */
+@media (max-width: 640px) {
+  .dashboard-filters {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    max-width: 100% !important;
+  }
+
+  .dashboard-filters .search-container {
+    max-width: 100% !important;
+  }
+
+  .dashboard-filters select {
+    min-width: unset !important;
     width: 100% !important;
   }
 }

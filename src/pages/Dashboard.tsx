@@ -61,7 +61,7 @@ export default function Dashboard() {
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '4rem' }}>
             {/* Header Area */}
-            <div style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+            <div className="page-header-flex" style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>
                     <h1 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontWeight: 800 }}>Dashboard</h1>
                     <p className="text-secondary" style={{ fontSize: '1.1rem', margin: 0 }}>
@@ -77,7 +77,7 @@ export default function Dashboard() {
             </div>
 
             {/* Quick Stats */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
                 {[
                     { label: 'Active Courses', value: courses.length, icon: BookOpenIcon, color: 'var(--brand-primary)' },
                     { label: 'Certificates Earned', value: '0', icon: DocumentCheckIcon, color: 'var(--success)' },
@@ -100,7 +100,7 @@ export default function Dashboard() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                     <h2 style={{ fontSize: '1.75rem', fontWeight: 700, margin: 0 }}>Recent Courses</h2>
 
-                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flex: 1, maxWidth: '500px', justifyContent: 'flex-end' }}>
+                    <div className="dashboard-filters" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flex: 1, maxWidth: '500px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
                         <div className="search-container" style={{ maxWidth: '240px' }}>
                             <input
                                 type="text"
@@ -144,7 +144,7 @@ export default function Dashboard() {
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {filteredCourses.slice(0, 5).map(course => (
-                            <div key={course.id} style={{
+                            <div key={course.id} className="dashboard-course-row" style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
@@ -152,7 +152,9 @@ export default function Dashboard() {
                                 background: 'var(--bg-tertiary)',
                                 borderRadius: '16px',
                                 border: '1px solid var(--border-color)',
-                                transition: 'all 0.2s'
+                                transition: 'all 0.2s',
+                                flexWrap: 'wrap',
+                                gap: '1rem'
                             }}
                                 onMouseEnter={(e) => {
                                     e.currentTarget.style.transform = 'translateX(5px)';

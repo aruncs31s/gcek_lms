@@ -43,7 +43,7 @@ export default function Home() {
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '4rem' }}>
             {/* Hero Section */}
-            <section className="hero-gradient glass-panel" style={{
+            <section className="hero-gradient glass-panel search-hero-section" style={{
                 padding: '6rem 2rem',
                 textAlign: 'center',
                 marginBottom: '4rem',
@@ -143,7 +143,7 @@ export default function Home() {
                     <Link to="/courses" className="btn btn-secondary" style={{ borderRadius: '12px' }}>Explore All Courses</Link>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: '1.5rem' }}>
                     {recentCourses.map(course => (
                         <div key={course.id} className="course-card">
                             <div className="course-card-img-wrapper">
@@ -190,7 +190,7 @@ export default function Home() {
             </section> */}
 
             {/* Footer */}
-            <footer style={{ marginTop: '5rem', paddingTop: '3rem', borderTop: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem' }}>
+            <footer className="responsive-footer" style={{ marginTop: '5rem', paddingTop: '3rem', borderTop: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem' }}>
                 <div>
                     <h3 className="text-gradient" style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1rem' }}>ESDC LMS</h3>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6 }}>

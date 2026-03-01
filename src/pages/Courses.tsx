@@ -68,7 +68,7 @@ export default function Courses() {
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '4rem' }}>
             {/* Header Section */}
-            <div className="glass-panel" style={{ padding: '4rem 2rem', marginBottom: '3rem', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(203, 166, 247, 0.08) 0%, rgba(245, 194, 231, 0.03) 100%)', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden' }}>
+            <div className="glass-panel search-hero-section" style={{ padding: '4rem 2rem', marginBottom: '3rem', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(203, 166, 247, 0.08) 0%, rgba(245, 194, 231, 0.03) 100%)', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', top: '-50%', left: '-10%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(203, 166, 247, 0.1) 0%, transparent 70%)', borderRadius: '50%', zIndex: 0 }}></div>
                 <div style={{ position: 'relative', zIndex: 1 }}>
                     <h1 className="text-gradient" style={{ fontSize: '3.5rem', marginBottom: '1rem', fontWeight: 800, lineHeight: 1.2 }}>Explore Our Courses</h1>
@@ -95,7 +95,7 @@ export default function Courses() {
                     </form>
 
                     {/* Filter Bar */}
-                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1.5rem', maxWidth: 'fit-content', margin: '1.5rem auto 0 auto' }}>
+                    <div className="filter-bar" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1.5rem', maxWidth: 'fit-content', margin: '1.5rem auto 0 auto' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '999px', border: '1px solid var(--border-color)', backdropFilter: 'blur(10px)' }}>
                             <FunnelIcon style={{ width: '1.25rem', height: '1.25rem', color: 'var(--text-secondary)' }} />
                             <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Filters</span>
@@ -159,7 +159,7 @@ export default function Courses() {
                     )}
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: '1.5rem' }}>
                     {courses.map(course => (
                         <div key={course.id} className="course-card">
                             <div className="course-card-img-wrapper">

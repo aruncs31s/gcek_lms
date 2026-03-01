@@ -79,13 +79,13 @@ export default function EditProfile() {
     };
 
     return (
-        <div className="animate-fade-in" style={{ paddingBottom: '4rem', maxWidth: '800px', margin: '0 auto' }}>
+        <div className="animate-fade-in edit-profile-container" style={{ paddingBottom: '4rem', maxWidth: '800px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Account Settings</h1>
                 <p style={{ color: 'var(--text-secondary)' }}>Manage your public profile and preferences.</p>
             </div>
 
-            <div className="glass-panel" style={{ padding: '3rem', borderRadius: '24px' }}>
+            <div className="glass-panel edit-profile-panel" style={{ padding: '3rem', borderRadius: '24px' }}>
                 {error && <div style={{ color: 'var(--danger)', background: 'rgba(243, 139, 168, 0.1)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', fontWeight: 500 }}>{error}</div>}
                 {successMessage && <div style={{ color: 'var(--success)', background: 'rgba(166, 227, 161, 0.1)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckBadgeIcon style={{ width: '1.5rem' }} /> {successMessage}</div>}
 
@@ -148,7 +148,7 @@ export default function EditProfile() {
                 </div>
 
                 <form onSubmit={handleSaveProfile} style={{ display: 'grid', gap: '1.5rem' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '1.5rem' }}>
+                    <div className="form-grid-2" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '1.5rem' }}>
                         <div>
                             <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 500 }}>First Name</label>
                             <input

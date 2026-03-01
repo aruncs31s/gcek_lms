@@ -50,6 +50,15 @@ export default function ChatBox({ conversationId }: { conversationId: string }) 
 
         ws.current = new WebSocket(wsUrl);
 
+        ws.current.onerror = (error) => {
+            console.error("WebSocket error:", error);
+            alert("WebSocket connection failed. Chat may not work on this hosting.");
+        };
+
+        ws.current.onopen = () => {
+            console.log("WebSocket connected");
+        };
+
         ws.current.onmessage = (event) => {
             const msg = JSON.parse(event.data);
             if (msg.conversation_id === conversationId) {

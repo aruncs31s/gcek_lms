@@ -296,7 +296,7 @@ export default function CodingAssignmentPage() {
     return (
         <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
             {/* ── Top bar ── */}
-            <header className="flex items-center justify-between px-6 py-3 bg-gray-900 border-b border-gray-800 shrink-0">
+            <header className="coding-header flex items-center justify-between px-6 py-3 bg-gray-900 border-b border-gray-800 shrink-0" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => navigate(-1)}
@@ -315,7 +315,7 @@ export default function CodingAssignmentPage() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="coding-header-actions flex items-center gap-3">
                     {/* Previous submission badge */}
                     {submission && (
                         <div className={`text-xs px-3 py-1 rounded-full font-medium ${submission.passed ? 'bg-green-900 text-green-300' : 'bg-yellow-900 text-yellow-300'}`}>
@@ -344,9 +344,9 @@ export default function CodingAssignmentPage() {
             </header>
 
             {/* ── Main layout: editor left, panel right ── */}
-            <div className="flex flex-1 overflow-hidden">
+            <div className="coding-layout flex flex-1 overflow-hidden" style={{ display: 'flex' }}>
                 {/* ── Left: editor + description ── */}
-                <div className="flex flex-col flex-1 min-w-0 border-r border-gray-800">
+                <div className="coding-left-panel flex flex-col flex-1 min-w-0 border-r border-gray-800">
                     {/* Description */}
                     <div className="px-6 py-4 border-b border-gray-800 bg-gray-900">
                         <p className="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">
@@ -366,7 +366,7 @@ export default function CodingAssignmentPage() {
                 </div>
 
                 {/* ── Right: tabs ── */}
-                <div className="w-[420px] shrink-0 flex flex-col overflow-hidden">
+                <div className="coding-right-panel w-[420px] shrink-0 flex flex-col overflow-hidden">
                     {/* Tab bar */}
                     <div className="flex border-b border-gray-800 bg-gray-900">
                         {(['cases', 'run', 'results'] as const).map((t) => (

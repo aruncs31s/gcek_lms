@@ -52,7 +52,7 @@ export default function TrendingCourses() {
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '4rem' }}>
             {/* Header Section */}
-            <div className="glass-panel" style={{ padding: '3rem 2rem', marginBottom: '3rem', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(243, 139, 168, 0.05) 0%, rgba(203, 166, 247, 0.05) 100%)', border: '1px solid var(--border-color)' }}>
+            <div className="glass-panel search-hero-section" style={{ padding: '3rem 2rem', marginBottom: '3rem', borderRadius: '24px', textAlign: 'center', background: 'linear-gradient(135deg, rgba(243, 139, 168, 0.05) 0%, rgba(203, 166, 247, 0.05) 100%)', border: '1px solid var(--border-color)' }}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
                     <HeartSolidIcon style={{ width: '3rem', height: '3rem', color: 'var(--danger)' }} />
                 </div>
@@ -70,7 +70,7 @@ export default function TrendingCourses() {
                     <p className="text-muted" style={{ fontSize: '1.1rem' }}>Check back later as our community grows!</p>
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: '1.5rem' }}>
                     {courses.map((course, index) => (
                         <Link to={`/courses/${course.id}`} key={course.id} className="stat-box hover-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden', textDecoration: 'none' }}>
                             <div style={{ height: '180px', background: course.thumbnail_url ? `url(${course.thumbnail_url}) center/cover` : 'var(--bg-tertiary)', position: 'relative' }}>

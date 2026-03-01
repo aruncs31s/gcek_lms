@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
+import { useAuthStore } from '../store/authStore';
 import { UserIcon, ArrowLeftIcon, TrophyIcon, BookOpenIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
 interface Achievement {
@@ -39,6 +40,8 @@ interface UserProfileData {
 export default function UserProfile() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { user: currentUser } = useAuthStore();
+    const isOwnProfile = currentUser?.id === id;
     const [profileData, setProfileData] = useState<UserProfileData | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -118,6 +121,14 @@ export default function UserProfile() {
                     {user.email}
                 </p>
 
+                {isOwnProfile && (
+                    <div style={{ marginBottom: '1.5rem' }}>
+                        <Link to="/profile/edit" className="btn btn-secondary" style={{ padding: '0.5rem 1.5rem', borderRadius: '8px', fontSize: '0.9rem' }}>
+                            Edit Profile
+                        </Link>
+                    </div>
+                )}
+
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
                     <span className="badge" style={{ ...getRoleBadgeStyle(user.role), fontSize: '0.9rem', padding: '0.35rem 1rem' }}>
                         {user.role}
@@ -130,7 +141,7 @@ export default function UserProfile() {
             </div>
 
             {/* Content Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '2rem' }}>
 
                 {/* Enrolments Section */}
                 <div>

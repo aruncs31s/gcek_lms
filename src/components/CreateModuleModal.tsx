@@ -85,7 +85,7 @@ export default function CreateModuleModal({ courseId, onClose, onSuccess }: Crea
                         <input
                             type="file"
                             accept="video/mp4, video/webm"
-                            className="input-field"
+                            className="file-input"
                             onChange={handleVideoUpload}
                             disabled={uploading}
                         />
