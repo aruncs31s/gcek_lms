@@ -86,8 +86,8 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                 </div>
             )}
 
-            <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', flex: 1, minWidth: 0 }}>
+            <div className="module-item-header">
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', flex: 1, minWidth: 0, width: '100%' }}>
                     {isTeacher && (
                         <div {...attributes} {...listeners} style={{ cursor: 'grab', display: 'flex', alignItems: 'center', color: 'var(--text-muted)', flexShrink: 0 }}>
                             <Bars3Icon style={{ width: '1.5rem', height: '1.5rem' }} />
@@ -140,7 +140,7 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                 </div>
 
                 {isTeacher && (
-                    <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem', flexShrink: 0 }}>
+                    <div className="module-item-teacher-actions">
                         <button
                             onPointerDown={(e) => e.stopPropagation()}
                             onClick={() => onEdit(module)}
@@ -176,7 +176,7 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
 
                 {/* Action buttons for videos */}
                 {isVideo && !isLocked && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0, marginLeft: '1rem' }}>
+                    <div className="module-item-actions">
                         {isAccessible && (
                             <button
                                 onPointerDown={(e) => e.stopPropagation()}
