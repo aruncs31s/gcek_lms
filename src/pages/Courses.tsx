@@ -175,7 +175,7 @@ export default function Courses() {
                                         background: course.status === 'coming soon' ? 'rgba(250, 176, 5, 0.2)' : course.status === 'active' ? 'rgba(166, 227, 161, 0.15)' : undefined,
                                         color: course.status === 'coming soon' ? 'var(--warning)' : course.status === 'active' ? 'var(--success)' : undefined,
                                     }}>
-                                        {course.status === 'coming soon' ? '🔜 Coming Soon' : (course.status || 'Not Started')}
+                                        {course.status === 'coming soon' ? 'Coming Soon' : (course.status || 'Not Started')}
                                     </span>
                                 </div>
                             </div>
