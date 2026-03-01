@@ -11,6 +11,7 @@ interface Course {
     price: number;
     thumbnail_url?: string;
     type: string;
+    format?: string;
     status: string;
     duration?: string;
     start_date?: string;
@@ -27,6 +28,7 @@ export default function Courses() {
     const [searchParams, setSearchParams] = useSearchParams();
     const query = searchParams.get('query') || '';
     const type = searchParams.get('type') || '';
+    const format = searchParams.get('format') || '';
     const status = searchParams.get('status') || '';
 
     const [localQuery, setLocalQuery] = useState(query);
@@ -36,7 +38,7 @@ export default function Courses() {
             setLoading(true);
             try {
                 const res = await api.get('/courses', {
-                    params: { query, type, status }
+                    params: { query, type, format, status }
                 });
                 setCourses(res.data);
             } catch (err) {
@@ -46,7 +48,7 @@ export default function Courses() {
             }
         };
         fetchCourses();
-    }, [query, type, status]);
+    }, [query, type, format, status]);
 
     const handleFilterChange = (key: string, value: string) => {
         const newParams = new URLSearchParams(searchParams);
@@ -107,6 +109,17 @@ export default function Courses() {
                             <option value="">All Types</option>
                             <option value="free">Free Courses</option>
                             <option value="paid">Premium Courses</option>
+                        </select>
+
+                        <select
+                            className="form-input"
+                            style={{ width: 'auto', minWidth: '160px', padding: '0.55rem 1rem', borderRadius: '999px', background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)' }}
+                            value={format}
+                            onChange={(e) => handleFilterChange('format', e.target.value)}
+                        >
+                            <option value="">All Formats</option>
+                            <option value="course">Standard Courses</option>
+                            <option value="project">Project-Based Courses</option>
                         </select>
 
                         <select

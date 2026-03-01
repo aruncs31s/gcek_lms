@@ -14,6 +14,7 @@ interface Course {
     price: number;
     thumbnail_url?: string;
     type: string;
+    format?: string;
     status: string;
     duration?: string;
     start_date?: string;
@@ -216,3 +217,4 @@ export default function Home() {
         </div>
     );
 }
+

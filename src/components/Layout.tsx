@@ -1,8 +1,9 @@
-import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useState, useEffect } from 'react';
-import { SunIcon, MoonIcon, MagnifyingGlassIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NotificationBell from './NotificationBell';
+import SearchBar from './SearchBar';
 
 export default function Layout() {
     const { user, logout } = useAuthStore();
@@ -12,11 +13,6 @@ export default function Layout() {
     });
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const location = useLocation();
-
-    useEffect(() => {
-        setIsMobileMenuOpen(false);
-    }, [location.pathname]);
 
     useEffect(() => {
         if (isDarkMode) {
@@ -29,18 +25,6 @@ export default function Layout() {
     }, [isDarkMode]);
 
     const toggleTheme = () => setIsDarkMode(!isDarkMode);
-
-    const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState('');
-
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (searchQuery.trim()) {
-            navigate(`/courses?query=${encodeURIComponent(searchQuery.trim())}`);
-        } else {
-            navigate('/courses');
-        }
-    };
 
     return (
         <div className="layout-container">
@@ -67,22 +51,15 @@ export default function Layout() {
 
                 <div className={`navbar-menu ${isMobileMenuOpen ? 'show' : ''}`}>
                     <div className="navbar-links">
+                        <Link to="/courses?format=course" className="nav-link">Courses</Link>
+                        <Link to="/courses?format=project" className="nav-link">Projects</Link>
                         <Link to="/courses/trending" className="nav-link">Trending</Link>
                         <Link to="/leaderboard" className="nav-link">Leaderboard</Link>
                         <Link to="/users" className="nav-link">Members</Link>
                     </div>
 
-                    <form onSubmit={handleSearch} className="search-container navbar-search">
-                        <input
-                            type="text"
-                            placeholder="Search courses..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="form-input"
-                        />
-                        <button type="submit" className="search-icon">
-                            <MagnifyingGlassIcon style={{ width: '1.25rem', height: '1.25rem' }} />
-                        </button>
+                    <form onSubmit={(e) => e.preventDefault()} className="navbar-search" style={{ flex: 1, maxWidth: '400px' }}>
+                        <SearchBar />
                     </form>
 
                     <div className="navbar-actions">

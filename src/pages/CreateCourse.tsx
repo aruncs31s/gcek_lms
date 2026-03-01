@@ -11,7 +11,8 @@ export default function CreateCourse() {
         thumbnail_url: '',
         status: 'coming soon',
         duration: '',
-        start_date: ''
+        start_date: '',
+        format: 'course'
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -114,7 +115,19 @@ export default function CreateCourse() {
                         />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Format</label>
+                            <select
+                                name="format"
+                                className="input-field"
+                                value={formData.format}
+                                onChange={handleChange}
+                            >
+                                <option value="course">Standard Course</option>
+                                <option value="project">Project-Based</option>
+                            </select>
+                        </div>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Price ($)</label>
                             <input

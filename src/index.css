@@ -6,7 +6,7 @@
   /* base */
   --bg-secondary: #181825;
   /* mantle */
-  --bg-tertiary: #11111b;
+  --bg-tertiary: #1b1b1d;
   /* crust */
   --bg-separator: #313244;
   /* surface0 */
@@ -134,15 +134,16 @@ a:hover {
 
 .btn-primary {
   background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-  color: var(--bg-primary);
-  /* dark text on vibrant btn */
+  color: #4a4141;
+  /* white text for contrast on gradient */
   font-weight: 600;
   box-shadow: 0 4px 14px 0 rgba(203, 166, 247, 0.39);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(203, 166, 247, 0.23);
+  color: #ffffff;
+  /* box-shadow: 0 6px 20px rgba(203, 166, 247, 0.23); */
 }
 
 .btn-secondary {

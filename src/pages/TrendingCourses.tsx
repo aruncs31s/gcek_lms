@@ -14,6 +14,7 @@ interface Course {
     student_count: number;
     price: number;
     type: string;
+    format?: string;
     status: string;
     duration?: string;
     start_date?: string;
