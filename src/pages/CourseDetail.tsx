@@ -4,6 +4,7 @@ import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
 import { PlayCircleIcon, AcademicCapIcon, UserIcon, ClockIcon, DocumentTextIcon, CheckCircleIcon, Bars3Icon, FolderIcon, VideoCameraIcon, LockClosedIcon, CheckBadgeIcon, Cog6ToothIcon, TrashIcon, HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
@@ -52,7 +53,7 @@ interface Enrollment {
 }
 
 // Sub-component for individual Draggable Module Items
-function SortableModuleItem({ module, idx, playingModuleUrl, setPlayingModuleUrl, canWatch, isTeacher, isLocked, isCurrentModule, markCompleted, completingId }: any) {
+function SortableModuleItem({ module, idx, playingModuleUrl, setPlayingModuleUrl, canWatch, isTeacher, isLocked, isCurrentModule, markCompleted, completingId, onEdit, onDelete }: any) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: module.id });
     const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -169,6 +170,41 @@ function SortableModuleItem({ module, idx, playingModuleUrl, setPlayingModuleUrl
                     )}
                 </div>
 
+                {isTeacher && (
+                    <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem', flexShrink: 0 }}>
+                        <button
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={() => onEdit(module)}
+                            className="btn"
+                            style={{
+                                background: 'transparent',
+                                border: '1px solid var(--brand-primary)',
+                                color: 'var(--brand-primary)',
+                                padding: '0.4rem 0.6rem',
+                                borderRadius: '6px'
+                            }}
+                            title="Edit Module"
+                        >
+                            <PencilSquareIcon style={{ width: '1.2rem', height: '1.2rem' }} />
+                        </button>
+                        <button
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={() => onDelete(module.id)}
+                            className="btn"
+                            style={{
+                                background: 'transparent',
+                                border: '1px solid var(--danger)',
+                                color: 'var(--danger)',
+                                padding: '0.4rem 0.6rem',
+                                borderRadius: '6px'
+                            }}
+                            title="Delete Module"
+                        >
+                            <TrashIcon style={{ width: '1.2rem', height: '1.2rem' }} />
+                        </button>
+                    </div>
+                )}
+
                 {/* Action buttons for videos */}
                 {isVideo && !isLocked && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0, marginLeft: '1rem' }}>
@@ -249,14 +285,14 @@ function SortableModuleItem({ module, idx, playingModuleUrl, setPlayingModuleUrl
 }
 
 // Inline Curriculum Builder Form
-function InlineModuleEditor({ courseId, modules, onSuccess, onCancel }: { courseId: string, modules: Module[], onSuccess: () => void, onCancel: () => void }) {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [points, setPoints] = useState<number | ''>('');
-    const [isFree, setIsFree] = useState(false);
-    const [parentId, setParentId] = useState<string>('');
-    const [type, setType] = useState<'video' | 'chapter'>('video');
-    const [videoUrl, setVideoUrl] = useState('');
+function InlineModuleEditor({ courseId, modules, onSuccess, onCancel, editModule }: { courseId: string, modules: Module[], onSuccess: () => void, onCancel: () => void, editModule?: Module | null }) {
+    const [title, setTitle] = useState(editModule?.title || '');
+    const [description, setDescription] = useState(editModule?.description || '');
+    const [points, setPoints] = useState<number | ''>(editModule?.points !== undefined ? editModule.points : '');
+    const [isFree, setIsFree] = useState(editModule?.is_free || false);
+    const [parentId, setParentId] = useState<string>(editModule?.parent_id || '');
+    const [type, setType] = useState<'video' | 'chapter'>(editModule?.type === 'chapter' ? 'chapter' : 'video');
+    const [videoUrl, setVideoUrl] = useState(editModule?.video_url || '');
     const [uploading, setUploading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
@@ -288,7 +324,7 @@ function InlineModuleEditor({ courseId, modules, onSuccess, onCancel }: { course
         setSaving(true);
         setError('');
         try {
-            await api.post(`/courses/${courseId}/modules`, {
+            const payload = {
                 title,
                 description,
                 points: points === '' ? 0 : Number(points),
@@ -296,10 +332,16 @@ function InlineModuleEditor({ courseId, modules, onSuccess, onCancel }: { course
                 parent_id: type === 'video' && parentId ? parentId : null,
                 type,
                 video_url: type === 'video' ? videoUrl : ''
-            });
+            };
+
+            if (editModule) {
+                await api.put(`/courses/${courseId}/modules/${editModule.id}`, payload);
+            } else {
+                await api.post(`/courses/${courseId}/modules`, payload);
+            }
             onSuccess();
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Failed to create module');
+            setError(err.response?.data?.error || `Failed to ${editModule ? 'update' : 'create'} module`);
         } finally {
             setSaving(false);
         }
@@ -680,6 +722,7 @@ export default function CourseDetail() {
 
     // UI state
     const [isCreatingModule, setIsCreatingModule] = useState(false);
+    const [editingModuleId, setEditingModuleId] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'overview' | 'curriculum' | 'assignments' | 'instructor' | 'reviews' | 'settings'>('overview');
     const [playingModuleUrl, setPlayingModuleUrl] = useState<string | null>(null);
 
@@ -788,6 +831,17 @@ export default function CourseDetail() {
             console.error("Failed to mark module as completed");
         } finally {
             setCompletingId(null);
+        }
+    };
+
+    const handleDeleteModule = async (moduleId: string) => {
+        if (!window.confirm("Are you sure you want to delete this module?")) return;
+        try {
+            await api.delete(`/courses/${id}/modules/${moduleId}`);
+            fetchCourseData();
+        } catch (err) {
+            console.error("Failed to delete module");
+            alert("Failed to delete module. Please try again.");
         }
     };
 
@@ -979,6 +1033,8 @@ export default function CourseDetail() {
                                                             setPlayingModuleUrl={setPlayingModuleUrl}
                                                             markCompleted={markModuleCompleted}
                                                             completingId={completingId}
+                                                            onEdit={() => setEditingModuleId(m.id)}
+                                                            onDelete={handleDeleteModule}
                                                         />
                                                     );
                                                 })}
@@ -997,6 +1053,29 @@ export default function CourseDetail() {
                                             fetchCourseData();
                                         }}
                                     />
+                                )}
+
+                                {editingModuleId && (
+                                    <div style={{
+                                        position: 'fixed', inset: 0,
+                                        background: 'rgba(0,0,0,0.6)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        zIndex: 1000, padding: '1rem'
+                                    }}>
+                                        <div style={{ background: 'var(--bg-primary)', padding: '2rem', borderRadius: '12px', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', border: '1px solid var(--border-color)' }}>
+                                            <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-primary)' }}>Edit Module</h3>
+                                            <InlineModuleEditor
+                                                courseId={course.id}
+                                                modules={modules}
+                                                editModule={modules.find(m => m.id === editingModuleId)}
+                                                onCancel={() => setEditingModuleId(null)}
+                                                onSuccess={() => {
+                                                    setEditingModuleId(null);
+                                                    fetchCourseData();
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
                                 )}
                             </div>
                         )}
