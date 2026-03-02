@@ -1,25 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../lib/api';
+import type { Course } from '../types/course';
 import { FunnelIcon, MagnifyingGlassIcon, UsersIcon, UserIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
-
-interface Course {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    thumbnail_url?: string;
-    type: string;
-    format?: string;
-    status: string;
-    duration?: string;
-    start_date?: string;
-    progress?: number;
-    teacher_name?: string;
-    student_count?: number;
-    likes_count?: number;
-}
 
 export default function Courses() {
     const [courses, setCourses] = useState<Course[]>([]);
