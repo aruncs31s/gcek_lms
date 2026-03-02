@@ -81,10 +81,10 @@ export default function CourseDetail() {
         try {
             if (course.is_liked) {
                 await api.delete(`/courses/${id}/like`);
-                setCourse({ ...course, is_liked: false, likes_count: Math.max(0, course.likes_count - 1) });
+                setCourse({ ...course, is_liked: false, likes_count: Math.max(0, (course.likes_count ?? 0) - 1) });
             } else {
                 await api.post(`/courses/${id}/like`);
-                setCourse({ ...course, is_liked: true, likes_count: course.likes_count + 1 });
+                setCourse({ ...course, is_liked: true, likes_count: (course.likes_count ?? 0) + 1 });
             }
         } catch (err) {
             console.error("Failed to toggle like", err);
@@ -185,7 +185,7 @@ export default function CourseDetail() {
                     <div className="course-meta" style={{ display: 'flex', gap: '2rem', color: 'var(--text-muted)', flexWrap: 'wrap' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <UserIcon style={{ width: '1.2rem', height: '1.2rem' }} />
-                            <span>{course.student_count} Enrolled</span>
+                            <span>{course.student_count ?? 0} Enrolled</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <DocumentTextIcon style={{ width: '1.2rem', height: '1.2rem' }} />
@@ -193,7 +193,7 @@ export default function CourseDetail() {
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <HeartSolidIcon style={{ width: '1.2rem', height: '1.2rem', color: 'var(--danger)' }} />
-                            <span>{course.likes_count} Likes</span>
+                            <span>{course.likes_count ?? 0} Likes</span>
                         </div>
                         {course.duration && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

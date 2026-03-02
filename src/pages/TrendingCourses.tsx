@@ -1,25 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
+import type { Course } from '../types/course';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { FolderIcon, UserIcon } from '@heroicons/react/24/outline';
-
-interface Course {
-    id: string;
-    title: string;
-    description: string;
-    thumbnail_url: string;
-    teacher_name: string;
-    likes_count: number;
-    student_count: number;
-    price: number;
-    type: string;
-    format?: string;
-    status: string;
-    duration?: string;
-    start_date?: string;
-    progress?: number;
-}
 
 export default function TrendingCourses() {
     const [courses, setCourses] = useState<Course[]>([]);

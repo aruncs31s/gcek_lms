@@ -17,19 +17,21 @@ export interface Course {
     description: string;
     price: number;
     thumbnail_url: string;
-    teacher_id: string;
-    teacher_name: string;
-    teacher_avatar_url: string;
-    teacher_bio: string;
-    student_count: number;
-    modules: Module[];
+    teacher_id?: string;
+    teacher_name?: string;
+    teacher_avatar_url?: string;
+    teacher_bio?: string;
+    student_count?: number;
+    modules?: Module[];
     type: string;
+    format?: string;
     status: string;
     duration?: string;
     start_date?: string;
     progress?: number;
-    likes_count: number;
-    is_liked: boolean;
+    likes_count?: number;
+    is_liked?: boolean;
+    created_at?: string;
 }
 
 export interface Enrollment {

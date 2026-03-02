@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { api } from '../lib/api';
+import type { Course } from '../types/course';
 import {
     BookOpenIcon,
     DocumentCheckIcon,
@@ -9,21 +10,6 @@ import {
     PlusIcon,
     ArrowRightIcon
 } from '@heroicons/react/24/outline';
-
-interface Course {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    thumbnail_url?: string;
-    type: string;
-    format?: string;
-    status: string;
-    duration?: string;
-    start_date?: string;
-    progress?: number;
-    created_at: string;
-}
 
 export default function Dashboard() {
     const { user } = useAuthStore();
