@@ -2,15 +2,7 @@ import { create } from 'zustand';
 
 import { persist } from 'zustand/middleware';
 
-interface User {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  avatar_url?: string;
-  bio?: string;
-}
+import type { User } from '../types/user';
 
 interface AuthState {
   user: User | null;

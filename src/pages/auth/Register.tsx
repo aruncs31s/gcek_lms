@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { api } from '../lib/api';
-import { useAuthStore } from '../store/authStore';
+import { api } from '../../lib/api';
+import { useAuthStore } from '../../store/authStore';
+import type { RegisterRequest, RegisterResponse } from './register';
 
 export default function Register() {
-    const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
+    const [formData, setFormData] = useState<RegisterRequest>({
+        firstname: '',
+        lastname: '',
         email: '',
         password: '',
         role: 'student'
@@ -17,13 +18,13 @@ export default function Register() {
     const navigate = useNavigate();
     const setAuth = useAuthStore((state) => state.login);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
         try {
-            const response = await api.post('/register', formData);
+            const response = await api.post<RegisterResponse>('/register', formData);
             setAuth(response.data.user, response.data.token);
             navigate('/dashboard');
         } catch (err: any) {
@@ -48,11 +49,11 @@ export default function Register() {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>First Name</label>
-                            <input type="text" name="first_name" required className="input-field" value={formData.first_name} onChange={handleChange} />
+                            <input type="text" name="firstname" required className="input-field" value={formData.firstname} onChange={handleChange} />
                         </div>
                         <div>
                             <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>Last Name</label>
-                            <input type="text" name="last_name" required className="input-field" value={formData.last_name} onChange={handleChange} />
+                            <input type="text" name="lastname" required className="input-field" value={formData.lastname} onChange={handleChange} />
                         </div>
                     </div>
 

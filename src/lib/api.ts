@@ -26,7 +26,11 @@ api.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             useAuthStore.getState().logout();
-            window.location.href = '/login';
+            // Don't redirect if we're already on the login page to avoid infinite refresh
+            // and allowing the Login component to show the error message.
+            if (window.location.pathname !== '/login') {
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }
