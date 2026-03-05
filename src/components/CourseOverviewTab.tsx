@@ -14,7 +14,7 @@ export default function CourseOverviewTab({ course, isCompleted }: CourseOvervie
                 {course.description || "No description provided."}
             </p>
 
-            {isCompleted && (
+            {isCompleted && course.is_certificate_available && (
                 <CertificateGenerator courseId={course.id} courseName={course.title} />
             )}
         </div>

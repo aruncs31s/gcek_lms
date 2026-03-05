@@ -105,7 +105,13 @@ export default function CourseDetail() {
     const requestCertificate = async () => {
         try {
             const res = await api.post('/certificates/generate', { user_id: user?.id, course_id: course?.id });
-            window.open(res.data.file_url, '_blank');
+            const fileName = res.data.file_url.split('/').pop();
+            const downloadUrl = `${import.meta.env.VITE_API_URL}/certificates/download?file=${fileName}&name=${encodeURIComponent(course?.title || 'Certificate')}`;
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         } catch (err) {
             alert("Error generating certificate");
         }
@@ -146,11 +152,12 @@ export default function CourseDetail() {
                     <div className="glass-panel" style={{ padding: '2.5rem' }}>
 
                         {activeTab === 'overview' && (
-                            <CourseOverviewTab course={course} isCompleted={enrollment?.status === 'completed'} />
+                            <CourseOverviewTab course={course} isCompleted={enrollment?.progress_percentage === 100} />
                         )}
 
                         {activeTab === 'curriculum' && (
                             <CourseCurriculumTab
+                                course={course}
                                 courseId={course.id}
                                 modules={modules}
                                 setModules={setModules}

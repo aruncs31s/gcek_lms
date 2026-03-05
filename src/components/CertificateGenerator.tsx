@@ -50,9 +50,7 @@ export default function CertificateGenerator({ courseId, courseName }: Certifica
                 <div>
                     <p style={{ color: 'var(--success)', marginBottom: '1rem', fontWeight: '500' }}>✨ Certificate generated successfully!</p>
                     <a
-                        href={certificateUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href={`${import.meta.env.VITE_API_URL}/certificates/download?file=${certificateUrl.split('/').pop()}&name=${encodeURIComponent(courseName)}`}
                         className="btn btn-primary"
                         style={{ display: 'inline-block', textDecoration: 'none' }}
                     >

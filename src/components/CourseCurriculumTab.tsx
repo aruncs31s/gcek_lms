@@ -1,12 +1,14 @@
-import { DocumentTextIcon } from '@heroicons/react/24/outline';
+import { DocumentTextIcon, AcademicCapIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import SortableModuleItem from './SortableModuleItem';
 import InlineModuleEditor from './InlineModuleEditor';
-import type { Module } from '../types/course';
+import type { Module, Course } from '../types/course';
+import CertificateGenerator from './CertificateGenerator';
 
 interface CourseCurriculumTabProps {
+    course: Course;
     courseId: string;
     modules: Module[];
     setModules: (modules: Module[]) => void;
@@ -26,6 +28,7 @@ interface CourseCurriculumTabProps {
 }
 
 export default function CourseCurriculumTab({
+    course,
     courseId,
     modules,
     setModules,
@@ -152,6 +155,43 @@ export default function CourseCurriculumTab({
                         </div>
                     </SortableContext>
                 </DndContext>
+            )}
+
+            {course.is_certificate_available && (
+                <div style={{
+                    marginTop: '1.5rem',
+                    padding: '1.5rem',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '12px',
+                    background: pct === 100 ? 'rgba(166, 227, 161, 0.05)' : 'var(--bg-secondary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1.5rem',
+                    opacity: pct === 100 ? 1 : 0.6
+                }}>
+                    <div style={{
+                        width: '3.5rem', height: '3.5rem', borderRadius: '50%',
+                        background: pct === 100 ? 'rgba(166, 227, 161, 0.2)' : 'var(--bg-tertiary)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: pct === 100 ? 'var(--success)' : 'var(--text-muted)'
+                    }}>
+                        <AcademicCapIcon style={{ width: '2rem' }} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>Milestone: Certificate of Completion</h4>
+                        <p style={{ margin: '0.2rem 0 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                            {pct === 100
+                                ? 'Congratulations! You have completed all course materials.'
+                                : 'Complete all video modules to unlock your certificate.'}
+                        </p>
+                    </div>
+                    {pct === 100 && (
+                        <CertificateGenerator courseId={course.id} courseName={course.title} />
+                    )}
+                    {pct !== 100 && (
+                        <LockClosedIcon style={{ width: '1.5rem', color: 'var(--text-muted)' }} />
+                    )}
+                </div>
             )}
 
             {isCreatingModule && (

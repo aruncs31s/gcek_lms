@@ -81,7 +81,7 @@ export default function CourseActionCard({
                                 ) : isEnrolled ? (
                                     <>
                                         <button onClick={() => setActiveTab('curriculum')} className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }}>Continue Learning</button>
-                                        {enrollment?.status === 'completed' && (
+                                        {enrollment?.progress_percentage === 100 && course.is_certificate_available && (
                                             <button onClick={requestCertificate} className="btn btn-secondary" style={{ width: '100%', padding: '1rem', background: 'var(--bg-tertiary)', border: '1px solid var(--success)', color: 'var(--success)' }}>Download Certificate</button>
                                         )}
                                     </>
@@ -128,10 +128,12 @@ export default function CourseActionCard({
                             <DocumentTextIcon style={{ width: '1.5rem', color: 'var(--brand-primary)' }} />
                             <span>{modules.filter(m => m.type === 'video').length} comprehensive videos</span>
                         </li>
-                        <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <AcademicCapIcon style={{ width: '1.5rem', color: 'var(--brand-primary)' }} />
-                            <span>Verifiable digital certificate</span>
-                        </li>
+                        {course.is_certificate_available && (
+                            <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                <AcademicCapIcon style={{ width: '1.5rem', color: 'var(--brand-primary)' }} />
+                                <span>Verifiable digital certificate</span>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>
