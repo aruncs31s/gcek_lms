@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
-import { FolderIcon, UserIcon } from '@heroicons/react/24/outline';
+import { FolderIcon } from '@heroicons/react/24/outline';
+import Pagination from '../components/Pagination';
+import CourseCard from '../components/CourseCard';
 
 interface Course {
     id: string;
@@ -24,6 +25,8 @@ interface Course {
 export default function TrendingCourses() {
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(12);
 
     useEffect(() => {
         const fetchTrending = async () => {
@@ -70,43 +73,26 @@ export default function TrendingCourses() {
                     <p className="text-muted" style={{ fontSize: '1.1rem' }}>Check back later as our community grows!</p>
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: '1.5rem' }}>
-                    {courses.map((course, index) => (
-                        <Link to={`/courses/${course.id}`} key={course.id} className="stat-box hover-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden', textDecoration: 'none' }}>
-                            <div style={{ height: '180px', background: course.thumbnail_url ? `url(${course.thumbnail_url}) center/cover` : 'var(--bg-tertiary)', position: 'relative' }}>
-                                <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(24, 24, 37, 0.8)', backdropFilter: 'blur(4px)', padding: '0.4rem 0.8rem', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                    <HeartSolidIcon style={{ width: '1rem', height: '1rem', color: 'var(--danger)' }} />
-                                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#fff' }}>{course.likes_count}</span>
-                                </div>
-                                <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))', padding: '0.4rem 0.8rem', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem', border: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
-                                    <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#000' }}>#{index + 1}</span>
-                                </div>
-                            </div>
-
-                            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, lineHeight: 1.3 }}>
-                                        {course.title}
-                                    </h3>
-                                </div>
-
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: '0 0 1.5rem 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                    {course.description || "Learn amazing skills in this course."}
-                                </p>
-
-                                <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                                        <UserIcon style={{ width: '1.2rem', height: '1.2rem' }} />
-                                        <span>{course.student_count} Enrolled</span>
-                                    </div>
-                                    <span style={{ fontWeight: 800, color: 'var(--success)', fontSize: '1.1rem' }}>
-                                        {course.price === 0 ? 'FREE' : `$${course.price}`}
-                                    </span>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+                <>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: '1.5rem' }}>
+                        {courses.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((course, index) => {
+                            const globalIndex = (currentPage - 1) * pageSize + index;
+                            return (
+                                <CourseCard key={course.id} course={course} variant="trending" ranking={globalIndex + 1} />
+                            )
+                        })}
+                    </div>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={Math.ceil(courses.length / pageSize)}
+                        onPageChange={setCurrentPage}
+                        pageSize={pageSize}
+                        onPageSizeChange={(newSize) => {
+                            setPageSize(newSize);
+                            setCurrentPage(1);
+                        }}
+                    />
+                </>
             )}
         </div>
     );

@@ -59,7 +59,7 @@ export default function Pagination({
                     key={`page-${page}`}
                     onClick={() => onPageChange(page as number)}
                     className={page === currentPage ? 'btn btn-primary' : 'btn btn-secondary'}
-                    style={{ padding: '0.6rem 1rem', minWidth: '45px', fontWeight: 600 }}
+                    style={{ padding: '0.8rem 1.25rem', minWidth: '45px', fontWeight: 600 }}
                 >
                     {page}
                 </button>
@@ -94,7 +94,7 @@ export default function Pagination({
                         onClick={() => onPageChange(currentPage - 1)}
                         disabled={currentPage === 1}
                         className="btn btn-secondary"
-                        style={{ padding: '0.6rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: currentPage === 1 ? 0.5 : 1, cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+                        style={{ padding: '0.8rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: currentPage === 1 ? 0.5 : 1, cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
                     >
                         <ChevronLeftIcon style={{ width: '1.25rem' }} /> Previous
                     </button>
@@ -107,7 +107,7 @@ export default function Pagination({
                         onClick={() => onPageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
                         className="btn btn-secondary"
-                        style={{ padding: '0.6rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: currentPage === totalPages ? 0.5 : 1, cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+                        style={{ padding: '0.8rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: currentPage === totalPages ? 0.5 : 1, cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
                     >
                         Next <ChevronRightIcon style={{ width: '1.25rem' }} />
                     </button>

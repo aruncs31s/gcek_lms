@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
+import Pagination from '../components/Pagination';
+import LeaderboardRow from '../components/LeaderboardRow';
 
 interface LeaderboardUser {
     user_id: string;
@@ -13,6 +15,8 @@ interface LeaderboardUser {
 export default function Leaderboard() {
     const [users, setUsers] = useState<LeaderboardUser[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
 
     useEffect(() => {
         const fetchLeaderboard = async () => {
@@ -27,13 +31,6 @@ export default function Leaderboard() {
         };
         fetchLeaderboard();
     }, []);
-
-    const getMedalColor = (index: number) => {
-        if (index === 0) return 'var(--brand-primary)'; // Gold
-        if (index === 1) return '#c0c0c0'; // Silver
-        if (index === 2) return '#cd7f32'; // Bronze
-        return 'transparent';
-    };
 
     return (
         <div className="animate-fade-in">
@@ -51,66 +48,25 @@ export default function Leaderboard() {
                     <p className="text-muted" style={{ fontSize: '1.25rem' }}>No data available yet.</p>
                 </div>
             ) : (
-                <div className="leaderboard-container" style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {users.map((user, index) => (
-                        <div
-                            key={user.user_id}
-                            className="glass-panel leaderboard-row"
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                padding: '1.5rem 2rem',
-                                gap: '1.5rem',
-                                transition: 'transform 0.2s',
-                                cursor: 'default',
-                                position: 'relative',
-                                overflow: 'hidden'
-                            }}
-                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
-                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
-                        >
-                            {index < 3 && (
-                                <div style={{
-                                    position: 'absolute',
-                                    left: 0,
-                                    top: 0,
-                                    bottom: 0,
-                                    width: '6px',
-                                    backgroundColor: getMedalColor(index)
-                                }} />
-                            )}
-
-                            <div style={{ fontSize: '1.75rem', fontWeight: 800, color: index < 3 ? getMedalColor(index) : 'var(--text-muted)', minWidth: '40px' }}>
-                                #{index + 1}
-                            </div>
-
-                            <div style={{
-                                width: '60px',
-                                height: '60px',
-                                borderRadius: '50%',
-                                background: user.avatar_url ? `url(${user.avatar_url}) center/cover` : 'var(--bg-tertiary)',
-                                border: index < 3 ? `2px solid ${getMedalColor(index)}` : 'none'
-                            }} />
-
-                            <div style={{ flex: 1 }}>
-                                <h3 style={{ fontSize: '1.25rem', margin: '0 0 0.25rem 0', fontWeight: 600 }}>
-                                    {user.first_name} {user.last_name}
-                                </h3>
-                                <p className="text-muted" style={{ fontSize: '0.9rem', margin: 0 }}>
-                                    {user.enrolled_courses} Course{user.enrolled_courses !== 1 ? 's' : ''} Enrolled
-                                </p>
-                            </div>
-
-                            <div style={{ textAlign: 'right' }}>
-                                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--brand-secondary)' }}>
-                                    {user.points.toLocaleString()}
-                                </div>
-                                <div className="text-muted" style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                                    Points
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                    <div className="leaderboard-container" style={{ maxWidth: '1200px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        {users.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((user, index) => {
+                            const globalIndex = (currentPage - 1) * pageSize + index;
+                            return (
+                                <LeaderboardRow key={user.user_id} user={user} globalIndex={globalIndex} />
+                            )
+                        })}
+                    </div>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={Math.ceil(users.length / pageSize)}
+                        onPageChange={setCurrentPage}
+                        pageSize={pageSize}
+                        onPageSizeChange={(newSize) => {
+                            setPageSize(newSize);
+                            setCurrentPage(1);
+                        }}
+                    />
                 </div>
             )}
         </div>
