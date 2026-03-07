@@ -1,4 +1,4 @@
-import { AcademicCapIcon, UserIcon, DocumentTextIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { UserIcon, DocumentTextIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { FiAward, FiCalendar } from 'react-icons/fi';
 import type { Course } from '../types/course';
@@ -14,7 +14,7 @@ export default function CourseHero({ course, modulesCount }: CourseHeroProps) {
             position: 'relative',
             borderRadius: '20px',
             overflow: 'hidden',
-            background: course.thumbnail_url 
+            background: course.thumbnail_url
                 ? `linear-gradient(135deg, rgba(30, 30, 46, 0.95) 0%, rgba(30, 30, 46, 0.85) 50%, rgba(30, 30, 46, 0.75) 100%), url(${course.thumbnail_url}) center/cover`
                 : 'linear-gradient(135deg, var(--bg-secondary), var(--bg-primary))',
             padding: '3.5rem 2.5rem',

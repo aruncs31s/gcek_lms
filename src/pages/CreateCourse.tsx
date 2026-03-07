@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
@@ -6,6 +6,7 @@ import { FiBook, FiZap } from 'react-icons/fi';
 import CourseForm from '../components/CourseForm';
 
 export default function CreateCourse() {
+    const [isDesktop, setIsDesktop] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -23,6 +24,15 @@ export default function CreateCourse() {
 
     const navigate = useNavigate();
     const { user } = useAuthStore();
+
+    useEffect(() => {
+        const checkDesktop = () => {
+            setIsDesktop(window.innerWidth >= 1024);
+        };
+        checkDesktop();
+        window.addEventListener('resize', checkDesktop);
+        return () => window.removeEventListener('resize', checkDesktop);
+    }, []);
 
     // Protect route
     if (!user || user.role !== 'teacher') {
@@ -87,14 +97,19 @@ export default function CreateCourse() {
                     <FiBook size={40} />
                     Create New Course
                 </h1>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '1rem' }}>Set up the foundation for your new educational content.</p>
-                <Link 
-                    to="/courses/new/advanced" 
-                    className="btn btn-secondary" 
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', textDecoration: 'none' }}
-                >
-                    <FiZap size={18} /> Try Advanced Creator (Split View)
-                </Link>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '1.5rem' }}>Set up the foundation for your new educational content.</p>
+                {isDesktop && (
+                    <div style={{ marginBottom: '1rem' }}>
+                        <Link 
+                            to="/courses/new/advanced" 
+                            className="btn btn-primary" 
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', padding: '0.75rem 1.5rem', textDecoration: 'none', fontSize: '1rem', fontWeight: 600, boxShadow: '0 4px 14px 0 rgba(203, 166, 247, 0.39)' }}
+                        >
+                            <FiZap size={20} /> Try Advanced Creator (Split View Editor)
+                        </Link>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.75rem' }}>✨ Live preview • Markdown support • Full-screen editing</p>
+                    </div>
+                )}
             </div>
 
             <CourseForm

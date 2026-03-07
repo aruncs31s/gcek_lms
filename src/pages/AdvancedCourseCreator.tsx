@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
-import { FiEye, FiEdit3, FiSave, FiX, FiPlus, FiTrash2, FiUploadCloud, FiCheckCircle } from 'react-icons/fi';
+import { FiEye, FiEdit3, FiSave, FiX, FiPlus, FiTrash2, FiUploadCloud, FiCheckCircle, FiMonitor } from 'react-icons/fi';
 import ReactMarkdown from 'react-markdown';
 
 interface Module {
@@ -15,6 +15,7 @@ interface Module {
 
 export default function AdvancedCourseCreator() {
     const [mode, setMode] = useState<'split' | 'edit' | 'preview'>('split');
+    const [isMobile, setIsMobile] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -33,8 +34,30 @@ export default function AdvancedCourseCreator() {
     const navigate = useNavigate();
     const { user } = useAuthStore();
 
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 1024);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     if (!user || user.role !== 'teacher') {
         return <div style={{ textAlign: 'center', marginTop: '2rem' }}>Unauthorized. Only teachers can create courses.</div>;
+    }
+
+    if (isMobile) {
+        return (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: '2rem', textAlign: 'center' }}>
+                <FiMonitor size={64} style={{ color: 'var(--brand-primary)', marginBottom: '1.5rem' }} />
+                <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>Desktop Only Feature</h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '2rem', maxWidth: '500px' }}>The Advanced Course Creator with split-view editing is optimized for desktop screens (1024px and above).</p>
+                <button onClick={() => navigate('/courses/new')} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    Use Simple Creator Instead
+                </button>
+            </div>
+        );
     }
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,48 +135,50 @@ export default function AdvancedCourseCreator() {
     };
 
     const renderPreview = () => (
-        <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '16px', height: '100%', overflow: 'auto' }}>
-            <div style={{ marginBottom: '2rem' }}>
-                {formData.thumbnail_url && (
-                    <img src={formData.thumbnail_url} alt="Course thumbnail" style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: '12px', marginBottom: '1.5rem' }} />
-                )}
-                <h1 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '1rem', fontWeight: 700 }}>{formData.title || 'Course Title'}</h1>
-                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
-                    <span className="badge badge-primary">{formData.format}</span>
-                    <span className="badge badge-success">{formData.status}</span>
-                    {formData.duration && <span className="badge badge-primary">{formData.duration}</span>}
-                    {formData.price > 0 && <span className="badge badge-primary">${formData.price}</span>}
-                </div>
-                <div className="markdown-content" style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                    <ReactMarkdown>{formData.description || '*No description yet*'}</ReactMarkdown>
-                </div>
-            </div>
-
-            {modules.length > 0 && (
-                <div>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-primary)' }}>Course Curriculum</h2>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        {modules.map((module, idx) => (
-                            <div key={idx} className="glass-panel" style={{ padding: '1.5rem', borderRadius: '12px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
-                                    <span style={{ background: 'var(--brand-primary)', color: 'var(--bg-primary)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.9rem' }}>{idx + 1}</span>
-                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}>{module.title || `Module ${idx + 1}`}</h3>
-                                    <span className="badge badge-primary" style={{ marginLeft: 'auto' }}>{module.content_type}</span>
-                                </div>
-                                <div className="markdown-content" style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-                                    <ReactMarkdown>{module.description || '*No description*'}</ReactMarkdown>
-                                </div>
-                            </div>
-                        ))}
+        <div style={{ height: '100%', overflow: 'auto', padding: '2rem', background: 'var(--bg-secondary)', borderLeft: mode === 'split' ? '1px solid var(--border-color)' : 'none' }}>
+            <div className="glass-panel" style={{ padding: '2rem', borderRadius: '12px' }}>
+                <div style={{ marginBottom: '2rem' }}>
+                    {formData.thumbnail_url && (
+                        <img src={formData.thumbnail_url} alt="Course thumbnail" style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: '12px', marginBottom: '1.5rem' }} />
+                    )}
+                    <h1 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '1rem', fontWeight: 700 }}>{formData.title || 'Course Title'}</h1>
+                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                        <span className="badge badge-primary">{formData.format}</span>
+                        <span className="badge badge-success">{formData.status}</span>
+                        {formData.duration && <span className="badge badge-primary">{formData.duration}</span>}
+                        {formData.price > 0 && <span className="badge badge-primary">${formData.price}</span>}
+                    </div>
+                    <div className="markdown-content" style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+                        <ReactMarkdown>{formData.description || '*No description yet*'}</ReactMarkdown>
                     </div>
                 </div>
-            )}
+
+                {modules.length > 0 && (
+                    <div>
+                        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-primary)' }}>Course Curriculum</h2>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            {modules.map((module, idx) => (
+                                <div key={idx} className="glass-panel" style={{ padding: '1.5rem', borderRadius: '12px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+                                        <span style={{ background: 'var(--brand-primary)', color: 'var(--bg-primary)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.9rem' }}>{idx + 1}</span>
+                                        <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}>{module.title || `Module ${idx + 1}`}</h3>
+                                        <span className="badge badge-primary" style={{ marginLeft: 'auto' }}>{module.content_type}</span>
+                                    </div>
+                                    <div className="markdown-content" style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+                                        <ReactMarkdown>{module.description || '*No description*'}</ReactMarkdown>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 
     const renderEditor = () => (
-        <div style={{ height: '100%', overflow: 'auto', padding: '1rem' }}>
-            <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '16px' }}>
+        <div style={{ height: '100%', overflow: 'auto', padding: '2rem', background: 'var(--bg-primary)' }}>
+            <div className="glass-panel" style={{ padding: '2rem', borderRadius: '12px' }}>
                 {error && <div style={{ background: 'rgba(243, 139, 168, 0.15)', color: 'var(--danger)', padding: '1rem', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid var(--danger)', fontWeight: 500 }}>{error}</div>}
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -286,47 +311,47 @@ export default function AdvancedCourseCreator() {
     );
 
     return (
-        <div style={{ height: 'calc(100vh - 100px)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', width: '100%', overflow: 'hidden' }}>
             {/* Toolbar */}
-            <div className="glass-panel" style={{ padding: '1rem 1.5rem', marginBottom: '1rem', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 className="text-gradient" style={{ fontSize: '1.5rem', fontWeight: 700 }}>Advanced Course Creator</h1>
+            <div className="glass-panel" style={{ padding: '0.75rem 2rem', marginBottom: '0', borderRadius: '0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderLeft: 'none', borderRight: 'none', borderTop: 'none' }}>
+                <h1 className="text-gradient" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Advanced Course Creator</h1>
                 
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                     <div className="glass-panel" style={{ display: 'flex', gap: '0.25rem', padding: '0.25rem', borderRadius: '8px' }}>
                         <button
                             onClick={() => setMode('edit')}
                             className={mode === 'edit' ? 'btn btn-primary' : 'btn btn-secondary'}
-                            style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}
+                            style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}
                         >
-                            <FiEdit3 size={16} /> Edit
+                            <FiEdit3 size={14} /> Edit
                         </button>
                         <button
                             onClick={() => setMode('split')}
                             className={mode === 'split' ? 'btn btn-primary' : 'btn btn-secondary'}
-                            style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}
+                            style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}
                         >
-                            <FiEdit3 size={16} /> <FiEye size={16} /> Split
+                            <FiEdit3 size={14} /> <FiEye size={14} /> Split
                         </button>
                         <button
                             onClick={() => setMode('preview')}
                             className={mode === 'preview' ? 'btn btn-primary' : 'btn btn-secondary'}
-                            style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}
+                            style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}
                         >
-                            <FiEye size={16} /> Preview
+                            <FiEye size={14} /> Preview
                         </button>
                     </div>
 
-                    <button onClick={() => navigate('/dashboard')} className="btn btn-secondary" style={{ padding: '0.6rem 1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <FiX size={18} /> Cancel
+                    <button onClick={() => navigate('/dashboard')} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}>
+                        <FiX size={16} /> Cancel
                     </button>
-                    <button onClick={handleSubmit} disabled={loading || !formData.title} className="btn btn-primary" style={{ padding: '0.6rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: (loading || !formData.title) ? 0.6 : 1 }}>
-                        <FiSave size={18} /> {loading ? 'Publishing...' : 'Publish Course'}
+                    <button onClick={handleSubmit} disabled={loading || !formData.title} className="btn btn-primary" style={{ padding: '0.5rem 1.2rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', opacity: (loading || !formData.title) ? 0.6 : 1 }}>
+                        <FiSave size={16} /> {loading ? 'Publishing...' : 'Publish Course'}
                     </button>
                 </div>
             </div>
 
             {/* Content Area */}
-            <div style={{ flex: 1, overflow: 'hidden', display: 'grid', gridTemplateColumns: mode === 'split' ? '1fr 1fr' : '1fr', gap: '1rem' }}>
+            <div style={{ flex: 1, overflow: 'hidden', display: 'grid', gridTemplateColumns: mode === 'split' ? '1fr 1fr' : '1fr', gap: 0, minHeight: 0, background: 'var(--bg-primary)' }}>
                 {(mode === 'edit' || mode === 'split') && renderEditor()}
                 {(mode === 'preview' || mode === 'split') && renderPreview()}
             </div>
