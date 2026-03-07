@@ -229,6 +229,13 @@ a:hover {
   box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.1);
 }
 
+/* Hide spinner buttons on number inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* Custom File Input */
 .file-input {
   display: block;
