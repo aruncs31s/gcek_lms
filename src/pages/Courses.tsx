@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
-import { FunnelIcon, MagnifyingGlassIcon, UsersIcon, UserIcon } from '@heroicons/react/24/outline';
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
+import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { FiPlus } from 'react-icons/fi';
 import Pagination from '../components/Pagination';
+import CourseCard from '../components/CourseCard';
 
 interface Course {
     id: string;
@@ -207,51 +207,7 @@ export default function Courses() {
                 <div style={{ opacity: loading ? 0.6 : 1, pointerEvents: loading ? 'none' : 'auto', transition: 'opacity 0.2s ease' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: '1.5rem' }}>
                         {courses.map(course => (
-                            <div key={course.id} className="course-card">
-                                <div className="course-card-img-wrapper">
-                                    <div className="course-card-image" style={{ background: course.thumbnail_url ? `url(${course.thumbnail_url}) center/cover` : 'var(--bg-tertiary)' }} />
-                                    <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                        {course.type === 'free' || course.price === 0 ? (
-                                            <span className="badge badge-success badge-blur">Free</span>
-                                        ) : (
-                                            <span className="badge badge-primary badge-blur">Premium</span>
-                                        )}
-                                        <span className="badge badge-blur" style={{ textTransform: 'capitalize', background: course.status === 'coming soon' ? 'rgba(250, 176, 5, 0.2)' : course.status === 'active' ? 'rgba(166, 227, 161, 0.15)' : undefined, color: course.status === 'coming soon' ? 'var(--warning)' : course.status === 'active' ? 'var(--success)' : undefined }}>
-                                            {course.status === 'coming soon' ? 'Coming Soon' : (course.status || 'Not Started')}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                    <h3 style={{ fontSize: '1.3rem', fontWeight: 700, margin: '0 0 0.5rem 0', lineHeight: 1.4, color: 'var(--text-primary)' }}>{course.title}</h3>
-                                    {course.teacher_name && (
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--brand-primary)', marginBottom: '1rem', fontSize: '0.9rem', fontWeight: 500 }}>
-                                            <UserIcon style={{ width: '1rem' }} />
-                                            <span>{course.teacher_name}</span>
-                                        </div>
-                                    )}
-                                    <p className="text-muted" style={{ fontSize: '0.95rem', marginBottom: '1.5rem', flex: 1, lineHeight: 1.6 }}>
-                                        {course.description.length > 100 ? `${course.description.substring(0, 100)}...` : course.description || "No description provided."}
-                                    </p>
-                                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                            <UsersIcon style={{ width: '1.1rem' }} />
-                                            <span>{course.student_count || 0} Students</span>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                            <HeartSolidIcon style={{ width: '1.1rem', color: 'var(--danger)' }} />
-                                            <span>{course.likes_count || 0} Likes</span>
-                                        </div>
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)' }}>
-                                        <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                                            {course.price === 0 || course.type === 'free' ? 'Free' : `$${course.price}`}
-                                        </span>
-                                        <Link to={`/courses/${course.id}`} className="btn btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.95rem' }}>
-                                            View Content
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
+                            <CourseCard key={course.id} course={course} />
                         ))}
                     </div>
 
