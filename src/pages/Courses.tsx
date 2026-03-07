@@ -105,7 +105,6 @@ export default function Courses() {
         const newParams = new URLSearchParams(searchParams);
         newParams.set('page', newPage.toString());
         setSearchParams(newParams);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handlePageSizeChange = (newSize: number) => {
@@ -184,12 +183,12 @@ export default function Courses() {
                 </div>
             )}
 
-            {loading ? (
+            {loading && courses.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '5rem 0' }}>
                     <div style={{ display: 'inline-block', width: '40px', height: '40px', border: '4px solid var(--border-color)', borderTopColor: 'var(--brand-primary)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
                     <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Loading awesome courses...</p>
                 </div>
-            ) : courses.length === 0 ? (
+            ) : courses.length === 0 && !loading ? (
                 <div className="glass-panel" style={{ padding: '5rem 2rem', textAlign: 'center', borderRadius: '24px' }}>
                     {query ? (
                         <>
@@ -205,7 +204,7 @@ export default function Courses() {
                     )}
                 </div>
             ) : (
-                <>
+                <div style={{ opacity: loading ? 0.6 : 1, pointerEvents: loading ? 'none' : 'auto', transition: 'opacity 0.2s ease' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: '1.5rem' }}>
                         {courses.map(course => (
                             <div key={course.id} className="course-card">
@@ -263,7 +262,7 @@ export default function Courses() {
                         pageSize={pageSize}
                         onPageSizeChange={handlePageSizeChange}
                     />
-                </>
+                </div>
             )}
 
             <style>{`
