@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
+import { FiLoader } from 'react-icons/fi';
 import AssignmentList from '../components/AssignmentList';
 import CourseSettingsForm from '../components/CourseSettingsForm';
 import CourseReviews from '../components/CourseReviews';
@@ -128,28 +129,38 @@ export default function CourseDetail() {
         }
     };
 
-    if (loading) return <div style={{ textAlign: 'center', marginTop: '4rem', color: 'var(--text-secondary)' }}>Loading course content...</div>;
-    if (!course) return <div style={{ textAlign: 'center', marginTop: '4rem', color: 'var(--danger)' }}>Course not found</div>;
+    if (loading) return (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '1rem' }}>
+            <FiLoader size={48} className="animate-pulse" style={{ color: 'var(--brand-primary)' }} />
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Loading course content...</p>
+        </div>
+    );
+    if (!course) return (
+        <div style={{ textAlign: 'center', marginTop: '4rem' }}>
+            <p style={{ color: 'var(--danger)', fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Course not found</p>
+            <p style={{ color: 'var(--text-secondary)' }}>The course you're looking for doesn't exist or has been removed.</p>
+        </div>
+    );
 
     const isTeacher = user?.id === course.teacher_id;
     const isEnrolled = enrollment?.enrolled;
     const canWatch = isTeacher || isEnrolled || user?.role === 'admin';
 
     return (
-        <div className="animate-fade-in" style={{ paddingBottom: '4rem' }}>
+        <div className="animate-fade-in" style={{ paddingBottom: '4rem', maxWidth: '1400px', margin: '0 auto' }}>
             {/* Hero Section */}
             <CourseHero course={course} modulesCount={modules.length} />
 
             {/* Layout Grid */}
-            <div className="course-detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2.5rem', alignItems: 'start' }}>
+            <div className="course-detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '2rem', alignItems: 'start' }}>
 
                 {/* Left Column - Content */}
-                <div className="course-content-col">
+                <div className="course-content-col" style={{ minWidth: 0 }}>
                     {/* Tabs */}
                     <CourseTabs activeTab={activeTab} setActiveTab={setActiveTab} isTeacher={isTeacher} />
 
                     {/* Tab Contents */}
-                    <div className="glass-panel" style={{ padding: '2.5rem' }}>
+                    <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '16px', minHeight: '400px' }}>
 
                         {activeTab === 'overview' && (
                             <CourseOverviewTab course={course} isCompleted={enrollment?.progress_percentage === 100} />

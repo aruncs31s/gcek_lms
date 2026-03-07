@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
-import { FiBook } from 'react-icons/fi';
+import { FiBook, FiZap } from 'react-icons/fi';
 import CourseForm from '../components/CourseForm';
 
 export default function CreateCourse() {
@@ -87,7 +87,14 @@ export default function CreateCourse() {
                     <FiBook size={40} />
                     Create New Course
                 </h1>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Set up the foundation for your new educational content.</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '1rem' }}>Set up the foundation for your new educational content.</p>
+                <Link 
+                    to="/courses/new/advanced" 
+                    className="btn btn-secondary" 
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', textDecoration: 'none' }}
+                >
+                    <FiZap size={18} /> Try Advanced Creator (Split View)
+                </Link>
             </div>
 
             <CourseForm

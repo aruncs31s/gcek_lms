@@ -1,4 +1,4 @@
-import { Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { FiBook, FiList, FiFileText, FiUser, FiStar, FiSettings } from 'react-icons/fi';
 
 type TabType = 'overview' | 'curriculum' | 'assignments' | 'instructor' | 'reviews' | 'settings';
 
@@ -9,41 +9,52 @@ interface CourseTabsProps {
 }
 
 export default function CourseTabs({ activeTab, setActiveTab, isTeacher }: CourseTabsProps) {
-    const tabs: TabType[] = isTeacher 
-        ? ['overview', 'curriculum', 'assignments', 'instructor', 'reviews', 'settings']
-        : ['overview', 'curriculum', 'assignments', 'instructor', 'reviews'];
+    const tabs: { key: TabType; label: string; icon: any }[] = [
+        { key: 'overview', label: 'Overview', icon: FiBook },
+        { key: 'curriculum', label: 'Curriculum', icon: FiList },
+        { key: 'assignments', label: 'Assignments', icon: FiFileText },
+        { key: 'instructor', label: 'Instructor', icon: FiUser },
+        { key: 'reviews', label: 'Reviews', icon: FiStar },
+    ];
+
+    if (isTeacher) {
+        tabs.push({ key: 'settings', label: 'Settings', icon: FiSettings });
+    }
 
     return (
-        <div className="course-tabs" style={{ 
+        <div className="course-tabs glass-panel" style={{ 
             display: 'flex', 
-            borderBottom: '1px solid var(--border-color)', 
-            marginBottom: '2rem', 
-            overflowX: 'auto', 
-            paddingBottom: '2px' 
+            borderRadius: '12px',
+            padding: '0.5rem',
+            marginBottom: '1.5rem', 
+            overflowX: 'auto',
+            gap: '0.5rem',
+            background: 'var(--bg-secondary)'
         }}>
-            {tabs.map(tab => (
+            {tabs.map(({ key, label, icon: Icon }) => (
                 <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
+                    key={key}
+                    onClick={() => setActiveTab(key)}
                     style={{
-                        padding: '1rem 1.5rem',
-                        background: 'transparent',
-                        border: 'none',
-                        borderBottom: activeTab === tab ? '2px solid var(--brand-primary)' : '2px solid transparent',
-                        color: activeTab === tab ? (tab === 'settings' ? 'var(--warning)' : 'var(--brand-primary)') : 'var(--text-secondary)',
-                        fontWeight: activeTab === tab ? 600 : 500,
-                        fontSize: '1.05rem',
+                        padding: '0.875rem 1.5rem',
+                        background: activeTab === key ? 'var(--bg-primary)' : 'transparent',
+                        border: activeTab === key ? '1px solid var(--border-color)' : '1px solid transparent',
+                        borderRadius: '8px',
+                        color: activeTab === key ? (key === 'settings' ? 'var(--warning)' : 'var(--brand-primary)') : 'var(--text-secondary)',
+                        fontWeight: activeTab === key ? 600 : 500,
+                        fontSize: '0.95rem',
                         cursor: 'pointer',
                         textTransform: 'capitalize',
-                        transition: 'all 0.2s',
+                        transition: 'all 0.2s ease',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.5rem',
-                        whiteSpace: 'nowrap'
+                        gap: '0.6rem',
+                        whiteSpace: 'nowrap',
+                        boxShadow: activeTab === key ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'
                     }}
                 >
-                    {tab === 'settings' && <Cog6ToothIcon style={{ width: '1.1rem' }} />}
-                    {tab}
+                    <Icon size={18} />
+                    {label}
                 </button>
             ))}
         </div>
