@@ -48,13 +48,15 @@ export default function Leaderboard() {
                     <p className="text-muted" style={{ fontSize: '1.25rem' }}>No data available yet.</p>
                 </div>
             ) : (
-                <div className="leaderboard-container" style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {users.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((user, index) => {
-                        const globalIndex = (currentPage - 1) * pageSize + index;
-                        return (
-                            <LeaderboardRow key={user.user_id} user={user} globalIndex={globalIndex} />
-                        )
-                    })}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+                    <div className="leaderboard-container" style={{ maxWidth: '1200px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        {users.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((user, index) => {
+                            const globalIndex = (currentPage - 1) * pageSize + index;
+                            return (
+                                <LeaderboardRow key={user.user_id} user={user} globalIndex={globalIndex} />
+                            )
+                        })}
+                    </div>
                     <Pagination
                         currentPage={currentPage}
                         totalPages={Math.ceil(users.length / pageSize)}
