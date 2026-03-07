@@ -26,6 +26,7 @@ export interface Course {
     type: string;
     status: string;
     duration?: string;
+    is_certificate_available: boolean;
     start_date?: string;
     progress?: number;
     likes_count: number;

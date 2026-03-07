@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
+import { FiBook, FiZap } from 'react-icons/fi';
+import CourseForm from '../components/CourseForm';
 
 export default function CreateCourse() {
+    const [isDesktop, setIsDesktop] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -21,6 +24,15 @@ export default function CreateCourse() {
 
     const navigate = useNavigate();
     const { user } = useAuthStore();
+
+    useEffect(() => {
+        const checkDesktop = () => {
+            setIsDesktop(window.innerWidth >= 1024);
+        };
+        checkDesktop();
+        window.addEventListener('resize', checkDesktop);
+        return () => window.removeEventListener('resize', checkDesktop);
+    }, []);
 
     // Protect route
     if (!user || user.role !== 'teacher') {
@@ -79,132 +91,37 @@ export default function CreateCourse() {
     };
 
     return (
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '2rem' }}>
-                <h1 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Create New Course</h1>
-                <p className="text-secondary">Set up the foundation for your new educational content.</p>
+        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem' }}>
+            <div style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
+                <h1 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
+                    <FiBook size={40} />
+                    Create New Course
+                </h1>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '1.5rem' }}>Set up the foundation for your new educational content.</p>
+                {isDesktop && (
+                    <div style={{ marginBottom: '1rem' }}>
+                        <Link 
+                            to="/courses/new/advanced" 
+                            className="btn btn-primary" 
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', padding: '0.75rem 1.5rem', textDecoration: 'none', fontSize: '1rem', fontWeight: 600, boxShadow: '0 4px 14px 0 rgba(203, 166, 247, 0.39)' }}
+                        >
+                            <FiZap size={20} /> Try Advanced Creator (Split View Editor)
+                        </Link>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.75rem' }}>✨ Live preview • Markdown support • Full-screen editing</p>
+                    </div>
+                )}
             </div>
 
-            <div className="glass-panel animate-fade-in" style={{ padding: '2rem' }}>
-                {error && <div style={{ background: 'var(--danger)', color: 'white', padding: '0.75rem', borderRadius: '8px', marginBottom: '1.5rem', textAlign: 'center' }}>{error}</div>}
-
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Course Title</label>
-                        <input
-                            type="text"
-                            name="title"
-                            required
-                            className="input-field"
-                            value={formData.title}
-                            onChange={handleChange}
-                            placeholder="e.g. Advanced Embedded Systems"
-                        />
-                    </div>
-
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Description</label>
-                        <textarea
-                            name="description"
-                            required
-                            className="input-field"
-                            value={formData.description}
-                            onChange={handleChange}
-                            rows={4}
-                            placeholder="Describe what students will learn..."
-                        />
-                    </div>
-
-                    <div className="form-grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Format</label>
-                            <select
-                                name="format"
-                                className="input-field"
-                                value={formData.format}
-                                onChange={handleChange}
-                            >
-                                <option value="course">Standard Course</option>
-                                <option value="project">Project-Based</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Price ($)</label>
-                            <input
-                                type="number"
-                                name="price"
-                                min="0"
-                                step="0.01"
-                                className="input-field"
-                                value={formData.price}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Thumbnail Image (Optional)</label>
-                            <input
-                                type="file"
-                                accept="image/jpeg, image/png, image/webp"
-                                className="file-input"
-                                onChange={handleImageUpload}
-                                disabled={uploadingImage}
-                            />
-                            {uploadingImage && <span style={{ fontSize: '0.875rem', color: 'var(--brand-primary)', marginTop: '0.5rem', display: 'block' }}>Uploading...</span>}
-                            {formData.thumbnail_url && !uploadingImage && (
-                                <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: 'var(--success)' }}>
-                                    Image uploaded successfully!
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="form-grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Status</label>
-                            <select
-                                name="status"
-                                className="input-field"
-                                value={formData.status}
-                                onChange={handleChange}
-                            >
-                                <option value="coming soon">Coming Soon</option>
-                                <option value="active">Active</option>
-                                <option value="ended">Ended</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Duration (e.g. "4 Weeks")</label>
-                            <input
-                                type="text"
-                                name="duration"
-                                className="input-field"
-                                value={formData.duration}
-                                onChange={handleChange}
-                                placeholder="10 Hours..."
-                            />
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Start Date</label>
-                            <input
-                                type="datetime-local"
-                                name="start_date"
-                                className="input-field"
-                                value={formData.start_date}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                        <button type="submit" disabled={loading || uploadingImage} className="btn btn-primary" style={{ flex: 1 }}>
-                            {loading ? 'Creating...' : 'Publish Course'}
-                        </button>
-                        <button type="button" onClick={() => navigate('/dashboard')} className="btn btn-secondary" style={{ flex: 1 }}>
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <CourseForm
+                formData={formData}
+                error={error}
+                loading={loading}
+                uploadingImage={uploadingImage}
+                onSubmit={handleSubmit}
+                onChange={handleChange}
+                onImageUpload={handleImageUpload}
+                onCancel={() => navigate('/dashboard')}
+            />
         </div>
     );
 }

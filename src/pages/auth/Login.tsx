@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { api } from '../lib/api';
-import { useAuthStore } from '../store/authStore';
+import { api } from '../../lib/api';
+import { useAuthStore } from '../../store/authStore';
+import type { LoginRequest, LoginResponse } from './login';
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [credentials, setCredentials] = useState<LoginRequest>({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -18,11 +18,16 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const response = await api.post('/login', { email, password });
+            const response = await api.post<LoginResponse>('/login', credentials);
             setAuth(response.data.user, response.data.token);
-            navigate('/');
+            if (response.data.user.role === 'admin') {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         } catch (err: any) {
-            setError(err.response?.data || 'An error occurred during login');
+            const errorMessage = err.response?.data?.error || err.response?.data?.message || 'An error occurred during login';
+            setError(typeof errorMessage === 'string' ? errorMessage : 'Invalid email or password');
         } finally {
             setLoading(false);
         }
@@ -42,8 +47,8 @@ export default function Login() {
                             type="email"
                             required
                             className="input-field"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={credentials.email}
+                            onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
                             placeholder="Enter your email"
                         />
                     </div>
@@ -53,8 +58,8 @@ export default function Login() {
                             type="password"
                             required
                             className="input-field"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={credentials.password}
+                            onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                             placeholder="Enter your password"
                         />
                     </div>

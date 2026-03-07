@@ -18,6 +18,7 @@ export default function CourseSettingsForm({ course, onSuccess }: CourseSettings
     const [type, setType] = useState(course.type || 'paid');
     const [status, setStatus] = useState(course.status || 'not started');
     const [duration, setDuration] = useState(course.duration || '');
+    const [isCertificateAvailable, setIsCertificateAvailable] = useState(course.is_certificate_available || false);
 
     // Format date for datetime-local input
     const formatDateTimeLocal = (isoString?: string) => {
@@ -49,7 +50,8 @@ export default function CourseSettingsForm({ course, onSuccess }: CourseSettings
                 thumbnail_url: thumbnailUrl,
                 type,
                 status,
-                duration
+                duration,
+                is_certificate_available: isCertificateAvailable
             };
             if (startDate) {
                 payload.start_date = new Date(startDate).toISOString();
@@ -146,6 +148,11 @@ export default function CourseSettingsForm({ course, onSuccess }: CourseSettings
                         <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>Start Date</label>
                         <input type="datetime-local" className="form-input" value={startDate} onChange={e => setStartDate(e.target.value)} />
                     </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
+                    <input type="checkbox" id="certAvailable" checked={isCertificateAvailable} onChange={e => setIsCertificateAvailable(e.target.checked)} style={{ width: '1.2rem', height: '1.2rem', accentColor: 'var(--brand-primary)' }} />
+                    <label htmlFor="certAvailable" style={{ color: 'var(--text-secondary)', cursor: 'pointer' }}>Enable Certificate of Completion</label>
                 </div>
 
                 <div>

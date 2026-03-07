@@ -229,6 +229,13 @@ a:hover {
   box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.1);
 }
 
+/* Hide spinner buttons on number inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* Custom File Input */
 .file-input {
   display: block;
@@ -676,9 +683,9 @@ body:not(.light-theme) .hero-gradient {
 }
 
 .main-content {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
   width: 100%;
 }
 

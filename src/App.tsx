@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import Dashboard from './pages/Dashboard';
 import Courses from './pages/Courses';
 import CreateCourse from './pages/CreateCourse';
+import AdvancedCourseCreator from './pages/AdvancedCourseCreator';
 import CourseDetail from './pages/CourseDetail';
 import ChatView from './pages/ChatView';
 import Leaderboard from './pages/Leaderboard';
@@ -27,6 +28,7 @@ function App() {
           <Route path="courses" element={<Courses />} />
           <Route path="courses/trending" element={<TrendingCourses />} />
           <Route path="courses/new" element={<CreateCourse />} />
+          <Route path="courses/new/advanced" element={<AdvancedCourseCreator />} />
           <Route path="courses/:id" element={<CourseDetail />} />
           <Route path="leaderboard" element={<Leaderboard />} />
           <Route path="users" element={<Users />} />
