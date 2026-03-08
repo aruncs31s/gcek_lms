@@ -12,6 +12,7 @@ import CourseOverviewTab from '../components/CourseOverviewTab';
 import CourseCurriculumTab from '../components/CourseCurriculumTab';
 import CourseInstructorTab from '../components/CourseInstructorTab';
 import CourseActionCard from '../components/CourseActionCard';
+import CourseEnrolledStudentsTab from '../components/CourseEnrolledStudentsTab';
 import { Course } from '../types/course';
 import { Module } from '../types/module';
 import type { CourseDTO } from '../types/course';
@@ -232,7 +233,7 @@ export default function CourseDetail() {
     // UI state
     const [isCreatingModule, setIsCreatingModule] = useState(false);
     const [editingModuleId, setEditingModuleId] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<'overview' | 'curriculum' | 'assignments' | 'instructor' | 'reviews' | 'settings'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'curriculum' | 'assignments' | 'instructor' | 'reviews' | 'settings' | 'students'>('overview');
     const [playingModuleUrl, setPlayingModuleUrl] = useState<string | null>(null);
 
     const { user } = useAuthStore();
@@ -335,6 +336,10 @@ export default function CourseDetail() {
                             <div className="animate-fade-in">
                                 <CourseReviews courseId={course.id} />
                             </div>
+                        )}
+
+                        {activeTab === 'students' && isTeacher && (
+                            <CourseEnrolledStudentsTab courseId={course.id} />
                         )}
 
                         {activeTab === 'settings' && isTeacher && (
