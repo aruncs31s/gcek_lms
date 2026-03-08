@@ -1,73 +1,71 @@
-import { useEffect, useState } from 'react';
-import { api } from '../lib/api';
-import Pagination from '../components/Pagination';
-import LeaderboardRow from '../components/LeaderboardRow';
-
-interface LeaderboardUser {
-    user_id: string;
-    first_name: string;
-    last_name: string;
-    avatar_url: string;
-    points: number;
-    enrolled_courses: number;
-}
+/**
+ * Leaderboard Page - Displays user rankings and points
+ * Architecture follows SOLID principles:
+ * - S: Single Responsibility: Orchestrates sub-components
+ * - O: Open/Closed: Ranking tiers are easily configurable
+ * - I: Interface Segregation: Separate concerns via components
+ * - D: Dependency Inversion: Uses service abstraction via custom hook
+ */
+import { useLeaderboard } from '../hooks/useLeaderboard';
+import LeaderboardList from '../components/LeaderboardList';
+import LeaderboardLoadingState from '../components/LeaderboardLoadingState';
+import LeaderboardEmptyState from '../components/LeaderboardEmptyState';
 
 export default function Leaderboard() {
-    const [users, setUsers] = useState<LeaderboardUser[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-
-    useEffect(() => {
-        const fetchLeaderboard = async () => {
-            try {
-                const res = await api.get('/leaderboard');
-                setUsers(res.data);
-            } catch (err) {
-                console.error("Failed to load leaderboard", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchLeaderboard();
-    }, []);
+    const {
+        users,
+        loading,
+        error,
+        currentPage,
+        setCurrentPage,
+        pageSize,
+        setPageSize
+    } = useLeaderboard();
 
     return (
         <div className="animate-fade-in">
+            {/* Header Section */}
             <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
-                <h1 className="text-gradient" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>Global Leaderboard</h1>
+                <h1 className="text-gradient" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>
+                    Global Leaderboard
+                </h1>
                 <p className="text-secondary" style={{ maxWidth: '600px', margin: '0 auto' }}>
                     See who's leading the pack. Complete courses and earn points to climb the ranks!
                 </p>
             </div>
 
+            {/* Content Section */}
+            {error && (
+                <div
+                    className="glass-panel"
+                    style={{
+                        padding: '1.5rem',
+                        textAlign: 'center',
+                        borderRadius: '12px',
+                        background: 'rgba(243, 139, 168, 0.1)',
+                        border: '1px solid rgba(243, 139, 168, 0.3)',
+                        marginBottom: '2rem'
+                    }}
+                >
+                    <p className="text-muted">{error}</p>
+                </div>
+            )}
+
             {loading ? (
-                <div style={{ textAlign: 'center', marginTop: '2rem' }}>Loading leaderboard...</div>
+                <LeaderboardLoadingState />
             ) : users.length === 0 ? (
-                <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center' }}>
-                    <p className="text-muted" style={{ fontSize: '1.25rem' }}>No data available yet.</p>
-                </div>
+                <LeaderboardEmptyState />
             ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-                    <div className="leaderboard-container" style={{ maxWidth: '1200px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                        {users.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((user, index) => {
-                            const globalIndex = (currentPage - 1) * pageSize + index;
-                            return (
-                                <LeaderboardRow key={user.user_id} user={user} globalIndex={globalIndex} />
-                            )
-                        })}
-                    </div>
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(users.length / pageSize)}
-                        onPageChange={setCurrentPage}
-                        pageSize={pageSize}
-                        onPageSizeChange={(newSize) => {
-                            setPageSize(newSize);
-                            setCurrentPage(1);
-                        }}
-                    />
-                </div>
+                <LeaderboardList
+                    users={users}
+                    currentPage={currentPage}
+                    pageSize={pageSize}
+                    onPageChange={setCurrentPage}
+                    onPageSizeChange={(newSize) => {
+                        setPageSize(newSize);
+                        setCurrentPage(1);
+                    }}
+                />
             )}
         </div>
     );

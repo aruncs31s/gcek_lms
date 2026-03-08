@@ -1,6 +1,6 @@
-import { FiBook, FiList, FiFileText, FiUser, FiStar, FiSettings } from 'react-icons/fi';
+import { FiBook, FiList, FiFileText, FiUser, FiStar, FiSettings, FiUsers } from 'react-icons/fi';
 
-type TabType = 'overview' | 'curriculum' | 'assignments' | 'instructor' | 'reviews' | 'settings';
+type TabType = 'overview' | 'curriculum' | 'assignments' | 'instructor' | 'reviews' | 'settings' | 'students';
 
 interface CourseTabsProps {
     activeTab: TabType;
@@ -18,6 +18,7 @@ export default function CourseTabs({ activeTab, setActiveTab, isTeacher }: Cours
     ];
 
     if (isTeacher) {
+        tabs.push({ key: 'students', label: 'Students', icon: FiUsers });
         tabs.push({ key: 'settings', label: 'Settings', icon: FiSettings });
     }
 

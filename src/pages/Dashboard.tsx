@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo,useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { api } from '../lib/api';
+import DashboardCourseRow from '../components/DashboardCourseRow';
 import {
     BookOpenIcon,
     DocumentCheckIcon,
@@ -9,42 +9,29 @@ import {
     PlusIcon,
     ArrowRightIcon
 } from '@heroicons/react/24/outline';
+import { CourseRepository } from '../repositories/courseRepository';
 
-interface Course {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    thumbnail_url?: string;
-    type: string;
-    format?: string;
-    status: string;
-    duration?: string;
-    start_date?: string;
-    progress?: number;
-    created_at: string;
-}
+import { Course } from '../types/course';
 
 export default function Dashboard() {
     const { user } = useAuthStore();
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
 
+
+    const courseRepository = useMemo(() => new CourseRepository(), []);
+
     useEffect(() => {
-        // For MVP, we just fetch all courses. Later, filter by enrolled/created based on role
-        const fetchStats = async () => {
-            setLoading(true);
-            try {
-                const res = await api.get('/courses');
-                setCourses(res.data);
-            } catch (err) {
-                console.error("Failed to load dashboard data");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchStats();
-    }, []);
+    async function load() {
+        setLoading(true);
+        const courses = await courseRepository.getCourses();
+        setCourses(courses);
+        setLoading(false);
+    }
+
+    load();
+    }, [courseRepository]);
+
 
     const [searchParams, setSearchParams] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
@@ -65,7 +52,7 @@ export default function Dashboard() {
                 <div>
                     <h1 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontWeight: 800 }}>Dashboard</h1>
                     <p className="text-secondary" style={{ fontSize: '1.1rem', margin: 0 }}>
-                        Welcome back, <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{user.first_name}</span>! Here's your overview as a <span style={{ textTransform: 'capitalize', color: 'var(--brand-primary)', fontWeight: 600 }}>{user.role}</span>.
+                        Welcome back, <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{user.firstName}</span>! Here's your overview as a <span style={{ textTransform: 'capitalize', color: 'var(--brand-primary)', fontWeight: 600 }}>{user.role}</span>.
                     </p>
                 </div>
                 {user.role && (user.role === 'admin' || user.role === 'teacher') && (
@@ -144,51 +131,15 @@ export default function Dashboard() {
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {filteredCourses.slice(0, 5).map(course => (
-                            <div key={course.id} className="dashboard-course-row" style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                padding: '1.25rem 1.5rem',
-                                background: 'var(--bg-tertiary)',
-                                borderRadius: '16px',
-                                border: '1px solid var(--border-color)',
-                                transition: 'all 0.2s',
-                                flexWrap: 'wrap',
-                                gap: '1rem'
-                            }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateX(5px)';
-                                    e.currentTarget.style.borderColor = 'var(--brand-primary)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateX(0)';
-                                    e.currentTarget.style.borderColor = 'var(--border-color)';
-                                }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                                    <div style={{
-                                        width: '60px',
-                                        height: '60px',
-                                        borderRadius: '12px',
-                                        background: course.thumbnail_url ? `url(${course.thumbnail_url}) center/cover` : 'var(--bg-secondary)',
-                                        border: '1px solid var(--border-color)'
-                                    }} />
-                                    <div>
-                                        <h4 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.25rem', color: 'var(--text-primary)' }}>{course.title}</h4>
-                                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: course.status === 'active' ? 'var(--success)' : 'var(--text-muted)' }}></span>
-                                                <span style={{ textTransform: 'capitalize' }}>{course.status || 'Not Started'}</span>
-                                            </span>
-                                            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                                                {course.type === 'free' || course.price === 0 ? 'Free' : `$${course.price}`}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <Link to={`/courses/${course.id}`} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '0.9rem' }}>
-                                    View Details
-                                </Link>
-                            </div>
+                            <DashboardCourseRow
+                                key={course.id}
+                                id={course.id}
+                                title={course.title}
+                                thumbnail_url={course.thumbnailUrl}
+                                status={course.status}
+                                type={course.type}
+                                price={course.price}
+                            />
                         ))}
                     </div>
                 )}

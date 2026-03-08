@@ -1,7 +1,7 @@
 import { UserIcon, DocumentTextIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { FiAward, FiCalendar } from 'react-icons/fi';
-import type { Course } from '../types/course';
+import { Course } from '../types/course';
 
 interface CourseHeroProps {
     course: Course;
@@ -14,8 +14,8 @@ export default function CourseHero({ course, modulesCount }: CourseHeroProps) {
             position: 'relative',
             borderRadius: '20px',
             overflow: 'hidden',
-            background: course.thumbnail_url
-                ? `linear-gradient(135deg, rgba(30, 30, 46, 0.95) 0%, rgba(30, 30, 46, 0.85) 50%, rgba(30, 30, 46, 0.75) 100%), url(${course.thumbnail_url}) center/cover`
+            background: course.thumbnailUrl
+                ? `linear-gradient(135deg, rgba(30, 30, 46, 0.95) 0%, rgba(30, 30, 46, 0.85) 50%, rgba(30, 30, 46, 0.75) 100%), url(${course.thumbnailUrl}) center/cover`
                 : 'linear-gradient(135deg, var(--bg-secondary), var(--bg-primary))',
             padding: '3.5rem 2.5rem',
             marginBottom: '2.5rem',
@@ -28,12 +28,12 @@ export default function CourseHero({ course, modulesCount }: CourseHeroProps) {
                     <span style={{ fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--brand-primary)' }}>ESDC Masterclass</span>
                 </div>
                 <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.15, color: 'var(--text-primary)', textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>{course.title}</h1>
-                <p style={{ fontSize: '1.15rem', color: 'var(--text-secondary)', marginBottom: '2.5rem', lineHeight: 1.6, fontWeight: 500 }}>Instructed by <span style={{ color: 'var(--brand-primary)', fontWeight: 600 }}>{course.teacher_name}</span></p>
+                <p style={{ fontSize: '1.15rem', color: 'var(--text-secondary)', marginBottom: '2.5rem', lineHeight: 1.6, fontWeight: 500 }}>Instructed by <span style={{ color: 'var(--brand-primary)', fontWeight: 600 }}>{course.teacherName}</span></p>
 
                 <div className="course-meta" style={{ display: 'flex', gap: '2rem', color: 'var(--text-muted)', flexWrap: 'wrap', alignItems: 'center' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'var(--bg-secondary)', padding: '0.6rem 1rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
                         <UserIcon style={{ width: '1.25rem', height: '1.25rem', color: 'var(--brand-primary)' }} />
-                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{course.student_count}</span>
+                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{course.studentCount}</span>
                         <span style={{ fontSize: '0.9rem' }}>Students</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'var(--bg-secondary)', padding: '0.6rem 1rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
@@ -43,7 +43,7 @@ export default function CourseHero({ course, modulesCount }: CourseHeroProps) {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'var(--bg-secondary)', padding: '0.6rem 1rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
                         <HeartSolidIcon style={{ width: '1.25rem', height: '1.25rem', color: 'var(--danger)' }} />
-                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{course.likes_count}</span>
+                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{course.likesCount}</span>
                         <span style={{ fontSize: '0.9rem' }}>Likes</span>
                     </div>
                     {course.duration && (
@@ -52,10 +52,10 @@ export default function CourseHero({ course, modulesCount }: CourseHeroProps) {
                             <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{course.duration}</span>
                         </div>
                     )}
-                    {course.start_date && (
+                    {course.startDate && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'rgba(166, 227, 161, 0.15)', padding: '0.6rem 1rem', borderRadius: '10px', border: '1px solid rgba(166, 227, 161, 0.3)' }}>
                             <FiCalendar style={{ width: '1.1rem', height: '1.1rem', color: 'var(--success)' }} />
-                            <span style={{ color: 'var(--success)', fontWeight: 600, fontSize: '0.9rem' }}>Starts {new Date(course.start_date).toLocaleDateString()}</span>
+                            <span style={{ color: 'var(--success)', fontWeight: 600, fontSize: '0.9rem' }}>Starts {new Date(course.startDate).toLocaleDateString()}</span>
                         </div>
                     )}
                 </div>

@@ -2,10 +2,10 @@ import type { LoginResponse } from "./login";
 export interface RegisterRequest {
     email: string;
     password: string;
-    firstname: string;
-    lastname: string;
+    first_name: string;
+    last_name: string;
     role: 'student' | 'instructor';
     avatar_url?: string;
 }
 
-export interface RegisterResponse extends LoginResponse {}
+export type RegisterResponse = LoginResponse
