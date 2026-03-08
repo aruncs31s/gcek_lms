@@ -8,10 +8,10 @@ export default function EditProfile() {
     const { user, updateUser } = useAuthStore();
     const navigate = useNavigate();
 
-    const [firstName, setFirstName] = useState(user?.first_name || '');
-    const [lastName, setLastName] = useState(user?.last_name || '');
+    const [firstName, setFirstName] = useState(user?.firstName || '');
+    const [lastName, setLastName] = useState(user?.lastName || '');
     const [bio, setBio] = useState(user?.bio || '');
-    const [avatarUrl, setAvatarUrl] = useState(user?.avatar_url || '');
+    const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || '');
 
     const [uploading, setUploading] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -64,10 +64,10 @@ export default function EditProfile() {
             // Result is the updated user response
             const updatedUser = res.data;
             updateUser({
-                first_name: updatedUser.first_name,
-                last_name: updatedUser.last_name,
+                firstName: updatedUser.first_name,
+                lastName: updatedUser.last_name,
                 bio: updatedUser.bio,
-                avatar_url: updatedUser.avatar_url,
+                avatarUrl: updatedUser.avatar_url,
             });
             setSuccessMessage("Profile updated successfully!");
             setTimeout(() => setSuccessMessage(''), 3000);

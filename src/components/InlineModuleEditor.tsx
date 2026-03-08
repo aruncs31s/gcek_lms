@@ -15,10 +15,10 @@ export default function InlineModuleEditor({ courseId, modules, onSuccess, onCan
     const [title, setTitle] = useState(editModule?.title || '');
     const [description, setDescription] = useState(editModule?.description || '');
     const [points, setPoints] = useState<number | ''>(editModule?.points !== undefined ? editModule.points : '');
-    const [isFree, setIsFree] = useState(editModule?.is_free || false);
-    const [parentId, setParentId] = useState<string>(editModule?.parent_id || '');
+    const [isFree, setIsFree] = useState(editModule?.isFree || false);
+    const [parentId, setParentId] = useState<string>(editModule?.parentId || '');
     const [type, setType] = useState<'video' | 'chapter'>(editModule?.type === 'chapter' ? 'chapter' : 'video');
-    const [videoUrl, setVideoUrl] = useState(editModule?.video_url || '');
+    const [videoUrl, setVideoUrl] = useState(editModule?.videoUrl || '');
     const [uploading, setUploading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');

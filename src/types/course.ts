@@ -2,6 +2,8 @@ import { Module } from './module'
 import type { ModuleDTO } from './module'
 import defaultLogo from '../../public/default_course_logo.png';
 
+export type { Module };
+
 
 export interface CourseDTO {
   id: string
