@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import type { Course } from '../types/course';
+import { Course } from '../types/course';
 
 interface CourseSettingsFormProps {
     course: Course;
@@ -14,11 +14,11 @@ export default function CourseSettingsForm({ course, onSuccess }: CourseSettings
     const [title, setTitle] = useState(course.title);
     const [description, setDescription] = useState(course.description);
     const [price, setPrice] = useState(course.price.toString());
-    const [thumbnailUrl, setThumbnailUrl] = useState(course.thumbnail_url || '');
+    const [thumbnailUrl, setThumbnailUrl] = useState(course.thumbnailUrl || '');
     const [type, setType] = useState(course.type || 'paid');
     const [status, setStatus] = useState(course.status || 'not started');
     const [duration, setDuration] = useState(course.duration || '');
-    const [isCertificateAvailable, setIsCertificateAvailable] = useState(course.is_certificate_available || false);
+    const [isCertificateAvailable, setIsCertificateAvailable] = useState(course.certificateAvailable || false);
 
     // Format date for datetime-local input
     const formatDateTimeLocal = (isoString?: string) => {
@@ -28,7 +28,7 @@ export default function CourseSettingsForm({ course, onSuccess }: CourseSettings
         return d.toISOString().slice(0, 16);
     };
 
-    const [startDate, setStartDate] = useState(formatDateTimeLocal(course.start_date));
+    const [startDate, setStartDate] = useState(formatDateTimeLocal(course.startDate));
 
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');

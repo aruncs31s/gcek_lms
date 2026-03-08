@@ -4,7 +4,8 @@ import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import SortableModuleItem from './SortableModuleItem';
 import InlineModuleEditor from './InlineModuleEditor';
-import type { Module, Course } from '../types/course';
+import { Course } from '../types/course';
+import { Module } from '../types/module';
 import CertificateGenerator from './CertificateGenerator';
 
 interface CourseCurriculumTabProps {
@@ -71,13 +72,13 @@ export default function CourseCurriculumTab({
         }
     };
 
-    const videoModules = modules.filter(m => m.type === 'video');
-    const completedCount = videoModules.filter(m => m.is_completed).length;
+    const videoModules = modules.filter(m => m.isVideo);
+    const completedCount = videoModules.filter(m => m.isCompleted).length;
     const totalCount = videoModules.length;
     const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
     let previousVideoCompleted = true;
-    const currentModuleId = modules.find(m => m.type === 'video' && !m.is_completed)?.id || null;
+    const currentModuleId = modules.find(m => m.isVideo && !m.isCompleted)?.id || null;
 
     return (
         <div className="animate-fade-in">
@@ -127,11 +128,11 @@ export default function CourseCurriculumTab({
                     <SortableContext items={modules.map(m => m.id)} strategy={verticalListSortingStrategy}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {modules.map((m, idx) => {
-                                const isLocked = !isTeacher && m.type === 'video' && !m.is_free && !previousVideoCompleted;
-                                const canWatchModule = canWatch || m.is_free;
+                                const isLocked = !isTeacher && m.isVideo && !m.isFree && !previousVideoCompleted;
+                                const canWatchModule = canWatch || m.isFree;
 
-                                if (m.type === 'video') {
-                                    previousVideoCompleted = m.is_completed;
+                                if (m.isVideo) {
+                                    previousVideoCompleted = m.isCompleted;
                                 }
 
                                 return (
@@ -157,7 +158,7 @@ export default function CourseCurriculumTab({
                 </DndContext>
             )}
 
-            {course.is_certificate_available && (
+            {course.certificateAvailable && (
                 <div style={{
                     marginTop: '1.5rem',
                     padding: '1.5rem',

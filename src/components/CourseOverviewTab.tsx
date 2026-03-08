@@ -1,4 +1,4 @@
-import type { Course } from '../types/course';
+import { Course } from '../types/course';
 import CertificateGenerator from './CertificateGenerator';
 
 interface CourseOverviewTabProps {
@@ -14,7 +14,7 @@ export default function CourseOverviewTab({ course, isCompleted }: CourseOvervie
                 {course.description || "No description provided."}
             </p>
 
-            {isCompleted && course.is_certificate_available && (
+            {isCompleted && course.certificateAvailable && (
                 <CertificateGenerator courseId={course.id} courseName={course.title} />
             )}
         </div>

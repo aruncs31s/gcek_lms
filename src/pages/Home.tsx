@@ -2,6 +2,7 @@ import { useAuthStore } from '../store/authStore';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
+import defaultLogo from '../../public/default_course_logo.png';
 import {
     ArrowRightIcon,
 } from '@heroicons/react/24/outline';
@@ -147,7 +148,12 @@ export default function Home() {
                     {recentCourses.map(course => (
                         <div key={course.id} className="course-card">
                             <div className="course-card-img-wrapper">
-                                <div className="course-card-image" style={{ background: course.thumbnail_url ? `url(${course.thumbnail_url}) center/cover` : 'var(--bg-tertiary)' }} />
+                                <div className="course-card-image" style={{ 
+                                    backgroundImage: course.thumbnail_url ? `url(${course.thumbnail_url})` : `url(${defaultLogo})`,
+                                    backgroundPosition: 'center',
+                                    backgroundSize: 'cover',
+                                    backgroundRepeat: 'no-repeat'
+                                }} />
                                 <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.5rem' }}>
                                     {course.type === 'free' || course.price === 0 ? (
                                         <span className="badge badge-success badge-blur">Free</span>

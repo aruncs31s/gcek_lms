@@ -72,21 +72,21 @@ export default function Layout() {
                                     <NotificationBell />
                                 </div>
                                 <Link to={`/users/${user.id}`} className="profile-link hover-card">
-                                    {user.avatar_url ? (
-                                        <img src={user.avatar_url} alt="Profile" className="profile-avatar" />
+                                    {user.avatar ? (
+                                        <img src={user.avatar} alt="Profile" className="profile-avatar" />
                                     ) : (
                                         <div className="profile-avatar-placeholder">
-                                            {user.first_name?.[0]}{user.last_name?.[0]}
+                                            {user.firstName?.[0]}{user.firstName?.[0]}
                                         </div>
                                     )}
-                                    <span className="profile-name">{user.first_name}</span>
+                                    <span className="profile-name">{user.firstName}</span>
                                 </Link>
                                 <button onClick={logout} className="btn-logout">Logout</button>
                             </>
                         ) : (
                             <div className="auth-buttons">
                                 <Link to="/login" className="btn btn-secondary">Login</Link>
-                                <Link to="/register" className="btn btn-primary">Get Started</Link>
+                                <Link to="/register" className="btn btn-primary p-10">Get Started</Link>
                             </div>
                         )}
                     </div>

@@ -6,24 +6,14 @@ import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { FiPlus } from 'react-icons/fi';
 import Pagination from '../components/Pagination';
 import CourseCard from '../components/CourseCard';
+import { Course } from '../types/course';
+import type { CourseDTO } from '../types/course';
 
-interface Course {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    thumbnail_url?: string;
-    type: string;
-    format?: string;
-    status: string;
-    duration?: string;
-    start_date?: string;
-    progress?: number;
-    teacher_name?: string;
-    student_count?: number;
-    likes_count?: number;
-}
-
+/**
+ * Courses Page - Displays list of courses with search and filters
+ * Single Responsibility: Manages course listing, search, and filtering UI
+ *
+ */
 export default function Courses() {
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
@@ -51,17 +41,17 @@ export default function Courses() {
                     params: { query, type, format, status, page, limit }
                 });
 
-                let fetchedCourses = [];
+                let fetchedCourses: Course[] = [];
                 let total = 0;
                 let calculatedTotalPages = 1;
 
                 if (res.data.courses) {
-                    fetchedCourses = res.data.courses;
+                    fetchedCourses = res.data.courses.map((dto: CourseDTO) => Course.fromDTO(dto));
                     total = res.data.total || fetchedCourses.length;
                     calculatedTotalPages = res.data.totalPages || Math.ceil(total / limit);
                 } else if (Array.isArray(res.data)) {
                     // API returned a flat array, we need to paginate on the frontend
-                    fetchedCourses = res.data;
+                    fetchedCourses = res.data.map((dto: CourseDTO) => Course.fromDTO(dto));
                     total = fetchedCourses.length;
                     calculatedTotalPages = Math.ceil(total / limit) || 1;
 

@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom';
 import { CheckCircleIcon, ClockIcon, DocumentTextIcon, AcademicCapIcon, HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
-import type { Course, Enrollment, Module } from '../types/course';
-import type { User } from '../types/user';
+import { Course } from '../types/course';
+import { Module } from '../types/module';
+import { User } from '../types/user';
+
+interface Enrollment {
+    enrolled: boolean;
+    progress_percentage?: number;
+}
 
 interface CourseActionCardProps {
     course: Course;
@@ -36,8 +42,8 @@ export default function CourseActionCard({
     return (
         <div className="course-action-col" style={{ position: 'sticky', top: '2rem' }}>
             <div className="glass-panel" style={{ padding: '2rem', overflow: 'hidden', position: 'relative' }}>
-                {course.thumbnail_url && (
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '120px', backgroundImage: `url(${course.thumbnail_url})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.1 }} />
+                {course.thumbnailUrl && (
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '120px', backgroundImage: `url(${course.thumbnailUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.1 }} />
                 )}
 
                 <div style={{ position: 'relative', zIndex: 1 }}>
@@ -64,7 +70,7 @@ export default function CourseActionCard({
                         ) : (
                             <>
                                 <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
-                                    {course.price === 0 ? 'Free' : `$${course.price}`}
+                                    {course.isFree ? 'Free' : `$${course.price}`}
                                 </h2>
                                 <p style={{ color: 'var(--success)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                                     <CheckCircleIcon style={{ width: '1.2rem' }} /> Lifetime Access Guarantee
@@ -81,7 +87,7 @@ export default function CourseActionCard({
                                 ) : isEnrolled ? (
                                     <>
                                         <button onClick={() => setActiveTab('curriculum')} className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }}>Continue Learning</button>
-                                        {enrollment?.progress_percentage === 100 && course.is_certificate_available && (
+                                        {enrollment?.progress_percentage === 100 && course.certificateAvailable && (
                                             <button onClick={requestCertificate} className="btn btn-secondary" style={{ width: '100%', padding: '1rem', background: 'var(--bg-tertiary)', border: '1px solid var(--success)', color: 'var(--success)' }}>Download Certificate</button>
                                         )}
                                     </>
@@ -102,14 +108,14 @@ export default function CourseActionCard({
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                         gap: '0.5rem',
-                                        background: course.is_liked ? 'rgba(243, 139, 168, 0.1)' : 'transparent',
-                                        border: course.is_liked ? '1px solid var(--danger)' : '1px solid var(--border-color)',
-                                        color: course.is_liked ? 'var(--danger)' : 'var(--text-secondary)',
+                                        background: course.isLiked ? 'rgba(243, 139, 168, 0.1)' : 'transparent',
+                                        border: course.isLiked ? '1px solid var(--danger)' : '1px solid var(--border-color)',
+                                        color: course.isLiked ? 'var(--danger)' : 'var(--text-secondary)',
                                         transition: 'all 0.2s ease'
                                     }}
                                 >
-                                    {course.is_liked ? <HeartSolidIcon style={{ width: '1.2rem' }} /> : <HeartIcon style={{ width: '1.2rem' }} />}
-                                    {course.is_liked ? 'Liked' : 'Like'} ({course.likes_count})
+                                    {course.isLiked ? <HeartSolidIcon style={{ width: '1.2rem' }} /> : <HeartIcon style={{ width: '1.2rem' }} />}
+                                    {course.isLiked ? 'Liked' : 'Like'} ({course.likesCount})
                                 </button>
                             </>
                         ) : (
@@ -126,9 +132,9 @@ export default function CourseActionCard({
                         </li>
                         <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                             <DocumentTextIcon style={{ width: '1.5rem', color: 'var(--brand-primary)' }} />
-                            <span>{modules.filter(m => m.type === 'video').length} comprehensive videos</span>
+                            <span>{modules.filter(m => m.isVideo).length} comprehensive videos</span>
                         </li>
-                        {course.is_certificate_available && (
+                        {course.certificateAvailable && (
                             <li style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                 <AcademicCapIcon style={{ width: '1.5rem', color: 'var(--brand-primary)' }} />
                                 <span>Verifiable digital certificate</span>

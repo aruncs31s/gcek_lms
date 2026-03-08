@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { PlayCircleIcon, CheckCircleIcon, Bars3Icon, LockClosedIcon, CheckBadgeIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
-import type { Module } from '../types/course';
+import { Module } from '../types/module';
 
 interface SortableModuleItemProps {
     module: Module;
@@ -26,9 +26,9 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: module.id });
     const videoRef = useRef<HTMLVideoElement>(null);
 
-    const isVideo = module.type === 'video';
-    const isCompleted = module.is_completed;
-    const isAccessible = (canWatch || module.is_free) && !isLocked;
+    const isVideo = module.isVideo;
+    const isCompleted = module.isCompleted;
+    const isAccessible = (canWatch || module.isFree) && !isLocked;
 
     // Determine visual state
     const getBorderLeft = () => {
@@ -59,7 +59,7 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
         position: (isDragging ? 'relative' : 'static') as any,
         zIndex: isDragging ? 100 : 1,
         marginTop: module.type === 'chapter' && idx !== 0 ? '1.5rem' : '0',
-        marginLeft: module.parent_id ? '2rem' : '0',
+        marginLeft: module.parentId ? '2rem' : '0',
         boxShadow: isCurrentModule && isVideo ? '0 0 0 1px rgba(203, 166, 247, 0.3), 0 4px 20px rgba(203, 166, 247, 0.08)' : 'none',
         filter: isLocked && isVideo && !isTeacher ? 'grayscale(0.3)' : 'none',
         pointerEvents: (isLocked && isVideo && !isTeacher ? 'none' : 'auto') as any,
@@ -114,7 +114,7 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                                     transition: 'color 0.2s ease'
                                 }}>
                                     {module.title}
-                                    {module.is_free && <span style={{ fontSize: '0.65rem', background: 'var(--success)', color: '#000', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>FREE PREVIEW</span>}
+                                    {module.isFree && <span style={{ fontSize: '0.65rem', background: 'var(--success)', color: '#000', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>FREE PREVIEW</span>}
                                     {module.points > 0 && <span style={{ fontSize: '0.75rem', color: 'var(--brand-primary)', fontWeight: 600 }}>+{module.points} pts</span>}
                                     {isCurrentModule && !isCompleted && <span style={{ fontSize: '0.65rem', background: 'rgba(203, 166, 247, 0.15)', color: 'var(--brand-primary)', padding: '0.15rem 0.6rem', borderRadius: '4px', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>CURRENT</span>}
                                 </h4>
@@ -180,19 +180,19 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                         {isAccessible && (
                             <button
                                 onPointerDown={(e) => e.stopPropagation()}
-                                onClick={() => setPlayingModuleUrl(playingModuleUrl === module.video_url ? null : module.video_url)}
+                                onClick={() => setPlayingModuleUrl(playingModuleUrl === module.videoUrl ? null : module.videoUrl)}
                                 className="btn"
                                 style={{
-                                    background: playingModuleUrl === module.video_url ? 'var(--brand-primary)' : 'transparent',
+                                    background: playingModuleUrl === module.videoUrl ? 'var(--brand-primary)' : 'transparent',
                                     border: '1px solid var(--brand-primary)',
-                                    color: playingModuleUrl === module.video_url ? '#000' : 'var(--brand-primary)',
+                                    color: playingModuleUrl === module.videoUrl ? '#000' : 'var(--brand-primary)',
                                     padding: '0.45rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem',
                                     fontSize: '0.9rem', fontWeight: 600, borderRadius: '8px',
                                     transition: 'all 0.2s ease'
                                 }}
                             >
                                 <PlayCircleIcon style={{ width: '1.1rem', height: '1.1rem' }} />
-                                {playingModuleUrl === module.video_url ? 'Close' : 'Play'}
+                                {playingModuleUrl === module.videoUrl ? 'Close' : 'Play'}
                             </button>
                         )}
 
@@ -235,14 +235,14 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
             </div>
 
             {/* Video player area */}
-            {playingModuleUrl === module.video_url && isVideo && isAccessible && !isLocked && (
+            {playingModuleUrl === module.videoUrl && isVideo && isAccessible && !isLocked && (
                 <div style={{ background: '#000', width: '100%', aspectRatio: '16/9' }} onPointerDown={(e) => e.stopPropagation()}>
                     <video
                         ref={videoRef}
                         controls
                         autoPlay
                         style={{ width: '100%', height: '100%' }}
-                        src={module.video_url}
+                        src={module.videoUrl}
                         onEnded={() => markCompleted(module.id)}
                     >
                         Your browser does not support HTML video.
