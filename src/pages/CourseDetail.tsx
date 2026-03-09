@@ -117,6 +117,7 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                         description: m.description,
                         type: m.type,
                         video_url: m.videoUrl,
+                        pdf_url: m.pdfUrl,
                         points: m.points,
                         is_free: m.isFree,
                         order_index: m.orderIndex,
@@ -151,6 +152,7 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                         description: m.description,
                         type: m.type,
                         video_url: m.videoUrl,
+                        pdf_url: m.pdfUrl,
                         points: m.points,
                         is_free: m.isFree,
                         order_index: m.orderIndex,
@@ -195,6 +197,7 @@ function useModuleOperations(courseId: string | undefined, course: Course | null
                         description: m.description,
                         type: m.type,
                         video_url: m.videoUrl,
+                        pdf_url: m.pdfUrl,
                         points: m.points,
                         is_free: m.isFree,
                         order_index: m.orderIndex,
@@ -229,7 +232,7 @@ function useModuleOperations(courseId: string | undefined, course: Course | null
 
 export default function CourseDetail() {
     const { id } = useParams<{ id: string }>();
-    
+
     // UI state
     const [isCreatingModule, setIsCreatingModule] = useState(false);
     const [editingModuleId, setEditingModuleId] = useState<string | null>(null);

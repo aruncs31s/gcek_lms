@@ -3,7 +3,10 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { PlayCircleIcon, CheckCircleIcon, Bars3Icon, LockClosedIcon, CheckBadgeIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+    PlayCircleIcon, CheckCircleIcon, Bars3Icon, LockClosedIcon,
+    CheckBadgeIcon, TrashIcon, DocumentArrowDownIcon, EyeIcon, DocumentTextIcon
+} from '@heroicons/react/24/outline';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { Module } from '../types/module';
 
@@ -20,27 +23,36 @@ interface SortableModuleItemProps {
     completingId: string | null;
     onEdit: (module: Module) => void;
     onDelete: (moduleId: string) => void;
+    viewingPdfId: string | null;
+    setViewingPdfId: (id: string | null) => void;
 }
 
-export default function SortableModuleItem({ module, idx, playingModuleUrl, setPlayingModuleUrl, canWatch, isTeacher, isLocked, isCurrentModule, markCompleted, completingId, onEdit, onDelete }: SortableModuleItemProps) {
+export default function SortableModuleItem({
+    module, idx, playingModuleUrl, setPlayingModuleUrl,
+    canWatch, isTeacher, isLocked, isCurrentModule,
+    markCompleted, completingId, onEdit, onDelete,
+    viewingPdfId, setViewingPdfId
+}: SortableModuleItemProps) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: module.id });
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const isVideo = module.isVideo;
+    const isPdf = module.isPdf;
     const isCompleted = module.isCompleted;
     const isAccessible = (canWatch || module.isFree) && !isLocked;
+    const isViewingPdf = viewingPdfId === module.id;
 
-    // Determine visual state
     const getBorderLeft = () => {
+        if (isPdf) return '4px solid #f59e0b'; // amber for PDF
         if (!isVideo) return 'none';
         if (isCompleted) return '4px solid var(--success)';
         if (isCurrentModule) return '4px solid var(--brand-primary)';
-        if (isLocked) return '4px solid var(--border-color)';
         return '4px solid var(--border-color)';
     };
 
     const getBackground = () => {
         if (module.type === 'chapter') return 'var(--bg-primary)';
+        if (isPdf) return isViewingPdf ? 'rgba(245, 158, 11, 0.05)' : 'var(--bg-secondary)';
         if (isCompleted) return 'rgba(166, 227, 161, 0.04)';
         if (isCurrentModule) return 'rgba(203, 166, 247, 0.06)';
         return 'var(--bg-secondary)';
@@ -74,8 +86,7 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
             {isLocked && isVideo && !isTeacher && (
                 <div style={{
                     position: 'absolute', inset: 0, zIndex: 10,
-                    background: 'rgba(0,0,0,0.25)',
-                    backdropFilter: 'blur(2px)',
+                    background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(2px)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     borderRadius: '12px', pointerEvents: 'auto', cursor: 'not-allowed'
                 }}>
@@ -96,7 +107,6 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
 
                     {isVideo ? (
                         <>
-                            {/* Number badge or completed checkmark */}
                             <div style={{
                                 background: numberBadgeBg, color: numberBadgeColor,
                                 width: '38px', height: '38px', borderRadius: '50%',
@@ -125,6 +135,34 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                                 )}
                             </div>
                         </>
+                    ) : isPdf ? (
+                        <>
+                            {/* PDF module icon badge */}
+                            <div style={{
+                                background: 'rgba(245,158,11,0.15)', color: '#f59e0b',
+                                width: '38px', height: '38px', borderRadius: '10px',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                flexShrink: 0,
+                            }}>
+                                <DocumentTextIcon style={{ width: '1.4rem', height: '1.4rem' }} />
+                            </div>
+                            <div style={{ minWidth: 0, flex: 1 }}>
+                                <h4 style={{
+                                    fontSize: '1.1rem', margin: '0 0 0.2rem 0', fontWeight: 500,
+                                    color: 'var(--text-primary)',
+                                    display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap',
+                                }}>
+                                    {module.title}
+                                    <span style={{ fontSize: '0.65rem', background: 'rgba(245,158,11,0.2)', color: '#f59e0b', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>PDF</span>
+                                    {module.isFree && <span style={{ fontSize: '0.65rem', background: 'var(--success)', color: '#000', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>FREE</span>}
+                                </h4>
+                                {module.description && (
+                                    <div className="markdown-content" style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.3rem' }}>
+                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{module.description}</ReactMarkdown>
+                                    </div>
+                                )}
+                            </div>
+                        </>
                     ) : (
                         <div>
                             <h3 style={{ fontSize: '1.3rem', margin: '0 0 0.3rem 0', fontWeight: 700, color: 'var(--brand-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -145,13 +183,7 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                             onPointerDown={(e) => e.stopPropagation()}
                             onClick={() => onEdit(module)}
                             className="btn"
-                            style={{
-                                background: 'transparent',
-                                border: '1px solid var(--brand-primary)',
-                                color: 'var(--brand-primary)',
-                                padding: '0.4rem 0.6rem',
-                                borderRadius: '6px'
-                            }}
+                            style={{ background: 'transparent', border: '1px solid var(--brand-primary)', color: 'var(--brand-primary)', padding: '0.4rem 0.6rem', borderRadius: '6px' }}
                             title="Edit Module"
                         >
                             <PencilSquareIcon style={{ width: '1.2rem', height: '1.2rem' }} />
@@ -160,13 +192,7 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                             onPointerDown={(e) => e.stopPropagation()}
                             onClick={() => onDelete(module.id)}
                             className="btn"
-                            style={{
-                                background: 'transparent',
-                                border: '1px solid var(--danger)',
-                                color: 'var(--danger)',
-                                padding: '0.4rem 0.6rem',
-                                borderRadius: '6px'
-                            }}
+                            style={{ background: 'transparent', border: '1px solid var(--danger)', color: 'var(--danger)', padding: '0.4rem 0.6rem', borderRadius: '6px' }}
                             title="Delete Module"
                         >
                             <TrashIcon style={{ width: '1.2rem', height: '1.2rem' }} />
@@ -196,7 +222,6 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                             </button>
                         )}
 
-                        {/* Mark Complete button - only for enrolled students (not teachers), on unlocked & unwatched modules */}
                         {!isTeacher && isAccessible && !isCompleted && (
                             <button
                                 onPointerDown={(e) => e.stopPropagation()}
@@ -204,9 +229,7 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                                 disabled={completingId === module.id}
                                 className="btn"
                                 style={{
-                                    background: 'transparent',
-                                    border: '1px solid var(--success)',
-                                    color: 'var(--success)',
+                                    background: 'transparent', border: '1px solid var(--success)', color: 'var(--success)',
                                     padding: '0.45rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem',
                                     fontSize: '0.85rem', fontWeight: 600, borderRadius: '8px',
                                     transition: 'all 0.2s ease',
@@ -219,7 +242,6 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                             </button>
                         )}
 
-                        {/* Completed badge */}
                         {isCompleted && !isTeacher && (
                             <span style={{
                                 display: 'flex', alignItems: 'center', gap: '0.3rem',
@@ -230,6 +252,49 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                                 <CheckBadgeIcon style={{ width: '1.1rem', height: '1.1rem' }} /> Completed
                             </span>
                         )}
+                    </div>
+                )}
+
+                {/* Action buttons for PDFs */}
+                {isPdf && isAccessible && module.pdfUrl && (
+                    <div className="module-item-actions">
+                        <button
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={() => setViewingPdfId(isViewingPdf ? null : module.id)}
+                            className="btn"
+                            style={{
+                                background: isViewingPdf ? '#f59e0b' : 'transparent',
+                                border: '1px solid #f59e0b',
+                                color: isViewingPdf ? '#000' : '#f59e0b',
+                                padding: '0.45rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem',
+                                fontSize: '0.9rem', fontWeight: 600, borderRadius: '8px',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            <EyeIcon style={{ width: '1.1rem', height: '1.1rem' }} />
+                            {isViewingPdf ? 'Close' : 'View PDF'}
+                        </button>
+                        <a
+                            href={module.pdfUrl}
+                            download
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                                display: 'flex', alignItems: 'center', gap: '0.4rem',
+                                padding: '0.45rem 1rem',
+                                background: 'transparent',
+                                border: '1px solid var(--border-color)',
+                                color: 'var(--text-secondary)',
+                                fontSize: '0.9rem', fontWeight: 600, borderRadius: '8px',
+                                textDecoration: 'none',
+                                transition: 'all 0.2s ease',
+                                cursor: 'pointer',
+                                whiteSpace: 'nowrap',
+                            }}
+                        >
+                            <DocumentArrowDownIcon style={{ width: '1.1rem', height: '1.1rem' }} />
+                            Download
+                        </a>
                     </div>
                 )}
             </div>
@@ -247,6 +312,17 @@ export default function SortableModuleItem({ module, idx, playingModuleUrl, setP
                     >
                         Your browser does not support HTML video.
                     </video>
+                </div>
+            )}
+
+            {/* PDF inline viewer */}
+            {isViewingPdf && isPdf && isAccessible && module.pdfUrl && (
+                <div style={{ width: '100%', borderTop: '1px solid var(--border-color)' }} onPointerDown={(e) => e.stopPropagation()}>
+                    <iframe
+                        src={`${module.pdfUrl}#toolbar=1&navpanes=1`}
+                        style={{ width: '100%', height: '70vh', border: 'none', display: 'block' }}
+                        title={module.title}
+                    />
                 </div>
             )}
         </div>

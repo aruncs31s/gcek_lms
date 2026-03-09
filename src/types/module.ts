@@ -5,6 +5,7 @@ export interface ModuleDTO {
   description: string
   type: string
   video_url: string
+  pdf_url: string
   points: number
   is_free: boolean
   order_index: number
@@ -18,6 +19,7 @@ export class Module {
   description: string
   type: string
   videoUrl: string
+  pdfUrl: string
   points: number
   isFree: boolean
   orderIndex: number
@@ -30,6 +32,7 @@ export class Module {
     description: string,
     type: string,
     videoUrl: string,
+    pdfUrl: string,
     points: number,
     isFree: boolean,
     orderIndex: number,
@@ -41,6 +44,7 @@ export class Module {
     this.description = description
     this.type = type
     this.videoUrl = videoUrl
+    this.pdfUrl = pdfUrl
     this.points = points
     this.isFree = isFree
     this.orderIndex = orderIndex
@@ -55,6 +59,7 @@ export class Module {
       dto.description,
       dto.type,
       dto.video_url,
+      dto.pdf_url || '',
       dto.points,
       dto.is_free,
       dto.order_index,
@@ -63,6 +68,10 @@ export class Module {
   }
 
   get isVideo(): boolean {
-    return this.type === "video"
+    return this.type === 'video'
+  }
+
+  get isPdf(): boolean {
+    return this.type === 'pdf'
   }
 }
