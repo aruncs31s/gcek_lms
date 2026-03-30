@@ -1,8 +1,8 @@
 import { UserIcon, DocumentTextIcon, ClockIcon, AcademicCapIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { FiCalendar, FiLayers } from 'react-icons/fi';
-import { Course } from '../types/course';
-import { Module } from '../types/module';
+import { Course } from '../models/course';
+import { Module } from '../models/module';
 
 interface CourseHeroProps {
     course: Course;

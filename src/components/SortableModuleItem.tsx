@@ -8,7 +8,7 @@ import {
     CheckBadgeIcon, TrashIcon, DocumentArrowDownIcon, EyeIcon, DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
-import { Module } from '../types/module';
+import { Module } from '../models/module';
 
 interface SortableModuleItemProps {
     module: Module;
@@ -54,7 +54,7 @@ export default function SortableModuleItem({
         if (module.type === 'chapter') return 'var(--bg-primary)';
         if (isPdf) return isViewingPdf ? 'rgba(245, 158, 11, 0.05)' : 'var(--bg-secondary)';
         if (isCompleted) return 'rgba(166, 227, 161, 0.04)';
-        if (isCurrentModule) return 'rgba(203, 166, 247, 0.06)';
+        if (isCurrentModule) return 'var(--brand-glow-subtler)';
         return 'var(--bg-secondary)';
     };
 
@@ -72,7 +72,7 @@ export default function SortableModuleItem({
         zIndex: isDragging ? 100 : 1,
         marginTop: module.type === 'chapter' && idx !== 0 ? '1.5rem' : '0',
         marginLeft: module.parentId ? '2rem' : '0',
-        boxShadow: isCurrentModule && isVideo ? '0 0 0 1px rgba(203, 166, 247, 0.3), 0 4px 20px rgba(203, 166, 247, 0.08)' : 'none',
+        boxShadow: isCurrentModule && isVideo ? '0 0 0 1px var(--brand-glow), 0 4px 20px var(--brand-glow-subtler)' : 'none',
         filter: isLocked && isVideo && !isTeacher ? 'grayscale(0.3)' : 'none',
         pointerEvents: (isLocked && isVideo && !isTeacher ? 'none' : 'auto') as any,
     };
@@ -126,7 +126,7 @@ export default function SortableModuleItem({
                                     {module.title}
                                     {module.isFree && <span style={{ fontSize: '0.65rem', background: 'var(--success)', color: '#000', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>FREE PREVIEW</span>}
                                     {module.points > 0 && <span style={{ fontSize: '0.75rem', color: 'var(--brand-primary)', fontWeight: 600 }}>+{module.points} pts</span>}
-                                    {isCurrentModule && !isCompleted && <span style={{ fontSize: '0.65rem', background: 'rgba(203, 166, 247, 0.15)', color: 'var(--brand-primary)', padding: '0.15rem 0.6rem', borderRadius: '4px', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>CURRENT</span>}
+                                    {isCurrentModule && !isCompleted && <span style={{ fontSize: '0.65rem', background: 'var(--brand-glow-subtle)', color: 'var(--brand-primary)', padding: '0.15rem 0.6rem', borderRadius: '4px', fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1 }}>CURRENT</span>}
                                 </h4>
                                 {module.description && !isLocked && (
                                     <div className="markdown-content" style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.3rem' }}>

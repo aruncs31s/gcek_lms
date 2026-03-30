@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { CourseRepository } from '../repositories/courseRepository';
 
-import { Course } from '../types/course';
+import { Course } from '../models/course';
 
 export default function Dashboard() {
     const { user } = useAuthStore();

@@ -3,7 +3,7 @@ import { UserIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import defaultLogo from '../../public/default_course_logo.png';
 
-import { Course } from '../types/course';
+import { Course } from '../models/course';
 
 interface CourseProps {
     course: Course;

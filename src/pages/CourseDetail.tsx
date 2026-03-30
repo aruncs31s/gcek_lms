@@ -13,8 +13,8 @@ import CourseCurriculumTab from '../components/CourseCurriculumTab';
 import CourseInstructorTab from '../components/CourseInstructorTab';
 import CourseActionCard from '../components/CourseActionCard';
 import CourseEnrolledStudentsTab from '../components/CourseEnrolledStudentsTab';
-import { Course } from '../types/course';
-import { Module } from '../types/module';
+import { Course } from '../models/course';
+import { Module } from '../models/module';
 import type { CourseDTO } from '../types/course';
 import type { ModuleDTO } from '../types/module';
 

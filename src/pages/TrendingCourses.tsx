@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FolderIcon } from "@heroicons/react/24/outline";
 import Pagination from "../components/Pagination";
 import CourseCard from "../components/CourseCard";
-import { Course } from "../types/course";
+import { Course } from "../models/course";
 // import type { CourseDTO } from '../types/course';
 import { CourseRepository } from "../repositories/courseRepository";
 

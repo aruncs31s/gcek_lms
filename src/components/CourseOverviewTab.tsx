@@ -1,8 +1,8 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { DocumentTextIcon, AcademicCapIcon, ClockIcon, StarIcon, VideoCameraIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
-import { Course } from '../types/course';
-import { Module } from '../types/module';
+import { Course } from '../models/course';
+import { Module } from '../models/module';
 import CertificateGenerator from './CertificateGenerator';
 
 interface CourseOverviewTabProps {
@@ -74,7 +74,7 @@ export default function CourseOverviewTab({ course, isCompleted, modules = [], o
                             border: 'none', borderRadius: '10px',
                             cursor: 'pointer',
                             display: 'flex', alignItems: 'center', gap: '0.5rem',
-                            boxShadow: '0 4px 20px rgba(203,166,247,0.3)',
+                            boxShadow: '0 4px 20px var(--brand-glow)',
                             transition: 'all 0.2s ease',
                         }}
                     >

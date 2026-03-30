@@ -1,5 +1,5 @@
 import { api } from '../lib/api';
-import { Course } from "../types/course";
+import { Course } from "../models/course";
 import type { CourseDTO } from "../types/course";
 
 export class CourseRepository {

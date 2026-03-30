@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { api } from '../lib/api';
 import { VideoCameraIcon, FolderIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
-import type { Module } from '../types/course';
+import type { Module } from '../models/module';
 
 interface InlineModuleEditorProps {
     courseId: string;

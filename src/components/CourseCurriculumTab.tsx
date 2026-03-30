@@ -5,8 +5,8 @@ import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import SortableModuleItem from './SortableModuleItem';
 import InlineModuleEditor from './InlineModuleEditor';
-import { Course } from '../types/course';
-import { Module } from '../types/module';
+import { Course } from '../models/course';
+import { Module } from '../models/module';
 import CertificateGenerator from './CertificateGenerator';
 
 interface CourseCurriculumTabProps {

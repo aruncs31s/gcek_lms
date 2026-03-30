@@ -1,5 +1,5 @@
 import { UserIcon, AcademicCapIcon, BookOpenIcon } from '@heroicons/react/24/outline';
-import { Course } from '../types/course';
+import { Course } from '../models/course';
 
 interface CourseInstructorTabProps {
     course: Course;

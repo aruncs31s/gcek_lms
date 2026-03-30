@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { CheckCircleIcon, ClockIcon, AcademicCapIcon, CheckBadgeIcon, DocumentArrowDownIcon, VideoCameraIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon, HeartIcon } from '@heroicons/react/24/solid';
-import { Course } from '../types/course';
-import { Module } from '../types/module';
+import { Course } from '../models/course';
+import { Module } from '../models/module';
 import { User } from '../models/user';
 
 interface Enrollment {
