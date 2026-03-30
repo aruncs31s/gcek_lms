@@ -4,7 +4,7 @@
  */
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { userService } from '../services/userService';
-import type { User } from '../types/user';
+import type { User } from '../models/user';
 import type { FilterRole, SortOption } from '../types/userFilters';
 import { applyUserFilters } from '../utils/userFilters';
 

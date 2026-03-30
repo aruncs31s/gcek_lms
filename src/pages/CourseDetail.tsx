@@ -288,7 +288,7 @@ export default function CourseDetail() {
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '4rem', maxWidth: '1400px', margin: '0 auto' }}>
             {/* Hero Section */}
-            <CourseHero course={course} modulesCount={modules.length} />
+            <CourseHero course={course} modulesCount={modules.length} modules={modules} />
 
             {/* Layout Grid */}
             <div className="course-detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '2rem', alignItems: 'start' }}>
@@ -301,7 +301,12 @@ export default function CourseDetail() {
                     {/* Tab Contents */}
                     <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '16px', minHeight: '400px' }}>
 
-                        <CourseOverviewTab course={course} isCompleted={enrollment?.progress_percentage === 100} />
+                        <CourseOverviewTab
+                            course={course}
+                            isCompleted={enrollment?.progress_percentage === 100}
+                            modules={modules}
+                            onGoToCurriculum={() => setActiveTab('curriculum')}
+                        />
 
                         {activeTab === 'curriculum' && (
                             <CourseCurriculumTab

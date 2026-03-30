@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NotificationBell from './NotificationBell';
 import SearchBar from './SearchBar';
-
 export default function Layout() {
     const { user, logout } = useAuthStore();
     const [isDarkMode, setIsDarkMode] = useState(() => {

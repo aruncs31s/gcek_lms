@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 import { persist } from 'zustand/middleware';
 
-import type { User } from '../types/user';
+import type { User } from '../models/user';
 
 type UserUpdates = Partial<Omit<User, 'fullName' | 'avatar' | 'badgeStyle' | 'totalPoins' | 'isAdmin'>>;
 

@@ -23,41 +23,46 @@ export default function CourseTabs({ activeTab, setActiveTab, isTeacher }: Cours
     }
 
     return (
-        <div className="course-tabs glass-panel" style={{ 
-            display: 'flex', 
-            borderRadius: '12px',
-            padding: '0.5rem',
-            marginBottom: '1.5rem', 
+        <div style={{
+            display: 'flex',
+            borderBottom: '2px solid var(--border-color)',
+            marginBottom: '2rem',
             overflowX: 'auto',
-            gap: '0.5rem',
-            background: 'var(--bg-secondary)'
+            gap: '0',
+            scrollbarWidth: 'none',
         }}>
-            {tabs.map(({ key, label, icon: Icon }) => (
-                <button
-                    key={key}
-                    onClick={() => setActiveTab(key)}
-                    style={{
-                        padding: '0.875rem 1.5rem',
-                        background: activeTab === key ? 'var(--bg-primary)' : 'transparent',
-                        border: activeTab === key ? '1px solid var(--border-color)' : '1px solid transparent',
-                        borderRadius: '8px',
-                        color: activeTab === key ? (key === 'settings' ? 'var(--warning)' : 'var(--brand-primary)') : 'var(--text-secondary)',
-                        fontWeight: activeTab === key ? 600 : 500,
-                        fontSize: '0.95rem',
-                        cursor: 'pointer',
-                        textTransform: 'capitalize',
-                        transition: 'all 0.2s ease',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.6rem',
-                        whiteSpace: 'nowrap',
-                        boxShadow: activeTab === key ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'
-                    }}
-                >
-                    <Icon size={18} />
-                    {label}
-                </button>
-            ))}
+            {tabs.map(({ key, label, icon: Icon }) => {
+                const isActive = activeTab === key;
+                const isSettings = key === 'settings';
+                const activeColor = isSettings ? 'var(--warning)' : 'var(--brand-primary)';
+
+                return (
+                    <button
+                        key={key}
+                        onClick={() => setActiveTab(key)}
+                        style={{
+                            padding: '0.9rem 1.4rem',
+                            background: 'transparent',
+                            border: 'none',
+                            borderBottom: isActive ? `3px solid ${activeColor}` : '3px solid transparent',
+                            marginBottom: '-2px',
+                            color: isActive ? activeColor : 'var(--text-muted)',
+                            fontWeight: isActive ? 700 : 500,
+                            fontSize: '0.92rem',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.55rem',
+                            whiteSpace: 'nowrap',
+                            transition: 'color 0.2s ease, border-color 0.2s ease',
+                            position: 'relative',
+                        }}
+                    >
+                        <Icon size={17} />
+                        {label}
+                    </button>
+                );
+            })}
         </div>
     );
 }

@@ -4,7 +4,7 @@
  */
 import Pagination from './Pagination';
 import LeaderboardRow from './LeaderboardRow';
-import type { User } from '../types/user';
+import type { User } from '../models/user';
 
 interface LeaderboardListProps {
     users: User[];

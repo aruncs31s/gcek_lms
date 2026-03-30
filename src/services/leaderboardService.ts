@@ -3,8 +3,8 @@
  * Dependency Inversion: Abstracts API calls from UI components
  */
 import { api } from '../lib/api';
-import { User, type UserDTO } from '../types/user';
-
+import { type UserDTO } from '../types/user';
+import { User } from '../models/user'
 export const leaderboardService = {
     /**
      * Fetch leaderboard data

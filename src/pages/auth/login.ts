@@ -1,4 +1,4 @@
-import type { User } from '../../types/user';
+import type { User } from '../../models/user';
 
 export interface LoginResponse {
     user: User;
