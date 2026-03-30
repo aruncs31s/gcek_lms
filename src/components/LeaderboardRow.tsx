@@ -51,7 +51,7 @@ export default function LeaderboardRow({ user, globalIndex }: LeaderboardRowProp
             />
 
             {/* Points display */}
-            <PointsDisplay points={user.totalPoins} />
+            <PointsDisplay points={user.totalPoints} />
         </div>
     );
 }

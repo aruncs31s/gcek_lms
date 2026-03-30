@@ -78,7 +78,7 @@ export default function CourseOverviewTab({ course, isCompleted, modules = [], o
                             transition: 'all 0.2s ease',
                         }}
                     >
-                        📚 View Full Curriculum →
+                        View Full Curriculum →
                     </button>
                 </div>
             )}

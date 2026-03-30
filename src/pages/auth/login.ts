@@ -1,7 +1,7 @@
-import type { User } from '../../models/user';
+import type { UserDTO } from '../../types/user';
 
 export interface LoginResponse {
-    user: User;
+    user: UserDTO;
     token: string;
 }
 

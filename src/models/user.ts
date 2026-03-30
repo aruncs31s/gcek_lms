@@ -82,7 +82,7 @@ export class User {
         }
 
     }
-    get totalPoins(): number {
+    get totalPoints(): number {
         return this.points ?? 0;
     }
 
