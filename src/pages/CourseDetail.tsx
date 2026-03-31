@@ -237,7 +237,7 @@ export default function CourseDetail() {
     const [isCreatingModule, setIsCreatingModule] = useState(false);
     const [editingModuleId, setEditingModuleId] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'overview' | 'curriculum' | 'assignments' | 'instructor' | 'reviews' | 'settings' | 'students'>('overview');
-    const [playingModuleUrl, setPlayingModuleUrl] = useState<string | null>(null);
+    const [playingModuleId, setPlayingModuleId] = useState<string | null>(null);
 
     const { user } = useAuthStore();
 
@@ -324,8 +324,8 @@ export default function CourseDetail() {
                                 setIsCreatingModule={setIsCreatingModule}
                                 editingModuleId={editingModuleId}
                                 setEditingModuleId={setEditingModuleId}
-                                playingModuleUrl={playingModuleUrl}
-                                setPlayingModuleUrl={setPlayingModuleUrl}
+                                playingModuleId={playingModuleId}
+                                setPlayingModuleId={setPlayingModuleId}
                                 completingId={completingId}
                                 markModuleCompleted={markModuleCompleted}
                                 handleDeleteModule={handleDeleteModule}

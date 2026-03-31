@@ -21,8 +21,8 @@ interface CourseCurriculumTabProps {
     setIsCreatingModule: (value: boolean) => void;
     editingModuleId: string | null;
     setEditingModuleId: (id: string | null) => void;
-    playingModuleUrl: string | null;
-    setPlayingModuleUrl: (url: string | null) => void;
+    playingModuleId: string | null;
+    setPlayingModuleId: (id: string | null) => void;
     completingId: string | null;
     markModuleCompleted: (moduleId: string) => void;
     handleDeleteModule: (moduleId: string) => void;
@@ -41,8 +41,8 @@ export default function CourseCurriculumTab({
     setIsCreatingModule,
     editingModuleId,
     setEditingModuleId,
-    playingModuleUrl,
-    setPlayingModuleUrl,
+    playingModuleId,
+    setPlayingModuleId,
     completingId,
     markModuleCompleted,
     handleDeleteModule,
@@ -147,8 +147,8 @@ export default function CourseCurriculumTab({
                                         canWatch={canWatchModule}
                                         isLocked={isLocked}
                                         isCurrentModule={m.id === currentModuleId}
-                                        playingModuleUrl={playingModuleUrl}
-                                        setPlayingModuleUrl={setPlayingModuleUrl}
+                                        playingModuleId={playingModuleId}
+                                        setPlayingModuleId={setPlayingModuleId}
                                         markCompleted={markModuleCompleted}
                                         completingId={completingId}
                                         onEdit={() => setEditingModuleId(m.id)}

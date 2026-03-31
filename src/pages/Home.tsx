@@ -56,7 +56,7 @@ export default function Home() {
                 <div style={{ position: 'relative', zIndex: 10, maxWidth: '900px', margin: '0 auto' }}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'var(--bg-tertiary)', padding: '0.5rem 1rem', borderRadius: '99px', marginBottom: '2rem', border: '1px solid var(--border-color)' }}>
                         <SparklesIcon style={{ width: '1.2rem', height: '1.2rem', color: 'var(--brand-secondary)' }} />
-                        <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Next-Gen Learning Platform</span>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Open Source Learning Platform</span>
                     </div>
 
                     <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.1, fontWeight: 800, letterSpacing: '-0.02em' }}>
