@@ -1,31 +1,15 @@
 import { Link } from 'react-router-dom';
-import { UserIcon, TrophyIcon } from '@heroicons/react/24/outline';
+import { TrophyIcon } from '@heroicons/react/24/outline';
+import { User } from '../../models/user';
 
 interface ProfileOverviewCardProps {
-    user: {
-        id: string;
-        first_name: string;
-        last_name: string;
-        email: string;
-        role: string;
-        avatar_url: string;
-    };
+    user: User;
     points: number;
     isOwnProfile: boolean;
 }
 
 export default function ProfileOverviewCard({ user, points, isOwnProfile }: ProfileOverviewCardProps) {
-    const getRoleBadgeStyle = (role: string) => {
-        switch (role.toLowerCase()) {
-            case 'admin':
-                return { background: 'rgba(239, 68, 68, 0.15)', color: 'var(--danger)', border: '1px solid rgba(239, 68, 68, 0.3)' };
-            case 'teacher':
-                return { background: 'var(--brand-glow-subtle)', color: 'var(--brand-primary)', border: '1px solid var(--brand-glow)' };
-            case 'student':
-            default:
-                return { background: 'rgba(34, 197, 94, 0.15)', color: 'var(--success)', border: '1px solid rgba(34, 197, 94, 0.3)' };
-        }
-    };
+    const badgeStyle = user.badgeStyle;
 
     return (
         <div className="glass-panel" style={{
@@ -52,15 +36,11 @@ export default function ProfileOverviewCard({ user, points, isOwnProfile }: Prof
                 justifyContent: 'center',
                 marginBottom: '1.5rem'
             }}>
-                {user.avatar_url ? (
-                    <img src={user.avatar_url} alt={user.first_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                    <UserIcon style={{ width: '4rem', height: '4rem', color: 'var(--text-muted)' }} />
-                )}
+                <img src={user.avatar} alt={user.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
 
             <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>
-                {user.first_name} {user.last_name}
+                {user.fullName}
             </h1>
 
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '1.5rem' }}>
@@ -76,7 +56,7 @@ export default function ProfileOverviewCard({ user, points, isOwnProfile }: Prof
             )}
 
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <span className="badge" style={{ ...getRoleBadgeStyle(user.role), fontSize: '0.9rem', padding: '0.35rem 1rem' }}>
+                <span className="badge" style={{ ...badgeStyle, fontSize: '0.9rem', padding: '0.35rem 1rem' }}>
                     {user.role}
                 </span>
                 <span className="badge badge-blur" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.9rem', padding: '0.35rem 1rem' }}>

@@ -1,49 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { api } from '../lib/api';
 import { useAuthStore } from '../store/authStore';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
-import type { Course } from '../models/course';
+import { Course } from '../models/course';
+import { User } from '../models/user';
 import ProfileOverviewCard from '../components/profile/ProfileOverviewCard';
 import CreatedCoursesSection from '../components/profile/CreatedCoursesSection';
-import EnrolledCoursesSection from '../components/EnrolledCoursesSection';
+import EnrolledCoursesSection from '../components/profile/EnrolledCoursesSection';
 import AchievementsSection from '../components/AchievementsSection';
+import { type UserProfileData } from '../types/profile';
+import { CourseRepository } from '../repositories/courseRepository';
 
-interface Achievement {
-    id: string;
-    title: string;
-    description: string;
-    icon_url: string;
-    points: number;
-    earned_at: string;
-}
-
-interface Enrolment {
-    course_id: string;
-    course_title: string;
-    course_thumbnail_url: string;
-    status: string;
-    progress_percentage: number;
-    enrolled_at: string;
-}
-
-interface UserProfileData {
-    user: {
-        id: string;
-        first_name: string;
-        last_name: string;
-        email: string;
-        role: string;
-        avatar_url: string;
-    };
-    points: number;
-    achievements: Achievement[];
-    enrolments: Enrolment[];
-    total_enrolments: number;
-}
 
 export default function UserProfile() {
     const { id } = useParams<{ id: string }>();
+    const courseRepository = useMemo(() => new CourseRepository(), []);
+
     const navigate = useNavigate();
     const { user: currentUser } = useAuthStore();
     const isOwnProfile = currentUser?.id === id;
@@ -51,15 +23,17 @@ export default function UserProfile() {
     const [createdCourses, setCreatedCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
 
+
+
     useEffect(() => {
         const fetchProfile = async () => {
             setLoading(true);
             try {
-                const res = await api.get(`/users/${id}/enrolments`);
-                setProfileData(res.data);
-                if (res.data.user.role === 'teacher') {
-                    const coursesRes = await api.get(`/courses?teacher_id=${id}`);
-                    setCreatedCourses(coursesRes.data || []);
+                const res = await courseRepository.getEnrolments(id!);
+                setProfileData(res);
+                if (res.user.role === 'teacher') {
+                    const coursesRes = await courseRepository.getTeachersCourses(id!);
+                    setCreatedCourses(coursesRes);
                 }
             } catch (err) {
                 console.error("Failed to load user profile", err);
@@ -102,7 +76,7 @@ export default function UserProfile() {
             </button>
 
             {/* Profile Overview Card */}
-            <ProfileOverviewCard user={user} points={points} isOwnProfile={isOwnProfile} />
+            <ProfileOverviewCard user={User.fromDTO(user)} points={points} isOwnProfile={isOwnProfile} />
 
             {/* Content Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '2rem' }}>

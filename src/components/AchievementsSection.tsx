@@ -1,16 +1,9 @@
 import { TrophyIcon } from '@heroicons/react/24/outline';
 
-interface Achievement {
-    id: string;
-    title: string;
-    description: string;
-    icon_url: string;
-    points: number;
-    earned_at: string;
-}
+import { type AchievementResponse } from '../types/achievement';
 
 interface AchievementsSectionProps {
-    achievements: Achievement[];
+    achievements: AchievementResponse[];
 }
 
 export default function AchievementsSection({ achievements }: AchievementsSectionProps) {

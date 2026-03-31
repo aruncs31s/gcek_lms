@@ -2,7 +2,13 @@ import type { UserDTO } from "../types/user"
 import userAvatarDefault from '../assets/user_avatar.png';
 import type { BadgeStyle } from "../types/user";
 
-export type Role = "admin" | "teacher" | "student"
+const Role = {
+    ADMIN: "admin",
+    TEACHER: "teacher",
+    STUDENT: "student"
+}
+
+export type Role = typeof Role[keyof typeof Role]
 
 export class User {
     id: string

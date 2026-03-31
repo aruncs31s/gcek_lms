@@ -1,27 +1,27 @@
 import { Module } from './module'
 import type { CourseDTO } from '../types/course'
-import defaultLogo from '../../public/default_course_logo.png';
-
+import defaultLogo from '../assets/default_course_logo.png';
+import { type EnrolmentDTO } from '../types/enrolments';
 export class Course {
     id: string
     title: string
-    description: string
-    price: number
-    thumbnailUrl: string
-    teacherId: string
-    teacherName: string
-    teacherAvatarUrl: string
-    teacherBio: string
-    studentCount: number
-    modules: Module[]
-    type: string
-    status: string
+    description?: string
+    price?: number
+    thumbnailUrl?: string
+    teacherId?: string
+    teacherName?: string
+    teacherAvatarUrl?: string
+    teacherBio?: string
+    studentCount?: number
+    modules?: Module[]
+    type?: string
+    status?: string
     duration?: string
-    certificateAvailable: boolean
+    certificateAvailable?: boolean
     startDate?: string
     progress?: number
-    likesCount: number
-    isLiked: boolean
+    likesCount?: number
+    isLiked?: boolean
 
     private constructor(
         id: string,
@@ -88,6 +88,31 @@ export class Course {
             dto.is_liked
         )
     }
+
+    static fromEnrolmentDTO(dto: EnrolmentDTO): Course {
+        return new Course(
+            dto.course_id,                  // id
+            dto.course_title,               // title
+            "",                             // description (default)
+            0,                              // price (default)
+            dto.course_thumbnail_url,       // thumbnailUrl
+            "",                             // teacherId (default)
+            "",                             // teacherName (default)
+            "",                             // teacherAvatarUrl (default)
+            "",                             // teacherBio (default)
+            0,                              // studentCount (default)
+            [],                             // modules (default empty array)
+            "",                             // type (default)
+            dto.status,                     // status
+            undefined,                      // duration
+            false,                          // certificateAvailable (default)
+            dto.enrolled_at,      // startDate (using enrolled_at)
+            dto.progress_percentage,        // progress
+            0,                              // likesCount (default)
+            false                           // isLiked (default)
+        );
+    }
+
     get thumbnail(): string {
         if (this.thumbnailUrl) {
             return this.thumbnailUrl;
@@ -100,11 +125,11 @@ export class Course {
     }
 
     get moduleCount(): number {
-        return this.modules.length
+        return this.modules?.length || 0
     }
 
     get completedModules(): number {
-        return this.modules.filter(m => m.isCompleted).length
+        return this.modules?.filter(m => m.isCompleted).length || 0
     }
 
 }

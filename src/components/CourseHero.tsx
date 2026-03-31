@@ -34,15 +34,13 @@ export default function CourseHero({ course, modulesCount, modules = [] }: Cours
             boxShadow: '0 25px 80px rgba(0,0,0,0.4), 0 0 0 1px var(--border-color)',
         }}>
             {/* Background layers */}
-            {course.thumbnailUrl && (
-                <div style={{
-                    position: 'absolute', inset: 0,
-                    backgroundImage: `url(${course.thumbnailUrl})`,
-                    backgroundSize: 'cover', backgroundPosition: 'center',
-                    filter: 'blur(2px) saturate(1.2)',
-                    transform: 'scale(1.05)',
-                }} />
-            )}
+            <div style={{
+                position: 'absolute', inset: 0,
+                backgroundImage: `url(${course.thumbnail})`,
+                backgroundSize: 'cover', backgroundPosition: 'center',
+                filter: 'blur(2px) saturate(1.2)',
+                transform: 'scale(1.05)',
+            }} />
             <div style={{
                 position: 'absolute', inset: 0,
                 background: course.thumbnailUrl
