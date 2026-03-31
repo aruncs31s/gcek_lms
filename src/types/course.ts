@@ -3,6 +3,7 @@ import type { ModuleDTO } from './module'
 
 export interface CourseDTO {
   id: string
+  prev_id: string
   title: string
   description: string
   price: number

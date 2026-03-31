@@ -1,5 +1,3 @@
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { DocumentTextIcon, AcademicCapIcon, ClockIcon, StarIcon, VideoCameraIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { Course } from '../models/course';
 import { Module } from '../models/module';
@@ -12,7 +10,7 @@ interface CourseOverviewTabProps {
     onGoToCurriculum?: () => void;
 }
 
-export default function CourseOverviewTab({ course, isCompleted, modules = [], onGoToCurriculum }: CourseOverviewTabProps) {
+export default function CourseOverviewTab({ course, isCompleted, modules = [] }: CourseOverviewTabProps) {
     const videoCount = modules.filter(m => m.isVideo).length;
     const pdfCount = modules.filter(m => m.isPdf).length;
 
@@ -43,45 +41,6 @@ export default function CourseOverviewTab({ course, isCompleted, modules = [], o
                     </div>
                 ))}
             </div>
-
-            {/* Description */}
-            <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <DocumentTextIcon style={{ width: '1.4rem', color: 'var(--brand-primary)' }} />
-                    About This Course
-                </h3>
-                {course.description ? (
-                    <div className="markdown-content" style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-secondary)' }}>
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {course.description}
-                        </ReactMarkdown>
-                    </div>
-                ) : (
-                    <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>No description provided yet.</p>
-                )}
-            </div>
-
-            {/* Go to curriculum CTA */}
-            {onGoToCurriculum && (
-                <div style={{ marginBottom: '2rem' }}>
-                    <button
-                        onClick={onGoToCurriculum}
-                        style={{
-                            padding: '0.85rem 2rem',
-                            background: 'linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))',
-                            color: '#000',
-                            fontWeight: 700, fontSize: '0.95rem',
-                            border: 'none', borderRadius: '10px',
-                            cursor: 'pointer',
-                            display: 'flex', alignItems: 'center', gap: '0.5rem',
-                            boxShadow: '0 4px 20px var(--brand-glow)',
-                            transition: 'all 0.2s ease',
-                        }}
-                    >
-                        View Full Curriculum →
-                    </button>
-                </div>
-            )}
 
             {/* Certificate download if completed */}
             {isCompleted && course.certificateAvailable && (

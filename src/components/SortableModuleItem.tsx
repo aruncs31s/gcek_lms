@@ -13,8 +13,8 @@ import { Module } from '../models/module';
 interface SortableModuleItemProps {
     module: Module;
     idx: number;
-    playingModuleUrl: string | null;
-    setPlayingModuleUrl: (url: string | null) => void;
+    playingModuleId: string | null;
+    setPlayingModuleId: (id: string | null) => void;
     canWatch: boolean;
     isTeacher: boolean;
     isLocked: boolean;
@@ -28,7 +28,7 @@ interface SortableModuleItemProps {
 }
 
 export default function SortableModuleItem({
-    module, idx, playingModuleUrl, setPlayingModuleUrl,
+    module, idx, playingModuleId, setPlayingModuleId,
     canWatch, isTeacher, isLocked, isCurrentModule,
     markCompleted, completingId, onEdit, onDelete,
     viewingPdfId, setViewingPdfId
@@ -206,19 +206,19 @@ export default function SortableModuleItem({
                         {isAccessible && (
                             <button
                                 onPointerDown={(e) => e.stopPropagation()}
-                                onClick={() => setPlayingModuleUrl(playingModuleUrl === module.videoUrl ? null : module.videoUrl)}
+                                onClick={() => setPlayingModuleId(playingModuleId === module.id ? null : module.id)}
                                 className="btn"
                                 style={{
-                                    background: playingModuleUrl === module.videoUrl ? 'var(--brand-primary)' : 'transparent',
+                                    background: playingModuleId === module.id ? 'var(--brand-primary)' : 'transparent',
                                     border: '1px solid var(--brand-primary)',
-                                    color: playingModuleUrl === module.videoUrl ? '#000' : 'var(--brand-primary)',
+                                    color: playingModuleId === module.id ? '#000' : 'var(--brand-primary)',
                                     padding: '0.45rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem',
                                     fontSize: '0.9rem', fontWeight: 600, borderRadius: '8px',
                                     transition: 'all 0.2s ease'
                                 }}
                             >
                                 <PlayCircleIcon style={{ width: '1.1rem', height: '1.1rem' }} />
-                                {playingModuleUrl === module.videoUrl ? 'Close' : 'Play'}
+                                {playingModuleId === module.id ? 'Close' : 'Play'}
                             </button>
                         )}
 
@@ -300,7 +300,7 @@ export default function SortableModuleItem({
             </div>
 
             {/* Video player area */}
-            {playingModuleUrl === module.videoUrl && isVideo && isAccessible && !isLocked && (
+            {playingModuleId === module.id && isVideo && isAccessible && !isLocked && (
                 <div style={{ background: '#000', width: '100%', aspectRatio: '16/9' }} onPointerDown={(e) => e.stopPropagation()}>
                     <video
                         ref={videoRef}

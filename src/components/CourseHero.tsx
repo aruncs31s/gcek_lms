@@ -1,4 +1,4 @@
-import { UserIcon, DocumentTextIcon, ClockIcon, AcademicCapIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
+import { UserIcon, DocumentTextIcon, ClockIcon, AcademicCapIcon, DocumentArrowDownIcon, GiftIcon, CurrencyRupeeIcon, TrophyIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { FiCalendar, FiLayers } from 'react-icons/fi';
 import { Course } from '../models/course';
@@ -21,7 +21,7 @@ const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }
 export default function CourseHero({ course, modulesCount, modules = [] }: CourseHeroProps) {
     const statusStyle = STATUS_STYLES[course.status?.toLowerCase() || 'active'] ?? STATUS_STYLES['active'];
     // Always show ESDC Masterclass as format label
-    const formatInfo = { emoji: '📚', label: 'ESDC Masterclass' };
+    const formatInfo = { label: 'ESDC Masterclass' };
     const videoCount = modules.filter(m => m.isVideo).length;
     const pdfCount = modules.filter(m => m.isPdf).length;
 
@@ -58,6 +58,7 @@ export default function CourseHero({ course, modulesCount, modules = [] }: Cours
                 <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
                     {/* Format badge */}
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(203,166,247,0.15)', border: '1px solid rgba(203,166,247,0.3)', color: 'var(--brand-primary)', padding: '0.4rem 0.9rem', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                        <SparklesIcon style={{ width: '1.1rem' }} />
                         {formatInfo.label}
                     </span>
 
@@ -69,12 +70,12 @@ export default function CourseHero({ course, modulesCount, modules = [] }: Cours
 
                     {/* Free/Paid badge */}
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: course.isFree ? 'rgba(166,227,161,0.15)' : 'rgba(249,226,175,0.15)', border: `1px solid ${course.isFree ? 'rgba(166,227,161,0.3)' : 'rgba(249,226,175,0.3)'}`, color: course.isFree ? 'var(--success)' : '#f9e2af', padding: '0.4rem 0.9rem', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                        {course.isFree ? '🎁 Free' : `💰 ₹${course.price}`}
+                        {course.isFree ? (<><GiftIcon style={{ width: '1.1rem' }} /> Free</>) : (<><CurrencyRupeeIcon style={{ width: '1.1rem' }} /> ₹{course.price}</>)}
                     </span>
 
                     {course.certificateAvailable && (
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(137,180,250,0.12)', border: '1px solid rgba(137,180,250,0.25)', color: '#89b4fa', padding: '0.4rem 0.9rem', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                            🏆 Certificate
+                            <TrophyIcon style={{ width: '1.1rem' }} /> Certificate
                         </span>
                     )}
                 </div>
