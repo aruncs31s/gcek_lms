@@ -1,5 +1,19 @@
 import { Link } from 'react-router-dom';
-import { CheckCircleIcon, ClockIcon, AcademicCapIcon, CheckBadgeIcon, DocumentArrowDownIcon, VideoCameraIcon } from '@heroicons/react/24/outline';
+import { 
+    CheckCircleIcon, 
+    ClockIcon, 
+    AcademicCapIcon, 
+    CheckBadgeIcon, 
+    DocumentArrowDownIcon, 
+    VideoCameraIcon,
+    Cog6ToothIcon,
+    PlayIcon,
+    RocketLaunchIcon,
+    TrophyIcon,
+    GiftIcon,
+    ChatBubbleLeftRightIcon,
+    SparklesIcon
+} from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon, HeartIcon } from '@heroicons/react/24/solid';
 import { Course } from '../models/course';
 import { Module } from '../models/module';
@@ -114,7 +128,9 @@ export default function CourseActionCard({
                                                     {modules.filter(m => m.isVideo && m.isCompleted).length} / {videoCount} videos done
                                                 </div>
                                                 {progressPct === 100 && (
-                                                    <div style={{ color: 'var(--success)', fontSize: '0.8rem', fontWeight: 700, marginTop: '0.3rem' }}>🎉 Course Complete!</div>
+                                                    <div style={{ color: 'var(--success)', fontSize: '0.8rem', fontWeight: 700, marginTop: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                                                        <SparklesIcon style={{ width: '1rem' }} /> Course Complete!
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
@@ -138,27 +154,32 @@ export default function CourseActionCard({
                         {user ? (
                             <>
                                 {isTeacher ? (
-                                    <button onClick={() => setActiveTab('settings')} className="btn btn-secondary" style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', borderColor: 'var(--brand-primary)', color: 'var(--brand-primary)' }}>
-                                        ⚙️ Manage Course
+                                    <button onClick={() => setActiveTab('settings')} className="btn btn-secondary" style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', borderColor: 'var(--brand-primary)', color: 'var(--brand-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                        <Cog6ToothIcon style={{ width: '1.2rem' }} /> Manage Course
                                     </button>
                                 ) : isEnrolled ? (
                                     <>
-                                        <button onClick={() => setActiveTab('curriculum')} className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', fontWeight: 700 }}>
-                                            {progressPct > 0 ? '▶ Continue Learning' : '🚀 Start Learning'}
+                                        <button onClick={() => setActiveTab('curriculum')} className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                            {progressPct > 0 ? <><PlayIcon style={{ width: '1.2rem' }} /> Continue Learning</> : <><RocketLaunchIcon style={{ width: '1.2rem' }} /> Start Learning</>}
                                         </button>
                                         {progressPct === 100 && course.certificateAvailable && (
-                                            <button onClick={requestCertificate} className="btn" style={{ width: '100%', padding: '0.9rem', background: 'rgba(166,227,161,0.1)', border: '1px solid var(--success)', color: 'var(--success)', fontWeight: 700 }}>
-                                                🏆 Download Certificate
+                                            <button onClick={requestCertificate} className="btn" style={{ width: '100%', padding: '0.9rem', background: 'rgba(166,227,161,0.1)', border: '1px solid var(--success)', color: 'var(--success)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                                <TrophyIcon style={{ width: '1.2rem' }} /> Download Certificate
                                             </button>
                                         )}
                                     </>
                                 ) : (
-                                    <button onClick={handleEnroll} disabled={enrolling} className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', fontWeight: 700 }}>
-                                        {enrolling ? 'Processing...' : course.isFree ? 'Enroll for Free 🎁' : `Enroll Now — ₹${course.price}`}
+                                    <button onClick={handleEnroll} disabled={enrolling} className="btn btn-primary" style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                        {enrolling ? 'Processing...' : (
+                                            <>
+                                                {course.isFree ? <GiftIcon style={{ width: '1.2rem' }} /> : null}
+                                                {course.isFree ? 'Enroll for Free' : `Enroll Now — ₹${course.price}`}
+                                            </>
+                                        )}
                                     </button>
                                 )}
-                                <Link to={`/chat?course=${course.id}`} className="btn btn-secondary" style={{ width: '100%', textAlign: 'center', padding: '0.9rem', display: 'block' }}>
-                                    💬 Community Chat
+                                <Link to={`/chat?course=${course.id}`} className="btn btn-secondary" style={{ width: '100%', textAlign: 'center', padding: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                    <ChatBubbleLeftRightIcon style={{ width: '1.2rem' }} /> Community Chat
                                 </Link>
                                 <button
                                     onClick={handleLikeToggle}

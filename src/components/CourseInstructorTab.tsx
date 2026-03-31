@@ -1,4 +1,4 @@
-import { UserIcon, AcademicCapIcon, BookOpenIcon } from '@heroicons/react/24/outline';
+import { UserIcon, AcademicCapIcon, BookOpenIcon, UsersIcon, StarIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { Course } from '../models/course';
 
 interface CourseInstructorTabProps {
@@ -50,9 +50,8 @@ export default function CourseInstructorTab({ course }: CourseInstructorTabProps
                             background: 'var(--brand-primary)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             border: '2px solid var(--bg-secondary)',
-                            fontSize: '0.75rem',
                         }}>
-                            ✓
+                            <CheckIcon style={{ width: '1rem', height: '1rem', color: '#fff' }} />
                         </div>
                     </div>
 
@@ -68,9 +67,9 @@ export default function CourseInstructorTab({ course }: CourseInstructorTabProps
 
                         {/* Stat pills */}
                         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                            <StatPill icon="👨‍🎓" value={course.studentCount?.toLocaleString() || '0'} label="Students" />
-                            <StatPill icon="📖" value="1" label="Course" />
-                            <StatPill icon="⭐" value="Verified" label="Instructor" />
+                            <StatPill icon={<UsersIcon style={{ width: '1rem' }} />} value={course.studentCount?.toLocaleString() || '0'} label="Students" />
+                            <StatPill icon={<BookOpenIcon style={{ width: '1rem' }} />} value="1" label="Course" />
+                            <StatPill icon={<StarIcon style={{ width: '1rem' }} />} value="Verified" label="Instructor" />
                         </div>
                     </div>
                 </div>
@@ -95,10 +94,10 @@ export default function CourseInstructorTab({ course }: CourseInstructorTabProps
     );
 }
 
-function StatPill({ icon, value, label }: { icon: string; value: string; label: string }) {
+function StatPill({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
     return (
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.4rem 0.9rem', fontSize: '0.85rem' }}>
-            <span>{icon}</span>
+            <span style={{ color: 'var(--brand-primary)', display: 'flex', alignItems: 'center' }}>{icon}</span>
             <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{value}</span>
             <span style={{ color: 'var(--text-muted)' }}>{label}</span>
         </div>

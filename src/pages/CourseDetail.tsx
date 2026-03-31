@@ -256,7 +256,8 @@ export default function CourseDetail() {
         try {
             const res = await api.post('/certificates/generate', { user_id: user.id, course_id: course.id });
             const fileName = res.data.file_url.split('/').pop();
-            const downloadUrl = `${import.meta.env.VITE_API_URL}/certificates/download?file=${fileName}&name=${encodeURIComponent(course.title || 'Certificate')}`;
+            const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8090/api';
+            const downloadUrl = `${apiBase}/certificates/download?file=${fileName}&name=${encodeURIComponent(course.title || 'Certificate')}`;
             const a = document.createElement('a');
             a.href = downloadUrl;
             document.body.appendChild(a);
@@ -301,12 +302,14 @@ export default function CourseDetail() {
                     {/* Tab Contents */}
                     <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '16px', minHeight: '400px' }}>
 
-                        <CourseOverviewTab
-                            course={course}
-                            isCompleted={enrollment?.progress_percentage === 100}
-                            modules={modules}
-                            onGoToCurriculum={() => setActiveTab('curriculum')}
-                        />
+                        {activeTab === 'overview' && (
+                            <CourseOverviewTab
+                                course={course}
+                                isCompleted={enrollment?.progress_percentage === 100}
+                                modules={modules}
+                                onGoToCurriculum={() => setActiveTab('curriculum')}
+                            />
+                        )}
 
                         {activeTab === 'curriculum' && (
                             <CourseCurriculumTab
