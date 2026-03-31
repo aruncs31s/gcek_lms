@@ -6,7 +6,7 @@ import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { FiPlus } from 'react-icons/fi';
 import Pagination from '../components/Pagination';
 import CourseCard from '../components/CourseCard';
-import { Course } from '../types/course';
+import { Course } from '../models/course';
 import type { CourseDTO } from '../types/course';
 
 /**

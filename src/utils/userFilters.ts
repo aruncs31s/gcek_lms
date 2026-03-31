@@ -2,7 +2,7 @@
  * User Filtering & Sorting Utilities
  * Single Responsibility: Each function handles one specific task
  */
-import type { User } from '../types/user';
+import type { User } from '../models/user';
 import type { FilterRole, SortOption } from '../types/userFilters';
 
 /**

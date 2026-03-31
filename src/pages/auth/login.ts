@@ -1,7 +1,7 @@
-import type { User } from '../../types/user';
+import type { UserDTO } from '../../types/user';
 
 export interface LoginResponse {
-    user: User;
+    user: UserDTO;
     token: string;
 }
 

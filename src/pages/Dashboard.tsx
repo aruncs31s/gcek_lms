@@ -1,4 +1,4 @@
-import { useEffect, useMemo,useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import DashboardCourseRow from '../components/DashboardCourseRow';
@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { CourseRepository } from '../repositories/courseRepository';
 
-import { Course } from '../types/course';
+import { Course } from '../models/course';
 
 export default function Dashboard() {
     const { user } = useAuthStore();
@@ -22,14 +22,14 @@ export default function Dashboard() {
     const courseRepository = useMemo(() => new CourseRepository(), []);
 
     useEffect(() => {
-    async function load() {
-        setLoading(true);
-        const courses = await courseRepository.getCourses();
-        setCourses(courses);
-        setLoading(false);
-    }
+        async function load() {
+            setLoading(true);
+            const courses = await courseRepository.getCourses();
+            setCourses(courses);
+            setLoading(false);
+        }
 
-    load();
+        load();
     }, [courseRepository]);
 
 
@@ -136,8 +136,8 @@ export default function Dashboard() {
                                 id={course.id}
                                 title={course.title}
                                 thumbnail_url={course.thumbnailUrl}
-                                status={course.status}
-                                type={course.type}
+                                status={course.status || ""}
+                                type={course.type || ""}
                                 price={course.price}
                             />
                         ))}

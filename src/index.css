@@ -18,13 +18,20 @@
   --text-muted: #737373;
   /* subtext0 */
 
-  /* --brand-primary: #facc15; */
   --brand-primary: #fc9a00;
+  --brand-primary-rgb: 252, 154, 0;
   /* yellow */
+
   --brand-primary-hover: #eab308;
   /* darker yellow */
+
   --brand-secondary: #fcd34d;
+  --brand-secondary-rgb: 252, 211, 77;
   /* lighter yellow */
+
+  --brand-glow: rgba(var(--brand-primary-rgb), 0.3);
+  --brand-glow-subtle: rgba(var(--brand-primary-rgb), 0.15);
+  --brand-glow-subtler: rgba(var(--brand-primary-rgb), 0.08);
 
   --danger: #ef4444;
   /* red */
@@ -57,11 +64,19 @@ body.light-theme {
   /* subtext0 */
 
   --brand-primary: #eab308;
+  --brand-primary-rgb: 234, 179, 8;
   /* yellow */
+
   --brand-primary-hover: #ca8a04;
   /* darker yellow */
+
   --brand-secondary: #facc15;
+  --brand-secondary-rgb: 250, 204, 21;
   /* lighter yellow */
+
+  --brand-glow: rgba(var(--brand-primary-rgb), 0.25);
+  --brand-glow-subtle: rgba(var(--brand-primary-rgb), 0.12);
+  --brand-glow-subtler: rgba(var(--brand-primary-rgb), 0.05);
 
   --danger: #ef4444;
   /* red */
@@ -136,13 +151,13 @@ a:hover {
   color: #4a4141;
   /* white text for contrast on gradient */
   font-weight: 600;
-  box-shadow: 0 4px 14px 0 rgba(203, 166, 247, 0.39);
+  box-shadow: 0 4px 14px 0 var(--brand-glow);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
   color: #ffffff;
-  /* box-shadow: 0 6px 20px rgba(203, 166, 247, 0.23); */
+  /* box-shadow: 0 6px 20px var(--brand-glow-subtle); */
 }
 
 .btn-secondary {
@@ -206,7 +221,7 @@ a:hover {
 .input-field:focus {
   outline: none;
   border-color: var(--brand-primary);
-  box-shadow: 0 0 0 2px rgba(203, 166, 247, 0.2);
+  box-shadow: 0 0 0 2px var(--brand-glow-subtle);
 }
 
 .form-input {
@@ -225,7 +240,7 @@ a:hover {
 .form-input:focus {
   border-color: var(--brand-primary);
   background-color: var(--bg-secondary);
-  box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.1);
+  box-shadow: 0 0 0 4px var(--brand-glow-subtler);
 }
 
 /* Hide spinner buttons on number inputs */
@@ -256,7 +271,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .file-input:focus {
   outline: none;
   border-color: var(--brand-primary);
-  box-shadow: 0 0 0 4px rgba(203, 166, 247, 0.1);
+  box-shadow: 0 0 0 4px var(--brand-glow-subtler);
 }
 
 .file-input::file-selector-button {
@@ -357,13 +372,13 @@ input[type="number"]::-webkit-inner-spin-button {
 /* --- LMS Specific Additions --- */
 
 .hero-gradient {
-  background: linear-gradient(-45deg, var(--bg-primary), rgba(136, 57, 239, 0.15), rgba(234, 118, 203, 0.05), var(--bg-primary));
+  background: linear-gradient(-45deg, var(--bg-primary), var(--brand-glow-subtle), var(--brand-glow-subtler), var(--bg-primary));
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
 }
 
 body:not(.light-theme) .hero-gradient {
-  background: linear-gradient(-45deg, var(--bg-primary), rgba(203, 166, 247, 0.15), rgba(245, 194, 231, 0.05), var(--bg-primary));
+  background: linear-gradient(-45deg, var(--bg-primary), var(--brand-glow-subtle), var(--brand-glow-subtler), var(--bg-primary));
   background-size: 400% 400%;
 }
 
@@ -394,7 +409,7 @@ body:not(.light-theme) .hero-gradient {
 
 .course-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(203, 166, 247, 0.15);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 20px var(--brand-glow-subtle);
   border-color: var(--brand-primary);
 }
 
@@ -429,7 +444,7 @@ body:not(.light-theme) .hero-gradient {
 .stat-box:hover {
   transform: translateY(-5px);
   border-color: var(--brand-primary);
-  box-shadow: 0 10px 30px -10px rgba(203, 166, 247, 0.2);
+  box-shadow: 0 10px 30px -10px var(--brand-glow-subtle);
 }
 
 .feature-card {
@@ -443,11 +458,11 @@ body:not(.light-theme) .hero-gradient {
 .feature-card:hover {
   transform: translateY(-8px);
   border-color: var(--brand-secondary);
-  box-shadow: 0 10px 30px -10px rgba(245, 194, 231, 0.2);
+  box-shadow: 0 10px 30px -10px var(--brand-glow-subtler);
 }
 
 .feature-icon-wrapper {
-  background: linear-gradient(135deg, rgba(203, 166, 247, 0.15), rgba(245, 194, 231, 0.1));
+  background: linear-gradient(135deg, var(--brand-glow-subtle), var(--brand-glow-subtler));
   color: var(--brand-primary);
   border-radius: 12px;
   padding: 1rem;
@@ -476,9 +491,9 @@ body:not(.light-theme) .hero-gradient {
 }
 
 .badge-primary {
-  background: rgba(203, 166, 247, 0.15);
+  background: var(--brand-glow-subtle);
   color: var(--brand-primary);
-  border: 1px solid rgba(203, 166, 247, 0.3);
+  border: 1px solid var(--brand-glow);
 }
 
 .badge-success {

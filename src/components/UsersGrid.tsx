@@ -4,7 +4,7 @@
  */
 import Pagination from './Pagination';
 import UserCard from './UserCard';
-import type { User } from '../types/user';
+import type { User } from '../models/user';
 
 interface UsersGridProps {
     users: User[];

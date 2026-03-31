@@ -4,6 +4,9 @@ import { api } from '../../lib/api';
 import { useAuthStore } from '../../store/authStore';
 import type { LoginRequest, LoginResponse } from './login';
 
+import { User } from '../../models/user';
+import type { UserDTO } from '../../types/user';
+
 export default function Login() {
     const [credentials, setCredentials] = useState<LoginRequest>({ email: '', password: '' });
     const [error, setError] = useState('');
@@ -19,8 +22,9 @@ export default function Login() {
 
         try {
             const response = await api.post<LoginResponse>('/login', credentials);
-            setAuth(response.data.user, response.data.token);
-            if (response.data.user.role === 'admin') {
+            const userInstance = User.fromDTO(response.data.user as unknown as UserDTO);
+            setAuth(userInstance, response.data.token);
+            if (userInstance.role === 'admin') {
                 navigate('/admin');
             } else {
                 navigate('/');

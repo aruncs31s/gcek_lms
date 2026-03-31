@@ -13,8 +13,8 @@ import CourseCurriculumTab from '../components/CourseCurriculumTab';
 import CourseInstructorTab from '../components/CourseInstructorTab';
 import CourseActionCard from '../components/CourseActionCard';
 import CourseEnrolledStudentsTab from '../components/CourseEnrolledStudentsTab';
-import { Course } from '../types/course';
-import { Module } from '../types/module';
+import { Course } from '../models/course';
+import { Module } from '../models/module';
 import type { CourseDTO } from '../types/course';
 import type { ModuleDTO } from '../types/module';
 
@@ -35,7 +35,7 @@ function useCourseData(courseId: string | undefined) {
             const courseRes = await api.get(`/courses/${courseId}`);
             const courseData = Course.fromDTO(courseRes.data as CourseDTO);
             setCourse(courseData);
-            const sortedModules = [...courseData.modules].sort((a, b) => a.orderIndex - b.orderIndex);
+            const sortedModules = [...(courseData.modules || [])].sort((a, b) => a.orderIndex - b.orderIndex);
             setModules(sortedModules);
         } catch {
             console.error("Failed to load course details");
@@ -110,13 +110,14 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                     teacher_avatar_url: course.teacherAvatarUrl,
                     teacher_bio: course.teacherBio,
                     student_count: course.studentCount,
-                    modules: course.modules.map(m => ({
+                    modules: course.modules?.map(m => ({
                         id: m.id,
                         parent_id: m.parentId,
                         title: m.title,
                         description: m.description,
                         type: m.type,
                         video_url: m.videoUrl,
+                        pdf_url: m.pdfUrl,
                         points: m.points,
                         is_free: m.isFree,
                         order_index: m.orderIndex,
@@ -128,7 +129,7 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                     is_certificate_available: course.certificateAvailable,
                     start_date: course.startDate,
                     progress: course.progress,
-                    likes_count: Math.max(0, course.likesCount - 1),
+                    likes_count: Math.max(0, (course.likesCount || 0) - 1),
                     is_liked: false,
                 } as CourseDTO));
             } else {
@@ -144,25 +145,26 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                     teacher_avatar_url: course.teacherAvatarUrl,
                     teacher_bio: course.teacherBio,
                     student_count: course.studentCount,
-                    modules: course.modules.map(m => ({
+                    modules: course.modules?.map(m => ({
                         id: m.id,
                         parent_id: m.parentId,
                         title: m.title,
                         description: m.description,
                         type: m.type,
                         video_url: m.videoUrl,
+                        pdf_url: m.pdfUrl,
                         points: m.points,
                         is_free: m.isFree,
                         order_index: m.orderIndex,
                         is_completed: m.isCompleted,
-                    })),
+                    })) || [],
                     type: course.type,
                     status: course.status,
                     duration: course.duration,
                     is_certificate_available: course.certificateAvailable,
                     start_date: course.startDate,
                     progress: course.progress,
-                    likes_count: course.likesCount + 1,
+                    likes_count: (course.likesCount || 0) + 1,
                     is_liked: true,
                 } as CourseDTO));
             }
@@ -195,6 +197,7 @@ function useModuleOperations(courseId: string | undefined, course: Course | null
                         description: m.description,
                         type: m.type,
                         video_url: m.videoUrl,
+                        pdf_url: m.pdfUrl,
                         points: m.points,
                         is_free: m.isFree,
                         order_index: m.orderIndex,
@@ -229,7 +232,7 @@ function useModuleOperations(courseId: string | undefined, course: Course | null
 
 export default function CourseDetail() {
     const { id } = useParams<{ id: string }>();
-    
+
     // UI state
     const [isCreatingModule, setIsCreatingModule] = useState(false);
     const [editingModuleId, setEditingModuleId] = useState<string | null>(null);
@@ -285,7 +288,7 @@ export default function CourseDetail() {
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '4rem', maxWidth: '1400px', margin: '0 auto' }}>
             {/* Hero Section */}
-            <CourseHero course={course} modulesCount={modules.length} />
+            <CourseHero course={course} modulesCount={modules.length} modules={modules} />
 
             {/* Layout Grid */}
             <div className="course-detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '2rem', alignItems: 'start' }}>
@@ -298,7 +301,12 @@ export default function CourseDetail() {
                     {/* Tab Contents */}
                     <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '16px', minHeight: '400px' }}>
 
-                        <CourseOverviewTab course={course} isCompleted={enrollment?.progress_percentage === 100} />
+                        <CourseOverviewTab
+                            course={course}
+                            isCompleted={enrollment?.progress_percentage === 100}
+                            modules={modules}
+                            onGoToCurriculum={() => setActiveTab('curriculum')}
+                        />
 
                         {activeTab === 'curriculum' && (
                             <CourseCurriculumTab

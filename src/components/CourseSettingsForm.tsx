@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { Course } from '../types/course';
+import { Course } from '../models/course';
 
 interface CourseSettingsFormProps {
     course: Course;

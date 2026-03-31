@@ -1,18 +1,10 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { FiLoader, FiUsers, FiMail } from 'react-icons/fi';
-import { User, type UserDTO } from '../types/user';
+import { type UserDTO } from '../types/user';
+import { User } from '../models/user';
 
 
-
-// interface EnrolledStudent {
-//     id: string;
-//     first_name?: string;
-//     last_name?: string;
-//     email: string;
-//     avatar_url?: string;
-//     role: string;
-// }
 
 interface CourseEnrolledStudentsTabProps {
     courseId: string;

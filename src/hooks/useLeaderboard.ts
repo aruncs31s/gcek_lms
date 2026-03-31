@@ -4,7 +4,7 @@
  */
 import { useEffect, useState } from 'react';
 import { leaderboardService } from '../services/leaderboardService';
-import type { User } from '../types/user';
+import type { User } from '../models/user';
 import { DEFAULT_PAGE_CONFIG } from '../types/leaderboardRanking';
 
 export function useLeaderboard() {

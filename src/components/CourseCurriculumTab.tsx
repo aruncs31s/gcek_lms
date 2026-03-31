@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import { DocumentTextIcon, AcademicCapIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import SortableModuleItem from './SortableModuleItem';
 import InlineModuleEditor from './InlineModuleEditor';
-import { Course } from '../types/course';
-import { Module } from '../types/module';
+import { Course } from '../models/course';
+import { Module } from '../models/module';
 import CertificateGenerator from './CertificateGenerator';
 
 interface CourseCurriculumTabProps {
@@ -47,6 +48,8 @@ export default function CourseCurriculumTab({
     handleDeleteModule,
     fetchCourseData
 }: CourseCurriculumTabProps) {
+    const [viewingPdfId, setViewingPdfId] = useState<string | null>(null);
+
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
         useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -67,7 +70,7 @@ export default function CourseCurriculumTab({
             const moduleIds = newOrder.map(m => m.id);
             await api.put(`/courses/${courseId}/modules/reorder`, { module_ids: moduleIds });
         } catch (err) {
-            console.error("Failed to persist module reorder", err);
+            console.error('Failed to persist module reorder', err);
             setModules(modules);
         }
     };
@@ -150,6 +153,8 @@ export default function CourseCurriculumTab({
                                         completingId={completingId}
                                         onEdit={() => setEditingModuleId(m.id)}
                                         onDelete={handleDeleteModule}
+                                        viewingPdfId={viewingPdfId}
+                                        setViewingPdfId={setViewingPdfId}
                                     />
                                 );
                             })}
@@ -160,14 +165,10 @@ export default function CourseCurriculumTab({
 
             {course.certificateAvailable && (
                 <div style={{
-                    marginTop: '1.5rem',
-                    padding: '1.5rem',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '12px',
+                    marginTop: '1.5rem', padding: '1.5rem',
+                    border: '1px solid var(--border-color)', borderRadius: '12px',
                     background: pct === 100 ? 'rgba(166, 227, 161, 0.05)' : 'var(--bg-secondary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1.5rem',
+                    display: 'flex', alignItems: 'center', gap: '1.5rem',
                     opacity: pct === 100 ? 1 : 0.6
                 }}>
                     <div style={{
@@ -186,12 +187,8 @@ export default function CourseCurriculumTab({
                                 : 'Complete all video modules to unlock your certificate.'}
                         </p>
                     </div>
-                    {pct === 100 && (
-                        <CertificateGenerator courseId={course.id} courseName={course.title} />
-                    )}
-                    {pct !== 100 && (
-                        <LockClosedIcon style={{ width: '1.5rem', color: 'var(--text-muted)' }} />
-                    )}
+                    {pct === 100 && <CertificateGenerator courseId={course.id} courseName={course.title} />}
+                    {pct !== 100 && <LockClosedIcon style={{ width: '1.5rem', color: 'var(--text-muted)' }} />}
                 </div>
             )}
 

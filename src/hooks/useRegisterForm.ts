@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { registerUser } from '../services/authService';
 import type { RegisterRequest } from '../pages/auth/register';
+import { User } from '../models/user';
 
 export function useRegisterForm() {
     const [formData, setFormData] = useState<RegisterRequest>({
@@ -29,7 +30,8 @@ export function useRegisterForm() {
 
         try {
             const response = await registerUser(formData);
-            setAuth(response.user, response.token);
+            const userInstance = User.fromDTO(response.user);
+            setAuth(userInstance, response.token);
             navigate('/dashboard');
         } catch (err: any) {
             setError(err.response?.data?.message || 'An error occurred during registration');

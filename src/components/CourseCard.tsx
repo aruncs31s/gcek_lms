@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 import { UserIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
-import defaultLogo from '../../public/default_course_logo.png';
 
-import { Course } from '../types/course';
+import { Course } from '../models/course';
 
 interface CourseProps {
     course: Course;
@@ -15,7 +14,7 @@ export default function CourseCard({ course, variant = 'default', ranking }: Cou
     if (variant === 'trending') {
         return (
             <Link to={`/courses/${course.id}`} className="stat-box hover-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden', textDecoration: 'none' }}>
-                <div style={{ height: '180px', background: course.thumbnailUrl ? `url(${course.thumbnailUrl}) center/cover` : `url(${defaultLogo}) center/cover`, position: 'relative' }}>
+                <div style={{ height: '180px', background: `url(${course.thumbnail}) center/cover`, position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(24, 24, 37, 0.8)', backdropFilter: 'blur(4px)', padding: '0.4rem 0.8rem', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '0.4rem', border: '1px solid rgba(255,255,255,0.1)' }}>
                         <HeartSolidIcon style={{ width: '1rem', height: '1rem', color: 'var(--danger)' }} />
                         <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#fff' }}>{course.likesCount}</span>
@@ -55,7 +54,7 @@ export default function CourseCard({ course, variant = 'default', ranking }: Cou
     return (
         <div className="course-card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <div className="course-card-img-wrapper" style={{ position: 'relative' }}>
-                <div className="course-card-image" style={{ background: course.thumbnailUrl ? `url(${course.thumbnailUrl}) center/cover` : `url(${defaultLogo}) center/cover`, height: '200px', width: '100%' }} />
+                <div className="course-card-image" style={{ background: `url(${course.thumbnail}) center/cover`, height: '200px', width: '100%' }} />
                 <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     {course.isFree ? (
                         <span className="badge badge-success badge-blur">Free</span>

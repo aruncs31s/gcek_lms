@@ -2,7 +2,7 @@
  * LeaderboardRow Component - Renders a single leaderboard row
  * Uses composition of sub-components following Single Responsibility Principle
  */
-import type { User } from '../types/user';
+import type { User } from '../models/user';
 import RankBadge from './RankBadge';
 import UserAvatarCircle from './UserAvatarCircle';
 import UserInfo from './UserInfo';
@@ -51,7 +51,7 @@ export default function LeaderboardRow({ user, globalIndex }: LeaderboardRowProp
             />
 
             {/* Points display */}
-            <PointsDisplay points={user.totalPoins} />
+            <PointsDisplay points={user.totalPoints} />
         </div>
     );
 }

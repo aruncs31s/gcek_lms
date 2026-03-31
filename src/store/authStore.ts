@@ -2,9 +2,9 @@ import { create } from 'zustand';
 
 import { persist } from 'zustand/middleware';
 
-import type { User } from '../types/user';
+import { User } from '../models/user';
 
-type UserUpdates = Partial<Omit<User, 'fullName' | 'avatar' | 'badgeStyle' | 'totalPoins' | 'isAdmin'>>;
+type UserUpdates = Partial<Omit<User, 'fullName' | 'avatar' | 'badgeStyle' | 'totalPoints' | 'isAdmin'>>;
 
 interface AuthState {
   user: User | null;
@@ -27,9 +27,23 @@ export const useAuthStore = create<AuthState>()(
       },
 
       updateUser: (updates: UserUpdates) => {
-        set((state) => ({
-          user: state.user ? { ...state.user, ...updates } as User : null,
-        }));
+        set((state) => {
+          if (!state.user) return { user: null };
+          
+          // Re-instantiate to maintain class methods/getters
+          const merged: any = { ...state.user, ...updates };
+          const userInstance = User.fromDTO({
+            id: merged.id,
+            first_name: merged.firstName || merged.first_name,
+            last_name: merged.lastName || merged.last_name,
+            email: merged.email,
+            role: merged.role,
+            avatar_url: merged.avatarUrl || merged.avatar_url,
+            bio: merged.bio || ""
+          });
+
+          return { user: userInstance };
+        });
       },
 
       logout: () => {
@@ -38,6 +52,22 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
+      onRehydrateStorage: () => (state) => {
+        if (state && state.user && !(state.user instanceof User)) {
+          // If the user object is present but not a class instance, convert it
+          // This happens after loading from localStorage
+          const dto: any = state.user;
+          state.user = User.fromDTO({
+            id: dto.id,
+            first_name: dto.firstName || dto.first_name,
+            last_name: dto.lastName || dto.last_name,
+            email: dto.email,
+            role: dto.role,
+            avatar_url: dto.avatarUrl || dto.avatar_url,
+            bio: dto.bio || ""
+          });
+        }
+      }
     }
   )
 );

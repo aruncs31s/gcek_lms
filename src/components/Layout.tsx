@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NotificationBell from './NotificationBell';
 import SearchBar from './SearchBar';
-
 export default function Layout() {
     const { user, logout } = useAuthStore();
     const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -72,14 +71,19 @@ export default function Layout() {
                                     <NotificationBell />
                                 </div>
                                 <Link to={`/users/${user.id}`} className="profile-link hover-card">
-                                    {user.avatar ? (
-                                        <img src={user.avatar} alt="Profile" className="profile-avatar" />
+                                    {(user.avatar || (user as any).avatar_url || (user as any).avatarUrl) ? (
+                                        <img 
+                                            src={user.avatar || (user as any).avatar_url || (user as any).avatarUrl} 
+                                            alt="Profile" 
+                                            className="profile-avatar" 
+                                        />
                                     ) : (
                                         <div className="profile-avatar-placeholder">
-                                            {user.firstName?.[0]}{user.firstName?.[0]}
+                                            {user.firstName?.[0] || (user as any).first_name?.[0]}
+                                            {user.lastName?.[0] || (user as any).last_name?.[0]}
                                         </div>
                                     )}
-                                    <span className="profile-name">{user.firstName}</span>
+                                    <span className="profile-name">{user.firstName || (user as any).first_name}</span>
                                 </Link>
                                 <button onClick={logout} className="btn-logout">Logout</button>
                             </>
