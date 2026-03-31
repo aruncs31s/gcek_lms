@@ -68,7 +68,7 @@ export default function CourseInstructorTab({ course }: CourseInstructorTabProps
 
                         {/* Stat pills */}
                         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                            <StatPill icon="👨‍🎓" value={course.studentCount.toLocaleString()} label="Students" />
+                            <StatPill icon="👨‍🎓" value={course.studentCount?.toLocaleString() || '0'} label="Students" />
                             <StatPill icon="📖" value="1" label="Course" />
                             <StatPill icon="⭐" value="Verified" label="Instructor" />
                         </div>

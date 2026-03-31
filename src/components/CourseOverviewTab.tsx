@@ -22,7 +22,7 @@ export default function CourseOverviewTab({ course, isCompleted, modules = [], o
         { icon: <ClockIcon style={{ width: '1.4rem', color: 'var(--success)' }} />, label: 'Duration', value: course.duration || 'Self-paced' },
         { icon: <AcademicCapIcon style={{ width: '1.4rem', color: '#89b4fa' }} />, label: 'Certificate', value: course.certificateAvailable ? 'Yes, included ✓' : 'Not included' },
         { icon: <StarIcon style={{ width: '1.4rem', color: '#f9e2af' }} />, label: 'Difficulty', value: 'All levels' },
-        { icon: <DocumentTextIcon style={{ width: '1.4rem', color: 'var(--brand-primary)' }} />, label: 'Total Modules', value: `${course.modules.length} items` },
+        { icon: <DocumentTextIcon style={{ width: '1.4rem', color: 'var(--brand-primary)' }} />, label: 'Total Modules', value: `${course.modules?.length || 0} items` },
     ];
 
     return (

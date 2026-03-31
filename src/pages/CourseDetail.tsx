@@ -35,7 +35,7 @@ function useCourseData(courseId: string | undefined) {
             const courseRes = await api.get(`/courses/${courseId}`);
             const courseData = Course.fromDTO(courseRes.data as CourseDTO);
             setCourse(courseData);
-            const sortedModules = [...courseData.modules].sort((a, b) => a.orderIndex - b.orderIndex);
+            const sortedModules = [...(courseData.modules || [])].sort((a, b) => a.orderIndex - b.orderIndex);
             setModules(sortedModules);
         } catch {
             console.error("Failed to load course details");
@@ -110,7 +110,7 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                     teacher_avatar_url: course.teacherAvatarUrl,
                     teacher_bio: course.teacherBio,
                     student_count: course.studentCount,
-                    modules: course.modules.map(m => ({
+                    modules: course.modules?.map(m => ({
                         id: m.id,
                         parent_id: m.parentId,
                         title: m.title,
@@ -129,7 +129,7 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                     is_certificate_available: course.certificateAvailable,
                     start_date: course.startDate,
                     progress: course.progress,
-                    likes_count: Math.max(0, course.likesCount - 1),
+                    likes_count: Math.max(0, (course.likesCount || 0) - 1),
                     is_liked: false,
                 } as CourseDTO));
             } else {
@@ -145,7 +145,7 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                     teacher_avatar_url: course.teacherAvatarUrl,
                     teacher_bio: course.teacherBio,
                     student_count: course.studentCount,
-                    modules: course.modules.map(m => ({
+                    modules: course.modules?.map(m => ({
                         id: m.id,
                         parent_id: m.parentId,
                         title: m.title,
@@ -157,14 +157,14 @@ function useCourseLikes(courseId: string | undefined, course: Course | null, set
                         is_free: m.isFree,
                         order_index: m.orderIndex,
                         is_completed: m.isCompleted,
-                    })),
+                    })) || [],
                     type: course.type,
                     status: course.status,
                     duration: course.duration,
                     is_certificate_available: course.certificateAvailable,
                     start_date: course.startDate,
                     progress: course.progress,
-                    likes_count: course.likesCount + 1,
+                    likes_count: (course.likesCount || 0) + 1,
                     is_liked: true,
                 } as CourseDTO));
             }

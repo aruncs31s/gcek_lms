@@ -5,12 +5,12 @@ import { type EnrolmentDTO } from '../types/enrolments';
 export class Course {
     id: string
     title: string
-    description?: string
-    price?: number
-    thumbnailUrl?: string
-    teacherId?: string
-    teacherName?: string
-    teacherAvatarUrl?: string
+    description: string
+    price: number
+    thumbnailUrl: string
+    teacherId: string
+    teacherName: string
+    teacherAvatarUrl: string
     teacherBio?: string
     studentCount?: number
     modules?: Module[]

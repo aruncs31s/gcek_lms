@@ -19,7 +19,7 @@ const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }
 
 
 export default function CourseHero({ course, modulesCount, modules = [] }: CourseHeroProps) {
-    const statusStyle = STATUS_STYLES[course.status?.toLowerCase()] ?? STATUS_STYLES['active'];
+    const statusStyle = STATUS_STYLES[course.status?.toLowerCase() || 'active'] ?? STATUS_STYLES['active'];
     // Always show ESDC Masterclass as format label
     const formatInfo = { emoji: '📚', label: 'ESDC Masterclass' };
     const videoCount = modules.filter(m => m.isVideo).length;
@@ -58,7 +58,7 @@ export default function CourseHero({ course, modulesCount, modules = [] }: Cours
                 <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
                     {/* Format badge */}
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(203,166,247,0.15)', border: '1px solid rgba(203,166,247,0.3)', color: 'var(--brand-primary)', padding: '0.4rem 0.9rem', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                        {formatInfo.emoji} {formatInfo.label}
+                        {formatInfo.label}
                     </span>
 
                     {/* Status badge */}
@@ -93,7 +93,7 @@ export default function CourseHero({ course, modulesCount, modules = [] }: Cours
                 {/* Meta pills row */}
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
                     {/* Students */}
-                    <MetaPill icon={<UserIcon style={{ width: '1.1rem', color: 'var(--brand-primary)' }} />} value={course.studentCount.toLocaleString()} label="Students" />
+                    <MetaPill icon={<UserIcon style={{ width: '1.1rem', color: 'var(--brand-primary)' }} />} value={course.studentCount?.toLocaleString() || '0'} label="Students" />
 
                     {/* Videos */}
                     {videoCount > 0 && (
@@ -116,7 +116,7 @@ export default function CourseHero({ course, modulesCount, modules = [] }: Cours
                     )}
 
                     {/* Likes */}
-                    <MetaPill icon={<HeartSolidIcon style={{ width: '1.1rem', color: 'var(--danger)' }} />} value={course.likesCount} label="Likes" />
+                    <MetaPill icon={<HeartSolidIcon style={{ width: '1.1rem', color: 'var(--danger)' }} />} value={course.likesCount || 0} label="Likes" />
 
                     {/* Certificate */}
                     {course.certificateAvailable && (
